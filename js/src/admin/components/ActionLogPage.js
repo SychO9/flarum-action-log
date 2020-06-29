@@ -35,10 +35,15 @@ export default class ActionLogPage extends Page {
                 <div className="ActionLogGrid">
                   {this.entries.map(entry => (
                     <div className="ActionLogGrid-item">
-                      <div className="ActionLogGrid-entryActor">{this.showActor(entry)}</div>
-                      <div className="ActionLogGrid-entryName">{this.formatName(entry)}</div>
-                      <div className="ActionLogGrid-entryType">{entry.type()}</div>
-                      <div className="ActionLogGrid-entryTime">{icon('far fa-clock')} {humanTime(entry.createdAt())}</div>
+                      <div className="ActionLogGrid-Avatar">{avatar(entry.actor())}</div>
+                      <div className="ActionLogGrid-itemContent">
+                        <div className="ActionLogGrid-entryDetails">
+                          <div className="ActionLogGrid-entryActor">{username(entry.actor())}</div>
+                          <div className="ActionLogGrid-entryType">{entry.type()}</div>
+                          <div className="ActionLogGrid-entryTime">{icon('far fa-clock')} {humanTime(entry.createdAt())}</div>
+                        </div>
+                        <div className="ActionLogGrid-entryName">{this.formatName(entry)}</div>
+                      </div>
                     </div>
                   ))}
                 </div>

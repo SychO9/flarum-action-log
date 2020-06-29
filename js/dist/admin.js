@@ -278,14 +278,20 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       return m("div", {
         className: "ActionLogGrid-item"
       }, m("div", {
+        className: "ActionLogGrid-Avatar"
+      }, flarum_helpers_avatar__WEBPACK_IMPORTED_MODULE_5___default()(entry.actor())), m("div", {
+        className: "ActionLogGrid-itemContent"
+      }, m("div", {
+        className: "ActionLogGrid-entryDetails"
+      }, m("div", {
         className: "ActionLogGrid-entryActor"
-      }, _this.showActor(entry)), m("div", {
-        className: "ActionLogGrid-entryName"
-      }, _this.formatName(entry)), m("div", {
+      }, flarum_helpers_username__WEBPACK_IMPORTED_MODULE_6___default()(entry.actor())), m("div", {
         className: "ActionLogGrid-entryType"
       }, entry.type()), m("div", {
         className: "ActionLogGrid-entryTime"
-      }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()('far fa-clock'), " ", flarum_helpers_humanTime__WEBPACK_IMPORTED_MODULE_3___default()(entry.createdAt())));
+      }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()('far fa-clock'), " ", flarum_helpers_humanTime__WEBPACK_IMPORTED_MODULE_3___default()(entry.createdAt()))), m("div", {
+        className: "ActionLogGrid-entryName"
+      }, _this.formatName(entry))));
     })) : m(flarum_components_Placeholder__WEBPACK_IMPORTED_MODULE_7___default.a, {
       text: app.translator.trans('sycho-action-log.admin.no_entries')
     }))));
