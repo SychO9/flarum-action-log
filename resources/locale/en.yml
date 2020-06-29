@@ -15,7 +15,7 @@ sycho-action-log:
           unstickied: Unstickied the discussion {discussion}
 
         post:
-          approved: Approved the post {post}
+          approved: Approved the post {post} by {author} from the the discussion {discussion}
 
         user:
           suspended: Suspended the user {u}

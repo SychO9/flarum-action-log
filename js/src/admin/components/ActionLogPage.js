@@ -100,20 +100,18 @@ export default class ActionLogPage extends Page {
 
     key += `.${entry.name()}`;
 
-    if (format) {
+    // If there are any objects, convert them to strings using the buildResourceName() method
+    Object.keys(format).map((key, index) => {
+      if (typeof format[key] !== 'object') return;
+
       // The core code tries to get the displayName attribute when the
       // translation parameter key is named 'user', even if the value is a string
       // so we have no choice but to add some ugly hackish code here
-      let resourceKey = entry.resourceType();
+      format[key === 'user' ? 'u' : key] = this.buildResourceName(key, entry);
 
-      if (entry.resourceType() === 'user')
-        resourceKey = 'u';
-
-      format[resourceKey] = this.buildResourceName(format[entry.resourceType()] || {}, entry);
-
-      if (resourceKey === 'u')
+      if (key === 'user')
         delete format.user;
-    }
+    });
 
     return app.translator.trans(key, format);
   }
@@ -125,10 +123,11 @@ export default class ActionLogPage extends Page {
    * @param entry
    * @returns string
    */
-  buildResourceName(format, entry) {
+  buildResourceName(key, entry) {
+    const format = entry.format()[key] || {};
     let name = format.title || format.name || 'unknown';
 
-    if (entry.resourceId()) {
+    if (entry.resourceId() && key === entry.resourceType()) {
       name = `#${entry.resourceId()} - ${name}`;
     }
 
@@ -141,7 +140,7 @@ export default class ActionLogPage extends Page {
 
     if (format.icon) {
       name = [
-        <span className="ActionLogExtensionIcon" style={format.icon}>
+        <span className="Badge ActionLogExtensionIcon" style={format.icon}>
           {icon(format.icon.name)}
         </span>,
         name

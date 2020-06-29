@@ -329,6 +329,8 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
   ;
 
   _proto.formatName = function formatName(entry) {
+    var _this3 = this;
+
     var key = "sycho-action-log.admin.actions." + entry.type();
     var format = entry.format();
 
@@ -336,18 +338,16 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       key += "." + entry.resourceType();
     }
 
-    key += "." + entry.name();
+    key += "." + entry.name(); // If there are any objects, convert them to strings using the buildResourceName() method
 
-    if (format) {
-      // The core code tries to get the displayName attribute when the
+    Object.keys(format).map(function (key, index) {
+      if (typeof format[key] !== 'object') return; // The core code tries to get the displayName attribute when the
       // translation parameter key is named 'user', even if the value is a string
       // so we have no choice but to add some ugly hackish code here
-      var resourceKey = entry.resourceType();
-      if (entry.resourceType() === 'user') resourceKey = 'u';
-      format[resourceKey] = this.buildResourceName(format[entry.resourceType()] || {}, entry);
-      if (resourceKey === 'u') delete format.user;
-    }
 
+      format[key === 'user' ? 'u' : key] = _this3.buildResourceName(key, entry);
+      if (key === 'user') delete format.user;
+    });
     return app.translator.trans(key, format);
   }
   /**
@@ -359,10 +359,11 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
    */
   ;
 
-  _proto.buildResourceName = function buildResourceName(format, entry) {
+  _proto.buildResourceName = function buildResourceName(key, entry) {
+    var format = entry.format()[key] || {};
     var name = format.title || format.name || 'unknown';
 
-    if (entry.resourceId()) {
+    if (entry.resourceId() && key === entry.resourceType()) {
       name = "#" + entry.resourceId() + " - " + name;
     }
 
@@ -372,7 +373,7 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
 
     if (format.icon) {
       name = [m("span", {
-        className: "ActionLogExtensionIcon",
+        className: "Badge ActionLogExtensionIcon",
         style: format.icon
       }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(format.icon.name)), name];
     }
