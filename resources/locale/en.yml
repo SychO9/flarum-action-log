@@ -1,0 +1,33 @@
+sycho-action-log:
+  admin:
+    title: Action Log
+    description: View a list of all the moderation/administration actions taken within the past week
+    no_entries: No Entries
+    actions:
+
+      moderation:
+
+        discussion:
+          locked: Locked the discussion {discussion}
+          unlocked: Unlocked the discussion {discussion}
+          deleted: Deleted the discussion {discussion}
+          stickied: Stickied the discussion {discussion}
+          unstickied: Unstickied the discussion {discussion}
+
+        post:
+          approved: Approved the post {post}
+
+        user:
+          suspended: Suspended the user {u}
+          unsuspended: Unsuspended the user {u}
+
+      administration:
+
+        group:
+          created: Created a new group {group}
+          deleted: Deleted the group {group}
+
+        extension:
+          enabled: Enabled the extension {extension}
+          disabled: Disabled the extension {extension}
+          uninstalled: Uninstalled the extension {extension}
