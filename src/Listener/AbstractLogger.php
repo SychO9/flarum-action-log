@@ -9,13 +9,18 @@
 
 namespace SychO\ActionLog\Listener;
 
+use SychO\ActionLog\ActionLogEntry;
 use Carbon\Carbon;
 use Laminas\Diactoros\ServerRequest;
-use SychO\ActionLog\ActionLogEntry;
 use Flarum\User\User;
 
 abstract class AbstractLogger
 {
+    /**
+     * @var ServerRequest
+     */
+    public static $request;
+
     /**
      * @var string
      */
@@ -35,19 +40,6 @@ abstract class AbstractLogger
      * @var string
      */
     protected $actor = 'user';
-
-    /**
-     * @var ServerRequest
-     */
-    protected $request;
-
-    /**
-     * @param ServerRequest $request
-     */
-    public function __construct(ServerRequest $request)
-    {
-        $this->request = $request;
-    }
 
     /**
      * @param $event
@@ -94,7 +86,7 @@ abstract class AbstractLogger
             return $event->{$this->actor};
         }
 
-        $requestActor = $this->request->getAttribute('actor');
+        $requestActor = self::$request->getAttribute('actor');
 
         return $requestActor ?? null;
     }

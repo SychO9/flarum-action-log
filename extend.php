@@ -9,6 +9,7 @@
 
 use SychO\ActionLog\Listener;
 use SychO\ActionLog\Controller;
+use SychO\ActionLog\Middleware;
 use Flarum\Extend;
 use Illuminate\Contracts\Events\Dispatcher;
 
@@ -22,6 +23,9 @@ return [
     (new Extend\Routes('api'))
         ->get('/action-log-entries', 'actionLogEntries.index', Controller\ListActionLogEntriesController::class)
         ->delete('/action-log-entries/{id}', 'actionLogEntries.delete', Controller\DeleteActionLogEntryController::class),
+
+    (new Extend\Middleware('api'))
+        ->add(Middleware\ActionLoggingMiddleware::class),
 
     function (Dispatcher $events) {
         // Flarum Lock
