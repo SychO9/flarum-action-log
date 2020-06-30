@@ -5,12 +5,22 @@ import icon from 'flarum/helpers/icon';
 import avatar from 'flarum/helpers/avatar';
 import username from 'flarum/helpers/username';
 import Placeholder from 'flarum/components/Placeholder';
+import Button from 'flarum/components/Button';
+import Select from 'flarum/components/Select';
 
 export default class ActionLogPage extends Page {
   init() {
     super.init();
 
     this.entries = [];
+
+    this.offset = 0;
+
+    this.limit = 20;
+
+    this.total = 0;
+
+    this.page = 0;
 
     this.load();
   }
@@ -23,6 +33,17 @@ export default class ActionLogPage extends Page {
             <h2>
               {icon('fas fa-clipboard-list')} {app.translator.trans('sycho-action-log.admin.title')}
             </h2>
+            <p>{app.translator.trans('sycho-action-log.admin.description')}</p>
+            {Button.component({
+              className: "Button Button--primary",
+              children: "Clear Log",
+              icon: "fas fa-trash",
+            })}
+            {Button.component({
+              className: "Button",
+              children: "Settings",
+              icon: "fas fa-cogs",
+            })}
           </div>
         </div>
 
@@ -31,7 +52,7 @@ export default class ActionLogPage extends Page {
             {this.loading ? (
               <LoadingIndicator className="LoadingIndicator--block" />
             ) :
-              this.entries.length ? (
+              this.entries.length ? [
                 <div className="ActionLogGrid">
                   {this.entries.map(entry => (
                     <div className="ActionLogGrid-item">
@@ -46,8 +67,9 @@ export default class ActionLogPage extends Page {
                       </div>
                     </div>
                   ))}
-                </div>
-              ) : (
+                </div>,
+                <div className="ActionLogPage-navigation">{this.buildPagination()}</div>
+              ] : (
                 <Placeholder text={app.translator.trans('sycho-action-log.admin.no_entries')} />
               )
             }
@@ -70,11 +92,11 @@ export default class ActionLogPage extends Page {
   /**
    * Loads the log entries
    */
-  load() {
+  load(params) {
     this.loading = true;
 
     app.store
-      .find('action-log-entries')
+      .find('action-log-entries', this.requestParams(params || {}))
       .then(this.handleResponse.bind(this))
       .then(() => {
         this.loading = false;
@@ -82,10 +104,83 @@ export default class ActionLogPage extends Page {
       });
   }
 
+  requestParams({ offset }) {
+    if (typeof offset !== 'undefined') {
+      this.offset = offset;
+    }
+
+    return { page: { offset: this.offset, limit: this.limit } };
+  }
+
   handleResponse(response) {
     this.entries = response;
+    this.total = response.payload.meta.count || 0;
+    this.links = response.payload.links;
+    this.page = Math.round(this.offset / this.limit);
 
     return response;
+  }
+
+  buildPagination() {
+    if (this.total <= this.limit) return;
+
+    return (
+      <div className="ActionLogPage-pagination">
+        <Button
+          className="Button Button--icon"
+          icon="fas fa-arrow-left"
+          onclick={this.prev.bind(this)}
+          disabled={!this.hasPrev()}
+        />
+        {<Select
+          value={this.page}
+          options={this.getPages()}
+          onchange={this.changePage.bind(this)}
+        />}
+        <Button
+          className="Button Button--icon"
+          icon="fas fa-arrow-right"
+          onclick={this.next.bind(this)}
+          disabled={!this.hasNext()}
+        />
+      </div>
+    );
+  }
+
+  next() {
+    if (!this.hasNext()) return;
+
+    this.load({ offset: this.offset + this.limit });
+  }
+
+  prev() {
+    if (!this.hasPrev()) return;
+
+    this.load({ offset: this.offset - this.limit });
+  }
+
+  hasNext() {
+    return this.offset+this.limit < this.total;
+  }
+
+  hasPrev() {
+    return this.links.prev;
+  }
+
+  getPages() {
+    let pageRange = Array.from({ length: Math.round(this.total/this.limit) }, (v, k) => k+1);
+
+    pageRange.map((number, index) => {
+      pageRange[index] = `Page: ${number}`;
+    });
+
+    return pageRange;
+  }
+
+  changePage(value) {
+    if (!Object.keys(this.getPages()).includes(value)) return;
+
+    this.load({ offset: value*this.limit });
   }
 
   /**

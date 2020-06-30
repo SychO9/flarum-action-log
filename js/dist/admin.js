@@ -232,6 +232,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_helpers_username__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(flarum_helpers_username__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var flarum_components_Placeholder__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! flarum/components/Placeholder */ "flarum/components/Placeholder");
 /* harmony import */ var flarum_components_Placeholder__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Placeholder__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var flarum_components_Button__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! flarum/components/Button */ "flarum/components/Button");
+/* harmony import */ var flarum_components_Button__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Button__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var flarum_components_Select__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! flarum/components/Select */ "flarum/components/Select");
+/* harmony import */ var flarum_components_Select__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Select__WEBPACK_IMPORTED_MODULE_9__);
+
+
 
 
 
@@ -254,6 +260,10 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
     _Page.prototype.init.call(this);
 
     this.entries = [];
+    this.offset = 0;
+    this.limit = 20;
+    this.total = 0;
+    this.page = 0;
     this.load();
   };
 
@@ -266,13 +276,21 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       className: "ActionLogPage-header"
     }, m("div", {
       className: "container"
-    }, m("h2", null, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()('fas fa-clipboard-list'), " ", app.translator.trans('sycho-action-log.admin.title')))), m("div", {
+    }, m("h2", null, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()('fas fa-clipboard-list'), " ", app.translator.trans('sycho-action-log.admin.title')), m("p", null, app.translator.trans('sycho-action-log.admin.description')), flarum_components_Button__WEBPACK_IMPORTED_MODULE_8___default.a.component({
+      className: "Button Button--primary",
+      children: "Clear Log",
+      icon: "fas fa-trash"
+    }), flarum_components_Button__WEBPACK_IMPORTED_MODULE_8___default.a.component({
+      className: "Button",
+      children: "Settings",
+      icon: "fas fa-cogs"
+    }))), m("div", {
       className: "ActionLogPage-content"
     }, m("div", {
       className: "container"
     }, this.loading ? m(flarum_components_LoadingIndicator__WEBPACK_IMPORTED_MODULE_2___default.a, {
       className: "LoadingIndicator--block"
-    }) : this.entries.length ? m("div", {
+    }) : this.entries.length ? [m("div", {
       className: "ActionLogGrid"
     }, this.entries.map(function (entry) {
       return m("div", {
@@ -292,7 +310,9 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()('far fa-clock'), " ", flarum_helpers_humanTime__WEBPACK_IMPORTED_MODULE_3___default()(entry.createdAt()))), m("div", {
         className: "ActionLogGrid-entryName"
       }, _this.formatName(entry))));
-    })) : m(flarum_components_Placeholder__WEBPACK_IMPORTED_MODULE_7___default.a, {
+    })), m("div", {
+      className: "ActionLogPage-navigation"
+    }, this.buildPagination())] : m(flarum_components_Placeholder__WEBPACK_IMPORTED_MODULE_7___default.a, {
       text: app.translator.trans('sycho-action-log.admin.no_entries')
     }))));
   }
@@ -311,19 +331,99 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
    */
   ;
 
-  _proto.load = function load() {
+  _proto.load = function load(params) {
     var _this2 = this;
 
     this.loading = true;
-    app.store.find('action-log-entries').then(this.handleResponse.bind(this)).then(function () {
+    app.store.find('action-log-entries', this.requestParams(params || {})).then(this.handleResponse.bind(this)).then(function () {
       _this2.loading = false;
       m.redraw();
     });
   };
 
+  _proto.requestParams = function requestParams(_ref) {
+    var offset = _ref.offset;
+
+    if (typeof offset !== 'undefined') {
+      this.offset = offset;
+    }
+
+    return {
+      page: {
+        offset: this.offset,
+        limit: this.limit
+      }
+    };
+  };
+
   _proto.handleResponse = function handleResponse(response) {
     this.entries = response;
+    this.total = response.payload.meta.count || 0;
+    this.links = response.payload.links;
+    this.page = Math.round(this.offset / this.limit);
     return response;
+  };
+
+  _proto.buildPagination = function buildPagination() {
+    if (this.total <= this.limit) return;
+    return m("div", {
+      className: "ActionLogPage-pagination"
+    }, m(flarum_components_Button__WEBPACK_IMPORTED_MODULE_8___default.a, {
+      className: "Button Button--icon",
+      icon: "fas fa-arrow-left",
+      onclick: this.prev.bind(this),
+      disabled: !this.hasPrev()
+    }), m(flarum_components_Select__WEBPACK_IMPORTED_MODULE_9___default.a, {
+      value: this.page,
+      options: this.getPages(),
+      onchange: this.changePage.bind(this)
+    }), m(flarum_components_Button__WEBPACK_IMPORTED_MODULE_8___default.a, {
+      className: "Button Button--icon",
+      icon: "fas fa-arrow-right",
+      onclick: this.next.bind(this),
+      disabled: !this.hasNext()
+    }));
+  };
+
+  _proto.next = function next() {
+    if (!this.hasNext()) return;
+    this.load({
+      offset: this.offset + this.limit
+    });
+  };
+
+  _proto.prev = function prev() {
+    if (!this.hasPrev()) return;
+    this.load({
+      offset: this.offset - this.limit
+    });
+  };
+
+  _proto.hasNext = function hasNext() {
+    return this.offset + this.limit < this.total;
+  };
+
+  _proto.hasPrev = function hasPrev() {
+    return this.links.prev;
+  };
+
+  _proto.getPages = function getPages() {
+    var pageRange = Array.from({
+      length: Math.round(this.total / this.limit)
+    }, function (v, k) {
+      return k + 1;
+    });
+    pageRange.map(function (number, index) {
+      pageRange[index] = "Page: " + number;
+    });
+    return pageRange;
+  };
+
+  _proto.changePage = function changePage(value) {
+    if (!Object.keys(this.getPages()).includes(value)) return;
+    this.load({
+      offset: value * this.limit
+    });
   }
   /**
    * Finds the appropriate language string
@@ -535,6 +635,17 @@ module.exports = flarum.core.compat['components/AdminNav'];
 
 /***/ }),
 
+/***/ "flarum/components/Button":
+/*!**********************************************************!*\
+  !*** external "flarum.core.compat['components/Button']" ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = flarum.core.compat['components/Button'];
+
+/***/ }),
+
 /***/ "flarum/components/LoadingIndicator":
 /*!********************************************************************!*\
   !*** external "flarum.core.compat['components/LoadingIndicator']" ***!
@@ -565,6 +676,17 @@ module.exports = flarum.core.compat['components/Page'];
 /***/ (function(module, exports) {
 
 module.exports = flarum.core.compat['components/Placeholder'];
+
+/***/ }),
+
+/***/ "flarum/components/Select":
+/*!**********************************************************!*\
+  !*** external "flarum.core.compat['components/Select']" ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = flarum.core.compat['components/Select'];
 
 /***/ }),
 

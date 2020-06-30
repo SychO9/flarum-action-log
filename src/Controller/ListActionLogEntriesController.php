@@ -9,10 +9,11 @@
 
 namespace SychO\ActionLog\Controller;
 
-use Flarum\Api\Controller\AbstractListController;
-use Psr\Http\Message\ServerRequestInterface;
 use SychO\ActionLog\ActionLogEntry;
 use SychO\ActionLog\Serializer\ActionLogEntrySerializer;
+use Flarum\Api\Controller\AbstractListController;
+use Flarum\Http\UrlGenerator;
+use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 
 class ListActionLogEntriesController extends AbstractListController
@@ -34,14 +35,41 @@ class ListActionLogEntriesController extends AbstractListController
     ];
 
     /**
+     * @var UrlGenerator
+     */
+    protected $url;
+
+    /**
+     * @param UrlGenerator $url
+     */
+    public function __construct(UrlGenerator $url)
+    {
+        $this->url = $url;
+    }
+
+    /**
      * @inheritDoc
      */
     protected function data(ServerRequestInterface $request, Document $document)
     {
         $include = $this->extractInclude($request);
-        $entries = ActionLogEntry::all();
+        $limit = $this->extractLimit($request);
+        $offset = $this->extractOffset($request);
 
+        $query = ActionLogEntry::skip($offset)->take($limit);
+
+        $entries = $query->get();
         $entries->load($include);
+
+        $document->addPaginationLinks(
+            $this->url->to('api')->route('actionLogEntries.index'),
+            $request->getQueryParams(),
+            $offset,
+            $limit,
+            null
+        );
+
+        $document->setMeta(['count' => ActionLogEntry::count()]);
 
         return $entries;
     }
