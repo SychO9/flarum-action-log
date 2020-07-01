@@ -261,7 +261,7 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
 
     this.entries = [];
     this.offset = 0;
-    this.limit = 4;
+    this.limit = 20;
     this.total = 0;
     this.page = 0;
     this.load();
