@@ -117,7 +117,7 @@ export default class ActionLogPage extends Page {
     this.entries = response;
     this.total = response.payload.meta.count || 0;
     this.links = response.payload.links;
-    this.page = Math.round(this.offset / this.limit);
+    this.page = Math.ceil(this.offset / this.limit);
 
     return response;
   }
