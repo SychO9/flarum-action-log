@@ -56,7 +56,7 @@ class ListActionLogEntriesController extends AbstractListController
         $limit = $this->extractLimit($request);
         $offset = $this->extractOffset($request);
 
-        $query = ActionLogEntry::skip($offset)->take($limit);
+        $query = ActionLogEntry::latest()->skip($offset)->take($limit);
 
         $entries = $query->get();
         $entries->load($include);
