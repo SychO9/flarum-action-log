@@ -168,7 +168,7 @@ export default class ActionLogPage extends Page {
   }
 
   getPages() {
-    let pageRange = Array.from({ length: Math.round(this.total/this.limit) }, (v, k) => k+1);
+    let pageRange = Array.from({ length: Math.ceil(this.total/this.limit) }, (v, k) => k+1);
 
     pageRange.map((number, index) => {
       pageRange[index] = `Page: ${number}`;

@@ -409,7 +409,7 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
 
   _proto.getPages = function getPages() {
     var pageRange = Array.from({
-      length: Math.round(this.total / this.limit)
+      length: Math.ceil(this.total / this.limit)
     }, function (v, k) {
       return k + 1;
     });
