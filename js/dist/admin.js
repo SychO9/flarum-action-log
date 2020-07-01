@@ -276,7 +276,9 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       className: "ActionLogPage-header"
     }, m("div", {
       className: "container"
-    }, m("h2", null, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()('fas fa-clipboard-list'), " ", app.translator.trans('sycho-action-log.admin.title')), m("p", null, app.translator.trans('sycho-action-log.admin.description')), flarum_components_Button__WEBPACK_IMPORTED_MODULE_8___default.a.component({
+    }, m("h2", null, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()('fas fa-clipboard-list'), " ", app.translator.trans('sycho-action-log.admin.title')), m("p", null, app.translator.trans('sycho-action-log.admin.description')), m("p", null, app.translator.trans('sycho-action-log.admin.total_entries', {
+      count: this.total
+    })), flarum_components_Button__WEBPACK_IMPORTED_MODULE_8___default.a.component({
       className: "Button Button--primary",
       children: "Clear Log",
       icon: "fas fa-trash"
@@ -414,7 +416,9 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       return k + 1;
     });
     pageRange.map(function (number, index) {
-      pageRange[index] = "Page: " + number;
+      pageRange[index] = app.translator.trans('sycho-action-log.admin.page', {
+        number: number
+      });
     });
     return pageRange;
   };
