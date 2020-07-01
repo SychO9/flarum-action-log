@@ -16,7 +16,7 @@ export default class ActionLogPage extends Page {
 
     this.offset = 0;
 
-    this.limit = 20;
+    this.limit = 4;
 
     this.total = 0;
 
