@@ -59,6 +59,8 @@ class ListActionLogEntriesController extends AbstractListController
         $query = ActionLogEntry::latest()->skip($offset)->take($limit);
 
         $entries = $query->get();
+
+        $entries = ActionLogEntry::prepareRelationships($entries);
         $entries->load($include);
 
         $document->addPaginationLinks(

@@ -214,6 +214,10 @@ export default class ActionLogPage extends Page {
         delete format.user;
     });
 
+    Object.keys(format).map((key, index) => {
+      format[key] = <strong>{format[key]}</strong>;
+    });
+
     return app.translator.trans(key, format);
   }
 
@@ -226,10 +230,10 @@ export default class ActionLogPage extends Page {
    */
   buildResourceName(key, entry) {
     const format = entry.format()[key] || {};
-    let name = format.title || format.name || 'unknown';
+    let name = format.title || '';
 
-    if (entry.resourceId() && key === entry.resourceType()) {
-      name = `#${entry.resourceId()} - ${name}`;
+    if (format.id) {
+      format.version = `#${format.id}`;
     }
 
     if (format.version) {
@@ -251,9 +255,6 @@ export default class ActionLogPage extends Page {
     if (format.link) {
       name = <a href={format.link}>{name}</a>;
     }
-
-    // Style the resource name
-    name = <strong>{name}</strong>;
 
     return name;
   }

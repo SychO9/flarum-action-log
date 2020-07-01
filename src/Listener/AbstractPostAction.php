@@ -17,7 +17,10 @@ abstract class AbstractPostAction extends AbstractLogger
     protected function details($event): array
     {
         return [
-            'discussion' => $event->post->discussion->title,
+            'discussion' => [
+                'id' => $event->post->discussion->id,
+                'title' => $event->post->discussion->title,
+            ],
             'author' => [
                 'id' => $event->post->user->id,
                 'name' => $event->post->user->display_name,

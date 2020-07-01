@@ -458,6 +458,9 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       format[key === 'user' ? 'u' : key] = _this3.buildResourceName(key, entry);
       if (key === 'user') delete format.user;
     });
+    Object.keys(format).map(function (key, index) {
+      format[key] = m("strong", null, format[key]);
+    });
     return app.translator.trans(key, format);
   }
   /**
@@ -471,10 +474,10 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
 
   _proto.buildResourceName = function buildResourceName(key, entry) {
     var format = entry.format()[key] || {};
-    var name = format.title || format.name || 'unknown';
+    var name = format.title || '';
 
-    if (entry.resourceId() && key === entry.resourceType()) {
-      name = "#" + entry.resourceId() + " - " + name;
+    if (format.id) {
+      format.version = "#" + format.id;
     }
 
     if (format.version) {
@@ -492,10 +495,8 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       name = m("a", {
         href: format.link
       }, name);
-    } // Style the resource name
+    }
 
-
-    name = m("strong", null, name);
     return name;
   };
 
