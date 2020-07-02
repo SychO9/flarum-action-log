@@ -22,6 +22,7 @@ abstract class AbstractPostAction extends AbstractLogger
                 'title' => $event->post->discussion->title,
             ],
             'author' => [
+                'type' => 'user',
                 'id' => $event->post->user->id,
                 'name' => $event->post->user->display_name,
             ],

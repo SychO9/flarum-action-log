@@ -86,7 +86,7 @@ class Formatter
     protected function formatResourceName(string $resourceType, array $params): array
     {
         if (! empty($params['id'])) {
-            $link = $this->getLink($resourceType, $params['id']);
+            $link = $this->getLink($params['type'] ?? $resourceType, $params['id']);
 
             if (! empty($link)) {
                 $params['link'] = $link;
