@@ -50,9 +50,12 @@ class ActionLogSearcher
         $search = new ActionLogSearch($query->getQuery(), $actor);
 
         $this->gambits->apply($search, $criteria->query);
+
+        $count = $query->count();
+
         $this->applySort($search, $criteria->sort);
         $this->applyOffset($search, $offset);
-        $this->applyLimit($search, $limit + 1);
+        $this->applyLimit($search, $limit);
 
         // @TODO add event
         // event(new Searching($search, $criteria));
@@ -65,6 +68,6 @@ class ActionLogSearcher
 
         $entries->load($load);
 
-        return new SearchResults($entries, $query->count());
+        return new SearchResults($entries, $count);
     }
 }
