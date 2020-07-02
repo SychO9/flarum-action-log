@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package Flarum Logs
+ * @package Flarum Action Log
  * @author Sami "SychO" Mazouz (https://github.com/SychO9)
  * @version 0.1.0
  * @license MIT
@@ -17,7 +17,7 @@ use Flarum\User\User;
 
 /**
  * Class ActionLogEntry
- * @package SychO\FlarumLogs
+ * @package SychO\ActionLog
  *
  * @property int id
  * @property int actor_id

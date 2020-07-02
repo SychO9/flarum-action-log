@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package Flarum Logs
+ * @package Flarum Action Log
  * @author Sami "SychO" Mazouz (https://github.com/SychO9)
  * @version 0.1.0
  * @license MIT
@@ -13,7 +13,7 @@ use Flarum\Sticky\Event\DiscussionWasUnstickied;
 
 /**
  * Class LogDiscussionUnstickied
- * @package SychO\FlarumLogs\Listener
+ * @package SychO\ActionLog\Listener
  *
  * @see DiscussionWasUnstickied
  */
