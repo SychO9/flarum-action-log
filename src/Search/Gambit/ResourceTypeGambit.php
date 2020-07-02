@@ -14,12 +14,12 @@ use Flarum\Search\AbstractRegexGambit;
 use Flarum\Search\AbstractSearch;
 use LogicException;
 
-class TypeGambit extends AbstractRegexGambit
+class ResourceTypeGambit extends AbstractRegexGambit
 {
     /**
      * @inheritDoc
      */
-    protected $pattern = 'type:(.+)';
+    protected $pattern = 'resource:(.+)';
 
     /**
      * {@inheritdoc}
@@ -30,6 +30,6 @@ class TypeGambit extends AbstractRegexGambit
             throw new LogicException('This gambit can only be applied on a ActionLogSearch');
         }
 
-        $search->getQuery()->where('type', trim($matches[1], '"'), 'and', $negate);
+        $search->getQuery()->where('resource_type', trim($matches[1], '"'), 'and', $negate);
     }
 }

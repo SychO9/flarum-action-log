@@ -11,6 +11,7 @@ namespace SychO\ActionLog\Provider;
 
 use SychO\ActionLog\Search\ActionLogSearcher;
 use SychO\ActionLog\Search\Gambit\TypeGambit;
+use SychO\ActionLog\Search\Gambit\ResourceTypeGambit;
 use Flarum\Foundation\AbstractServiceProvider;
 use Flarum\Search\GambitManager;
 use Illuminate\Contracts\Container\Container;
@@ -25,6 +26,7 @@ class SearchServiceProvider extends AbstractServiceProvider
                 $gambits = new GambitManager($app);
 
                 $gambits->add(TypeGambit::class);
+                $gambits->add(ResourceTypeGambit::class);
 
                 return $gambits;
             });
