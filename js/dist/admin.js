@@ -236,6 +236,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_components_Button__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Button__WEBPACK_IMPORTED_MODULE_8__);
 /* harmony import */ var flarum_components_Select__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! flarum/components/Select */ "flarum/components/Select");
 /* harmony import */ var flarum_components_Select__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Select__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var flarum_components_Dropdown__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! flarum/components/Dropdown */ "flarum/components/Dropdown");
+/* harmony import */ var flarum_components_Dropdown__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Dropdown__WEBPACK_IMPORTED_MODULE_10__);
+
 
 
 
@@ -260,6 +263,11 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
     _Page.prototype.init.call(this);
 
     this.entries = [];
+    this.sortingOptions = {
+      newest: '-createdAt',
+      oldest: 'createdAt'
+    };
+    this.sort = 'newest';
     this.offset = 0;
     this.limit = 20;
     this.total = 0;
@@ -271,6 +279,8 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
   };
 
   _proto.view = function view() {
+    var _this = this;
+
     return m("div", {
       className: "ActionLogPage"
     }, m("div", {
@@ -298,6 +308,18 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       placeholder: app.translator.trans('sycho-action-log.admin.search'),
       value: this.query(),
       oninput: this.search.bind(this)
+    }), flarum_components_Dropdown__WEBPACK_IMPORTED_MODULE_10___default.a.component({
+      buttonClassName: 'Button',
+      label: app.translator.trans("sycho-action-log.admin.sort." + this.sort),
+      children: Object.keys(this.sortingOptions).map(function (key) {
+        var active = _this.sort === key;
+        return flarum_components_Button__WEBPACK_IMPORTED_MODULE_8___default.a.component({
+          children: app.translator.trans("sycho-action-log.admin.sort." + key),
+          icon: active ? 'fas fa-check' : true,
+          onclick: _this.updateSort.bind(_this, key),
+          active: active
+        });
+      })
     })), this.loading ? m(flarum_components_LoadingIndicator__WEBPACK_IMPORTED_MODULE_2___default.a, {
       className: "LoadingIndicator--block"
     }) : this.entries.length ? [m("div", {
@@ -342,21 +364,26 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
   ;
 
   _proto.load = function load(params) {
-    var _this = this;
+    var _this2 = this;
 
     this.loading = true;
     app.store.find('action-log-entries', this.requestParams(params || {})).then(this.handleResponse.bind(this)).then(function () {
-      _this.loading = false;
+      _this2.loading = false;
       m.redraw();
     });
   };
 
   _proto.requestParams = function requestParams(_ref) {
     var offset = _ref.offset,
-        query = _ref.query;
+        query = _ref.query,
+        sort = _ref.sort;
 
     if (typeof offset !== 'undefined') {
       this.offset = offset;
+    }
+
+    if (typeof sort !== 'undefined') {
+      this.sort = sort;
     }
 
     return {
@@ -366,12 +393,13 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       },
       filter: {
         q: query
-      }
+      },
+      sort: this.sortingOptions[this.sort]
     };
   };
 
   _proto.handleResponse = function handleResponse(response) {
-    var _this2 = this;
+    var _this3 = this;
 
     this.entries = response;
     this.total = response.payload.meta.total || 0;
@@ -379,7 +407,7 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
     this.links = response.payload.links;
     this.page = Math.ceil(this.offset / this.limit);
     this.entries.map(function (entry) {
-      entry.formattedName = _this2.formatName(entry);
+      entry.formattedName = _this3.formatName(entry);
     });
     return response;
   };
@@ -448,20 +476,26 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
     });
   };
 
-  _proto.search = function search(input) {
-    var _this3 = this;
+  _proto.search = function search() {
+    var _this4 = this;
 
     m.withAttr('value', this.query)();
     this.loading = true;
 
     this.searching = function () {
-      return _this3.load({
-        query: _this3.query()
+      return _this4.load({
+        query: _this4.query()
       });
     };
 
     if (this.searchTimeout) clearTimeout(this.searchTimeout);
     this.searchTimeout = setTimeout(this.searching, 250);
+  };
+
+  _proto.updateSort = function updateSort(sort) {
+    this.load({
+      sort: sort
+    });
   }
   /**
    * Finds the appropriate language string
@@ -473,7 +507,7 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
   ;
 
   _proto.formatName = function formatName(entry) {
-    var _this4 = this;
+    var _this5 = this;
 
     var key = "sycho-action-log.admin.actions." + entry.type();
     var format = entry.format();
@@ -489,7 +523,7 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       // translation parameter key is named 'user', even if the value is a string
       // so we have no choice but to add some ugly hackish code here
 
-      format[key === 'user' ? 'u' : key] = _this4.buildResourceName(key, entry);
+      format[key === 'user' ? 'u' : key] = _this5.buildResourceName(key, entry);
       if (key === 'user') delete format.user;
     });
     Object.keys(format).map(function (key, index) {
@@ -682,6 +716,17 @@ module.exports = flarum.core.compat['components/AdminNav'];
 /***/ (function(module, exports) {
 
 module.exports = flarum.core.compat['components/Button'];
+
+/***/ }),
+
+/***/ "flarum/components/Dropdown":
+/*!************************************************************!*\
+  !*** external "flarum.core.compat['components/Dropdown']" ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = flarum.core.compat['components/Dropdown'];
 
 /***/ }),
 

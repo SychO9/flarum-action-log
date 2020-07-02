@@ -6,6 +6,10 @@ sycho-action-log:
     page: 'Page: {number}'
     no_entries: No Entries
     search: Search..
+    sort:
+      newest: Newest
+      oldest: Oldest
+
     actions:
 
       moderation:

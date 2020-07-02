@@ -72,6 +72,13 @@
   }
 }
 
-.ActionLogPage-navigation .Select-caret {
-  margin-right: 14px;
+.ActionLogPage-navigation {
+  display: flex;
+
+  > * {
+    .ActionLogPage.Button();
+  }
+  .Select-caret {
+    margin-right: 14px;
+  }
 }

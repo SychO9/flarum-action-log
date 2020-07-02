@@ -7,12 +7,20 @@ import username from 'flarum/helpers/username';
 import Placeholder from 'flarum/components/Placeholder';
 import Button from 'flarum/components/Button';
 import Select from 'flarum/components/Select';
+import Dropdown from 'flarum/components/Dropdown';
 
 export default class ActionLogPage extends Page {
   init() {
     super.init();
 
     this.entries = [];
+
+    this.sortingOptions = {
+      newest: '-createdAt',
+      oldest: 'createdAt',
+    };
+
+    this.sort = 'newest';
 
     this.offset = 0;
 
@@ -63,6 +71,20 @@ export default class ActionLogPage extends Page {
                 value={this.query()}
                 oninput={this.search.bind(this)}
               />
+              {Dropdown.component({
+                buttonClassName: 'Button',
+                label: app.translator.trans(`sycho-action-log.admin.sort.${this.sort}`),
+                children: Object.keys(this.sortingOptions).map(key => {
+                  const active = this.sort === key;
+
+                  return Button.component({
+                    children: app.translator.trans(`sycho-action-log.admin.sort.${key}`),
+                    icon: active ? 'fas fa-check' : true,
+                    onclick: this.updateSort.bind(this, key),
+                    active,
+                  });
+                })
+              })}
             </div>
             {this.loading ? (
               <LoadingIndicator className="LoadingIndicator--block" />
@@ -119,19 +141,24 @@ export default class ActionLogPage extends Page {
       });
   }
 
-  requestParams({ offset, query }) {
+  requestParams({ offset, query, sort }) {
     if (typeof offset !== 'undefined') {
       this.offset = offset;
+    }
+
+    if (typeof sort !== 'undefined') {
+      this.sort = sort;
     }
 
     return {
       page: {
         offset: this.offset,
-        limit: this.limit
+        limit: this.limit,
       },
       filter: {
-        q: query
-      }
+        q: query,
+      },
+      sort: this.sortingOptions[this.sort],
     };
   }
 
@@ -211,7 +238,7 @@ export default class ActionLogPage extends Page {
     this.load({ offset: value*this.limit });
   }
 
-  search(input) {
+  search() {
     m.withAttr('value', this.query)();
 
     this.loading = true;
@@ -221,6 +248,10 @@ export default class ActionLogPage extends Page {
       clearTimeout(this.searchTimeout);
 
     this.searchTimeout = setTimeout(this.searching, 250);
+  }
+
+  updateSort(sort) {
+    this.load({ sort });
   }
 
   /**
