@@ -7,8 +7,7 @@ import username from 'flarum/helpers/username';
 import Placeholder from 'flarum/components/Placeholder';
 import Button from 'flarum/components/Button';
 import Select from 'flarum/components/Select';
-import Dropdown from 'flarum/components/Dropdown';
-import Input from './Input';
+import ActionLogControls from '../utils/ActionLogControls';
 
 export default class ActionLogPage extends Page {
   init() {
@@ -35,7 +34,7 @@ export default class ActionLogPage extends Page {
 
     this.query = m.prop('');
 
-    this.searchTimeout = false;
+    this.controls = new ActionLogControls(this);
 
     this.load();
   }
@@ -50,46 +49,14 @@ export default class ActionLogPage extends Page {
             </h2>
             <p>{app.translator.trans('sycho-action-log.admin.description')}</p>
             <p>{app.translator.trans('sycho-action-log.admin.total_entries', { count: this.total || '0' })}</p>
-            {Button.component({
-              className: "Button Button--primary",
-              children: "Clear Log",
-              icon: "fas fa-trash",
-              onclick: this.clear.bind(this),
-            })}
-            {Button.component({
-              className: "Button",
-              children: "Settings",
-              icon: "fas fa-cogs",
-            })}
+            {this.controls.mainControls(this).toArray()}
           </div>
         </div>
 
         <div className="ActionLogPage-content">
           <div className="container">
             <div className="ActionLogPage-navigation">
-              <Input
-                icon="fas fa-filter"
-                parentClassName="ActionLog-search"
-                className="FormControl"
-                placeholder={app.translator.trans('sycho-action-log.admin.search')}
-                value={this.query()}
-                oninput={this.search.bind(this)}
-              />
-              {Dropdown.component({
-                buttonClassName: 'Button',
-                label: app.translator.trans(`sycho-action-log.admin.sort.${this.sort}`),
-                children: Object.keys(this.sortingOptions).map(key => {
-                  const active = this.sort === key;
-
-                  return Button.component({
-                    children: app.translator.trans(`sycho-action-log.admin.sort.${key}`),
-                    icon: active ? 'fas fa-check' : true,
-                    onclick: this.updateSort.bind(this, key),
-                    active,
-                  });
-                })
-              })}
-              {this.buildPagination()}
+              {this.controls.filterControls(this).toArray()}
             </div>
             {this.loading ? (
               <LoadingIndicator className="LoadingIndicator--block" />
@@ -241,33 +208,6 @@ export default class ActionLogPage extends Page {
     if (!Object.keys(this.getPages()).includes(value)) return;
 
     this.load({ offset: value*this.limit });
-  }
-
-  search() {
-    m.withAttr('value', this.query)();
-
-    this.loading = true;
-    this.searching = () => this.load({ query: this.query() });
-
-    if (this.searchTimeout)
-      clearTimeout(this.searchTimeout);
-
-    this.searchTimeout = setTimeout(this.searching, 250);
-  }
-
-  updateSort(sort) {
-    this.load({ sort });
-  }
-
-  clear() {
-    this.loading = true;
-
-    app
-      .request({
-        url: app.forum.attribute('apiUrl') + '/action-log-entries',
-        method: 'DELETE'
-      })
-      .then(() => this.load());
   }
 
   /**
