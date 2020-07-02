@@ -324,7 +324,7 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
           active: active
         });
       })
-    })), this.loading ? m(flarum_components_LoadingIndicator__WEBPACK_IMPORTED_MODULE_2___default.a, {
+    }), this.buildPagination()), this.loading ? m(flarum_components_LoadingIndicator__WEBPACK_IMPORTED_MODULE_2___default.a, {
       className: "LoadingIndicator--block"
     }) : this.entries.length ? [m("div", {
       className: "ActionLogGrid"

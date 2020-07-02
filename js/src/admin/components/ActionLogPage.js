@@ -88,6 +88,7 @@ export default class ActionLogPage extends Page {
                   });
                 })
               })}
+              {this.buildPagination()}
             </div>
             {this.loading ? (
               <LoadingIndicator className="LoadingIndicator--block" />
