@@ -10,11 +10,14 @@
 namespace SychO\ActionLog\Controller;
 
 use SychO\ActionLog\ActionLogEntry;
+use SychO\ActionLog\Search\ActionLogSearcher;
 use SychO\ActionLog\Serializer\ActionLogEntrySerializer;
 use Flarum\Api\Controller\AbstractListController;
+use Flarum\Search\SearchCriteria;
 use Flarum\Http\UrlGenerator;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
+use Illuminate\Support\Arr;
 
 class ListActionLogEntriesController extends AbstractListController
 {
@@ -35,15 +38,27 @@ class ListActionLogEntriesController extends AbstractListController
     ];
 
     /**
+     * {@inheritdoc}
+     */
+    public $sortFields = ['createdAt'];
+
+    /**
+     * @var ActionLogSearcher
+     */
+    protected $searcher;
+
+    /**
      * @var UrlGenerator
      */
     protected $url;
 
     /**
+     * @param ActionLogSearcher $searcher
      * @param UrlGenerator $url
      */
-    public function __construct(UrlGenerator $url)
+    public function __construct(ActionLogSearcher $searcher, UrlGenerator $url)
     {
+        $this->searcher = $searcher;
         $this->url = $url;
     }
 
@@ -52,16 +67,18 @@ class ListActionLogEntriesController extends AbstractListController
      */
     protected function data(ServerRequestInterface $request, Document $document)
     {
+        $actor = $request->getAttribute('actor');
+
+        $query = Arr::get($this->extractFilter($request), 'q');
+        $sort = $this->extractSort($request);
+
+        $criteria = new SearchCriteria($actor, $query, $sort);
+
         $include = $this->extractInclude($request);
         $limit = $this->extractLimit($request);
         $offset = $this->extractOffset($request);
 
-        $query = ActionLogEntry::latest()->skip($offset)->take($limit);
-
-        $entries = $query->get();
-
-        $entries = ActionLogEntry::prepareRelationships($entries);
-        $entries->load($include);
+        $results = $this->searcher->search($criteria, $limit, $offset, $include);
 
         $document->addPaginationLinks(
             $this->url->to('api')->route('actionLogEntries.index'),
@@ -71,8 +88,11 @@ class ListActionLogEntriesController extends AbstractListController
             null
         );
 
-        $document->setMeta(['count' => ActionLogEntry::count()]);
+        $document->setMeta([
+            'total' => ActionLogEntry::count(),
+            'count' => $results->getCount()
+        ]);
 
-        return $entries;
+        return $results->getResults();
     }
 }

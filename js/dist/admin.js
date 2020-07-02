@@ -263,13 +263,14 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
     this.offset = 0;
     this.limit = 20;
     this.total = 0;
+    this.count = 0;
     this.page = 0;
+    this.query = m.prop('');
+    this.searchTimeout = false;
     this.load();
   };
 
   _proto.view = function view() {
-    var _this = this;
-
     return m("div", {
       className: "ActionLogPage"
     }, m("div", {
@@ -290,7 +291,14 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       className: "ActionLogPage-content"
     }, m("div", {
       className: "container"
-    }, this.loading ? m(flarum_components_LoadingIndicator__WEBPACK_IMPORTED_MODULE_2___default.a, {
+    }, m("div", {
+      className: "ActionLogPage-navigation"
+    }, m("input", {
+      className: "FormControl",
+      placeholder: app.translator.trans('sycho-action-log.admin.search'),
+      value: this.query(),
+      oninput: this.search.bind(this)
+    })), this.loading ? m(flarum_components_LoadingIndicator__WEBPACK_IMPORTED_MODULE_2___default.a, {
       className: "LoadingIndicator--block"
     }) : this.entries.length ? [m("div", {
       className: "ActionLogGrid"
@@ -311,7 +319,7 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
         className: "ActionLogGrid-entryTime"
       }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()('far fa-clock'), " ", flarum_helpers_humanTime__WEBPACK_IMPORTED_MODULE_3___default()(entry.createdAt()))), m("div", {
         className: "ActionLogGrid-entryName"
-      }, _this.formatName(entry))));
+      }, entry.formattedName)));
     })), m("div", {
       className: "ActionLogPage-navigation"
     }, this.buildPagination())] : m(flarum_components_Placeholder__WEBPACK_IMPORTED_MODULE_7___default.a, {
@@ -334,17 +342,18 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
   ;
 
   _proto.load = function load(params) {
-    var _this2 = this;
+    var _this = this;
 
     this.loading = true;
     app.store.find('action-log-entries', this.requestParams(params || {})).then(this.handleResponse.bind(this)).then(function () {
-      _this2.loading = false;
+      _this.loading = false;
       m.redraw();
     });
   };
 
   _proto.requestParams = function requestParams(_ref) {
-    var offset = _ref.offset;
+    var offset = _ref.offset,
+        query = _ref.query;
 
     if (typeof offset !== 'undefined') {
       this.offset = offset;
@@ -354,20 +363,29 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       page: {
         offset: this.offset,
         limit: this.limit
+      },
+      filter: {
+        q: query
       }
     };
   };
 
   _proto.handleResponse = function handleResponse(response) {
+    var _this2 = this;
+
     this.entries = response;
-    this.total = response.payload.meta.count || 0;
+    this.total = response.payload.meta.total || 0;
+    this.count = response.payload.meta.count || 0;
     this.links = response.payload.links;
     this.page = Math.ceil(this.offset / this.limit);
+    this.entries.map(function (entry) {
+      entry.formattedName = _this2.formatName(entry);
+    });
     return response;
   };
 
   _proto.buildPagination = function buildPagination() {
-    if (this.total <= this.limit) return;
+    if (this.count <= this.limit) return;
     return m("div", {
       className: "ActionLogPage-pagination"
     }, m(flarum_components_Button__WEBPACK_IMPORTED_MODULE_8___default.a, {
@@ -402,7 +420,7 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
   };
 
   _proto.hasNext = function hasNext() {
-    return this.offset + this.limit < this.total;
+    return this.offset + this.limit < this.count;
   };
 
   _proto.hasPrev = function hasPrev() {
@@ -411,7 +429,7 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
 
   _proto.getPages = function getPages() {
     var pageRange = Array.from({
-      length: Math.ceil(this.total / this.limit)
+      length: Math.ceil(this.count / this.limit)
     }, function (v, k) {
       return k + 1;
     });
@@ -428,6 +446,22 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
     this.load({
       offset: value * this.limit
     });
+  };
+
+  _proto.search = function search(input) {
+    var _this3 = this;
+
+    m.withAttr('value', this.query)();
+    this.loading = true;
+
+    this.searching = function () {
+      return _this3.load({
+        query: _this3.query()
+      });
+    };
+
+    if (this.searchTimeout) clearTimeout(this.searchTimeout);
+    this.searchTimeout = setTimeout(this.searching, 250);
   }
   /**
    * Finds the appropriate language string
@@ -439,7 +473,7 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
   ;
 
   _proto.formatName = function formatName(entry) {
-    var _this3 = this;
+    var _this4 = this;
 
     var key = "sycho-action-log.admin.actions." + entry.type();
     var format = entry.format();
@@ -455,7 +489,7 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       // translation parameter key is named 'user', even if the value is a string
       // so we have no choice but to add some ugly hackish code here
 
-      format[key === 'user' ? 'u' : key] = _this3.buildResourceName(key, entry);
+      format[key === 'user' ? 'u' : key] = _this4.buildResourceName(key, entry);
       if (key === 'user') delete format.user;
     });
     Object.keys(format).map(function (key, index) {

@@ -20,7 +20,13 @@ export default class ActionLogPage extends Page {
 
     this.total = 0;
 
+    this.count = 0;
+
     this.page = 0;
+
+    this.query = m.prop('');
+
+    this.searchTimeout = false;
 
     this.load();
   }
@@ -50,6 +56,14 @@ export default class ActionLogPage extends Page {
 
         <div className="ActionLogPage-content">
           <div className="container">
+            <div className="ActionLogPage-navigation">
+              <input
+                className="FormControl"
+                placeholder={app.translator.trans('sycho-action-log.admin.search')}
+                value={this.query()}
+                oninput={this.search.bind(this)}
+              />
+            </div>
             {this.loading ? (
               <LoadingIndicator className="LoadingIndicator--block" />
             ) :
@@ -64,7 +78,7 @@ export default class ActionLogPage extends Page {
                           <div className="ActionLogGrid-entryType">{entry.type()}</div>
                           <div className="ActionLogGrid-entryTime">{icon('far fa-clock')} {humanTime(entry.createdAt())}</div>
                         </div>
-                        <div className="ActionLogGrid-entryName">{this.formatName(entry)}</div>
+                        <div className="ActionLogGrid-entryName">{entry.formattedName}</div>
                       </div>
                     </div>
                   ))}
@@ -105,25 +119,38 @@ export default class ActionLogPage extends Page {
       });
   }
 
-  requestParams({ offset }) {
+  requestParams({ offset, query }) {
     if (typeof offset !== 'undefined') {
       this.offset = offset;
     }
 
-    return { page: { offset: this.offset, limit: this.limit } };
+    return {
+      page: {
+        offset: this.offset,
+        limit: this.limit
+      },
+      filter: {
+        q: query
+      }
+    };
   }
 
   handleResponse(response) {
     this.entries = response;
-    this.total = response.payload.meta.count || 0;
+    this.total = response.payload.meta.total || 0;
+    this.count = response.payload.meta.count || 0;
     this.links = response.payload.links;
     this.page = Math.ceil(this.offset / this.limit);
+
+    this.entries.map(entry => {
+      entry.formattedName = this.formatName(entry);
+    });
 
     return response;
   }
 
   buildPagination() {
-    if (this.total <= this.limit) return;
+    if (this.count <= this.limit) return;
 
     return (
       <div className="ActionLogPage-pagination">
@@ -161,7 +188,7 @@ export default class ActionLogPage extends Page {
   }
 
   hasNext() {
-    return this.offset+this.limit < this.total;
+    return this.offset+this.limit < this.count;
   }
 
   hasPrev() {
@@ -169,7 +196,7 @@ export default class ActionLogPage extends Page {
   }
 
   getPages() {
-    let pageRange = Array.from({ length: Math.ceil(this.total/this.limit) }, (v, k) => k+1);
+    let pageRange = Array.from({ length: Math.ceil(this.count/this.limit) }, (v, k) => k+1);
 
     pageRange.map((number, index) => {
       pageRange[index] = app.translator.trans('sycho-action-log.admin.page', { number });
@@ -182,6 +209,18 @@ export default class ActionLogPage extends Page {
     if (!Object.keys(this.getPages()).includes(value)) return;
 
     this.load({ offset: value*this.limit });
+  }
+
+  search(input) {
+    m.withAttr('value', this.query)();
+
+    this.loading = true;
+    this.searching = () => this.load({ query: this.query() });
+
+    if (this.searchTimeout)
+      clearTimeout(this.searchTimeout);
+
+    this.searchTimeout = setTimeout(this.searching, 250);
   }
 
   /**

@@ -5,6 +5,7 @@ sycho-action-log:
     total_entries: '{count} Total entries.'
     page: 'Page: {number}'
     no_entries: No Entries
+    search: Search..
     actions:
 
       moderation:

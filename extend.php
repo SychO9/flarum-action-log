@@ -10,6 +10,8 @@
 use SychO\ActionLog\Listener;
 use SychO\ActionLog\Controller;
 use SychO\ActionLog\Middleware;
+use SychO\ActionLog\Provider;
+use Flarum\Foundation\Application;
 use Flarum\Extend;
 use Illuminate\Contracts\Events\Dispatcher;
 
@@ -27,7 +29,9 @@ return [
     (new Extend\Middleware('api'))
         ->add(Middleware\ActionLoggingMiddleware::class),
 
-    function (Dispatcher $events) {
+    function (Application $app, Dispatcher $events) {
+        $app->register(Provider\SearchServiceProvider::class);
+
         // Flarum Lock
         if (class_exists('\Flarum\Lock\Event\DiscussionWasLocked')) {
             $events->listen(\Flarum\Lock\Event\DiscussionWasLocked::class, Listener\LogDiscussionLocked::class);
