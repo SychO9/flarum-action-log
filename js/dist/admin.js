@@ -290,11 +290,12 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
     }, m("div", {
       className: "container"
     }, m("h2", null, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()('fas fa-clipboard-list'), " ", app.translator.trans('sycho-action-log.admin.title')), m("p", null, app.translator.trans('sycho-action-log.admin.description')), m("p", null, app.translator.trans('sycho-action-log.admin.total_entries', {
-      count: this.total
+      count: this.total || '0'
     })), flarum_components_Button__WEBPACK_IMPORTED_MODULE_8___default.a.component({
       className: "Button Button--primary",
       children: "Clear Log",
-      icon: "fas fa-trash"
+      icon: "fas fa-trash",
+      onclick: this.clear.bind(this)
     }), flarum_components_Button__WEBPACK_IMPORTED_MODULE_8___default.a.component({
       className: "Button",
       children: "Settings",
@@ -500,6 +501,18 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
     this.load({
       sort: sort
     });
+  };
+
+  _proto.clear = function clear() {
+    var _this5 = this;
+
+    this.loading = true;
+    app.request({
+      url: app.forum.attribute('apiUrl') + '/action-log-entries',
+      method: 'DELETE'
+    }).then(function () {
+      return _this5.load();
+    });
   }
   /**
    * Finds the appropriate language string
@@ -511,7 +524,7 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
   ;
 
   _proto.formatName = function formatName(entry) {
-    var _this5 = this;
+    var _this6 = this;
 
     var key = "sycho-action-log.admin.actions." + entry.type();
     var format = entry.format();
@@ -527,7 +540,7 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       // translation parameter key is named 'user', even if the value is a string
       // so we have no choice but to add some ugly hackish code here
 
-      format[key === 'user' ? 'u' : key] = _this5.buildResourceName(key, entry);
+      format[key === 'user' ? 'u' : key] = _this6.buildResourceName(key, entry);
       if (key === 'user') delete format.user;
     });
     Object.keys(format).map(function (key, index) {

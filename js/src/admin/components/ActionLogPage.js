@@ -49,11 +49,12 @@ export default class ActionLogPage extends Page {
               {icon('fas fa-clipboard-list')} {app.translator.trans('sycho-action-log.admin.title')}
             </h2>
             <p>{app.translator.trans('sycho-action-log.admin.description')}</p>
-            <p>{app.translator.trans('sycho-action-log.admin.total_entries', { count: this.total })}</p>
+            <p>{app.translator.trans('sycho-action-log.admin.total_entries', { count: this.total || '0' })}</p>
             {Button.component({
               className: "Button Button--primary",
               children: "Clear Log",
               icon: "fas fa-trash",
+              onclick: this.clear.bind(this),
             })}
             {Button.component({
               className: "Button",
@@ -256,6 +257,17 @@ export default class ActionLogPage extends Page {
 
   updateSort(sort) {
     this.load({ sort });
+  }
+
+  clear() {
+    this.loading = true;
+
+    app
+      .request({
+        url: app.forum.attribute('apiUrl') + '/action-log-entries',
+        method: 'DELETE'
+      })
+      .then(() => this.load());
   }
 
   /**

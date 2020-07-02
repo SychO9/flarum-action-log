@@ -24,7 +24,7 @@ return [
 
     (new Extend\Routes('api'))
         ->get('/action-log-entries', 'actionLogEntries.index', Controller\ListActionLogEntriesController::class)
-        ->delete('/action-log-entries/{id}', 'actionLogEntries.delete', Controller\DeleteActionLogEntryController::class),
+        ->delete('/action-log-entries', 'actionLogEntries.clear', Controller\ClearActionLogController::class),
 
     (new Extend\Middleware('api'))
         ->add(Middleware\ActionLoggingMiddleware::class),
