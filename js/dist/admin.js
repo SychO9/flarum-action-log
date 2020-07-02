@@ -238,6 +238,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_components_Select__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Select__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var flarum_components_Dropdown__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! flarum/components/Dropdown */ "flarum/components/Dropdown");
 /* harmony import */ var flarum_components_Dropdown__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Dropdown__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _Input__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Input */ "./src/admin/components/Input.js");
+
 
 
 
@@ -303,7 +305,9 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       className: "container"
     }, m("div", {
       className: "ActionLogPage-navigation"
-    }, m("input", {
+    }, m(_Input__WEBPACK_IMPORTED_MODULE_11__["default"], {
+      icon: "fas fa-filter",
+      parentClassName: "ActionLog-search",
       className: "FormControl",
       placeholder: app.translator.trans('sycho-action-log.admin.search'),
       value: this.query(),
@@ -575,6 +579,64 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
 
 /***/ }),
 
+/***/ "./src/admin/components/Input.js":
+/*!***************************************!*\
+  !*** ./src/admin/components/Input.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Input; });
+/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/inheritsLoose */ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js");
+/* harmony import */ var flarum_Component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flarum/Component */ "flarum/Component");
+/* harmony import */ var flarum_Component__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flarum_Component__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/helpers/icon */ "flarum/helpers/icon");
+/* harmony import */ var flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+
+var Input = /*#__PURE__*/function (_Component) {
+  Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(Input, _Component);
+
+  function Input() {
+    return _Component.apply(this, arguments) || this;
+  }
+
+  var _proto = Input.prototype;
+
+  _proto.view = function view() {
+    this.props.className = this.props.className || '';
+    this.props.className += ' ActionLog-FormControl';
+
+    if (this.props.icon) {
+      this.props.className += ' hasIcon';
+    }
+
+    var className = "ActionLog-input " + (this.props.parentClassName || '');
+    return m("div", {
+      className: className
+    }, this.icon(), m("input", this.props));
+  };
+
+  _proto.icon = function icon() {
+    if (!this.props.icon) return;
+    var iconValue = this.props.icon;
+    delete this.props.icon;
+    return m("span", {
+      "class": "ActionLog-inputIcon"
+    }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_2___default()(iconValue));
+  };
+
+  return Input;
+}(flarum_Component__WEBPACK_IMPORTED_MODULE_1___default.a);
+
+
+
+/***/ }),
+
 /***/ "./src/admin/index.js":
 /*!****************************!*\
   !*** ./src/admin/index.js ***!
@@ -661,6 +723,17 @@ var ActionLogEntry = /*#__PURE__*/function (_mixin) {
 /***/ (function(module, exports) {
 
 module.exports = flarum.core;
+
+/***/ }),
+
+/***/ "flarum/Component":
+/*!**************************************************!*\
+  !*** external "flarum.core.compat['Component']" ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = flarum.core.compat['Component'];
 
 /***/ }),
 

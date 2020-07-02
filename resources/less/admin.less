@@ -1,3 +1,5 @@
+@alInputIconWidth: 20px;
+
 .ActionLogPage {
   .Button {
     margin: 0 2px;
@@ -81,4 +83,38 @@
   .Select-caret {
     margin-right: 14px;
   }
+}
+
+@media (max-width: 425px) {
+  .ActionLogPage-navigation {
+    flex-wrap: wrap;
+
+    > * {
+      width: 100%;
+      margin: 1px 0;
+    }
+  }
+}
+
+.ActionLog-search {
+  width: 400px;
+  max-width: 100%;
+}
+
+.ActionLog-input {
+  display: flex;
+  align-items: center;
+}
+
+.ActionLog-inputIcon {
+  width: @alInputIconWidth;
+  text-align: center;
+  margin-right: -@alInputIconWidth;
+  padding-left: 13px;
+  z-index: 1;
+  color: @control-color;
+}
+
+.ActionLog-FormControl.hasIcon {
+  padding-left: calc(@alInputIconWidth + 13px);
 }

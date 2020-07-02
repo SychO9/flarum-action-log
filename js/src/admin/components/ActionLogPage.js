@@ -8,6 +8,7 @@ import Placeholder from 'flarum/components/Placeholder';
 import Button from 'flarum/components/Button';
 import Select from 'flarum/components/Select';
 import Dropdown from 'flarum/components/Dropdown';
+import Input from './Input';
 
 export default class ActionLogPage extends Page {
   init() {
@@ -65,7 +66,9 @@ export default class ActionLogPage extends Page {
         <div className="ActionLogPage-content">
           <div className="container">
             <div className="ActionLogPage-navigation">
-              <input
+              <Input
+                icon="fas fa-filter"
+                parentClassName="ActionLog-search"
                 className="FormControl"
                 placeholder={app.translator.trans('sycho-action-log.admin.search')}
                 value={this.query()}
