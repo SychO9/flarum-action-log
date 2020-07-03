@@ -2,6 +2,7 @@ import ItemList from 'flarum/utils/ItemList';
 import Button from 'flarum/components/Button';
 import Dropdown from 'flarum/components/Dropdown';
 import Input from '../components/Input';
+import ActionLogSettingsModal from '../components/ActionLogSettingsModal';
 
 export default class ActionLogControls {
   constructor(component) {
@@ -20,8 +21,9 @@ export default class ActionLogControls {
 
     items.add('settings', Button.component({
       className: "Button",
-      children: "Settings",
+      children: app.translator.trans('sycho-action-log.admin.settings'),
       icon: "fas fa-cogs",
+      onclick: () => app.modal.show(new ActionLogSettingsModal()),
     }));
 
     return items;

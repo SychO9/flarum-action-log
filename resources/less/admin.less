@@ -118,3 +118,41 @@
 .ActionLog-FormControl.hasIcon {
   padding-left: calc(@alInputIconWidth + 13px);
 }
+
+.ActionLogSettings-logTypes > h3 {
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: 0;
+
+  &::after {
+    content: "";
+    height: 1px;
+    width: 100%;
+    background: @control-color;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    z-index: -1;
+  }
+
+  > span {
+    background: @control-bg;
+    padding-right: 9px;
+  }
+}
+
+.ActionLogSettings-logTypes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.ActionLogSettings-resourceTypes {
+  width: 49%;
+  margin: 4px 0;
+  padding: 0 10px 10px;
+  border-radius: 4px;
+  background: @body-bg;
+}

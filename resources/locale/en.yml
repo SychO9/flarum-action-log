@@ -6,35 +6,70 @@ sycho-action-log:
     page: 'Page: {number}'
     no_entries: No Entries
     search: Search..
+    settings: => core.ref.settings
+    save: => core.ref.save_changes
     sort:
-      newest: Newest
-      oldest: Oldest
+      newest: => core.forum.index_sort.newest_button
+      oldest: => core.forum.index_sort.oldest_button
 
     actions:
 
       moderation:
+        label: Moderation
 
         discussion:
-          locked: Locked the discussion {discussion}
-          unlocked: Unlocked the discussion {discussion}
-          deleted: Deleted the discussion {discussion}
-          stickied: Stickied the discussion {discussion}
-          unstickied: Unstickied the discussion {discussion}
+          label: Discussion
+          locked:
+            label: Locked
+            action: Locked the discussion {discussion}
+          unlocked:
+            label: Unlocked
+            action: Unlocked the discussion {discussion}
+          deleted:
+            label: Deleted
+            action: Deleted the discussion {discussion}
+          stickied:
+            label: Stickied
+            action: Stickied the discussion {discussion}
+          unstickied:
+            label: Unstickied
+            action: Unstickied the discussion {discussion}
 
         post:
-          approved: Approved the post {post} by {author} from the the discussion {discussion}
+          label: Post
+          approved:
+            label: Approved
+            action: Approved the post {post} by {author} from the the discussion {discussion}
 
         user:
-          suspended: Suspended the user {u}
-          unsuspended: Unsuspended the user {u}
+          label: User
+          suspended:
+            label: Suspended
+            action: Suspended the user {u}
+          unsuspended:
+            label: Unsuspended
+            action: Unsuspended the user {u}
 
       administration:
+        label: Administration
 
         group:
-          created: Created a new group {group}
-          deleted: Deleted the group {group}
+          label: Group
+          created:
+            label: Created
+            action: Created a new group {group}
+          deleted:
+            label: Deleted
+            action: Deleted the group {group}
 
         extension:
-          enabled: Enabled the extension {extension}
-          disabled: Disabled the extension {extension}
-          uninstalled: Uninstalled the extension {extension}
+          label: Extension
+          enabled:
+            label: Enabled
+            action: Enabled the extension {extension}
+          disabled:
+            label: Disabled
+            action: Disabled the extension {extension}
+          uninstalled:
+            label: Uninstalled
+            action: Uninstalled the extension {extension}

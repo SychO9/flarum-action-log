@@ -225,7 +225,7 @@ export default class ActionLogPage extends Page {
       key += `.${entry.resourceType()}`;
     }
 
-    key += `.${entry.name()}`;
+    key += `.${entry.name()}.action`;
 
     // If there are any objects, convert them to strings using the buildResourceName() method
     Object.keys(format).map((key, index) => {

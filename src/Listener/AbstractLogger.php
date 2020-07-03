@@ -13,6 +13,7 @@ use SychO\ActionLog\ActionLogEntry;
 use Carbon\Carbon;
 use Laminas\Diactoros\ServerRequest;
 use Flarum\User\User;
+use Flarum\Settings\SettingsRepositoryInterface;
 
 abstract class AbstractLogger
 {
@@ -37,9 +38,22 @@ abstract class AbstractLogger
     protected $resource_type;
 
     /**
+     * @var SettingsRepositoryInterface
+     */
+    protected $settings;
+
+    /**
      * @var string
      */
     protected $actor = 'user';
+
+    /**
+     * @param SettingsRepositoryInterface $settings
+     */
+    public function __construct(SettingsRepositoryInterface $settings)
+    {
+        $this->settings = $settings;
+    }
 
     /**
      * @param $event
@@ -52,6 +66,10 @@ abstract class AbstractLogger
      */
     public function handle($event)
     {
+        if ($this->isDisabled()) {
+            return;
+        }
+
         $entry = new ActionLogEntry();
 
         $entry->name = $this->name;
@@ -74,6 +92,20 @@ abstract class AbstractLogger
         $entry->created_at = new Carbon('now');
 
         $entry->save();
+    }
+
+    /**
+     * Checks if an admin has disabled this type of action logging
+     *
+     * @return bool
+     */
+    protected function isDisabled(): bool
+    {
+        $actionName = "{$this->type}.{$this->resource_type}.{$this->name}";
+
+        $excludedLogging = (array) json_decode($this->settings->get('sycho-action-log.excluded_logging'), true);
+
+        return in_array($actionName, $excludedLogging, true);
     }
 
     /**
