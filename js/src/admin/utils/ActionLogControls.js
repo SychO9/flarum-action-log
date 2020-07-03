@@ -58,6 +58,12 @@ export default class ActionLogControls {
 
     items.add('pagination', this.component.buildPagination());
 
+    items.add('refresh', Button.component({
+      className: 'Button Button--icon',
+      icon: 'fas fa-sync',
+      onclick: this.component.load.bind(this.component),
+    }));
+
     return items;
   }
 

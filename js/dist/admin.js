@@ -842,6 +842,11 @@ var ActionLogControls = /*#__PURE__*/function () {
       })
     }));
     items.add('pagination', this.component.buildPagination());
+    items.add('refresh', flarum_components_Button__WEBPACK_IMPORTED_MODULE_1___default.a.component({
+      className: 'Button Button--icon',
+      icon: 'fas fa-sync',
+      onclick: this.component.load.bind(this.component)
+    }));
     return items;
   };
 
