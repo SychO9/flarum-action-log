@@ -50,28 +50,31 @@ export default class ActionLogSettingsModal extends SettingsModal {
   form() {
     const actions = this.actions();
 
-    return Object.keys(actions).map(key => (
-      <div className="ActionLogSettings-logTypes">
-        <h3>
-          <span>{app.translator.trans(`sycho-action-log.admin.actions.${key}.label`)}</span>
-        </h3>
-        {Object.keys(actions[key]).map(resourceType => (
-          <div className="ActionLogSettings-resourceTypes">
-            <h4>{app.translator.trans(`sycho-action-log.admin.actions.${key}.${resourceType}.label`)}</h4>
-            {actions[key][resourceType].map(action => (
-              <div className="Form-group">
-                <Switch
-                  state={!this.getExcludedLoggingValue().includes(`${key}.${resourceType}.${action}`)}
-                  onchange={this.switch.bind(this, key, resourceType, action)}
-                >
-                  {app.translator.trans(`sycho-action-log.admin.actions.${key}.${resourceType}.${action}.label`)}
-                </Switch>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    ));
+    return [
+      <p>{app.translator.trans('sycho-action-log.admin.action_settings')}</p>,
+      Object.keys(actions).map(key => (
+        <div className="ActionLogSettings-logTypes">
+          <h3>
+            <span>{app.translator.trans(`sycho-action-log.admin.actions.${key}.label`)}</span>
+          </h3>
+          {Object.keys(actions[key]).map(resourceType => (
+            <div className="ActionLogSettings-resourceTypes">
+              <h4>{app.translator.trans(`sycho-action-log.admin.actions.${key}.${resourceType}.label`)}</h4>
+              {actions[key][resourceType].map(action => (
+                <div className="Form-group">
+                  <Switch
+                    state={!this.getExcludedLoggingValue().includes(`${key}.${resourceType}.${action}`)}
+                    onchange={this.switch.bind(this, key, resourceType, action)}
+                  >
+                    {app.translator.trans(`sycho-action-log.admin.actions.${key}.${resourceType}.${action}.label`)}
+                  </Switch>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )),
+    ]
   }
 
   getExcludedLoggingValue() {

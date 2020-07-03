@@ -7,6 +7,7 @@ sycho-action-log:
     no_entries: No Entries
     search: Search..
     settings: => core.ref.settings
+    action_settings: From here you can control which actions to log.
     save: => core.ref.save_changes
     sort:
       newest: => core.forum.index_sort.newest_button

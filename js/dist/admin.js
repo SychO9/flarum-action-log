@@ -595,7 +595,7 @@ var ActionLogSettingsModal = /*#__PURE__*/function (_SettingsModal) {
     var _this = this;
 
     var actions = this.actions();
-    return Object.keys(actions).map(function (key) {
+    return [m("p", null, app.translator.trans('sycho-action-log.admin.action_settings')), Object.keys(actions).map(function (key) {
       return m("div", {
         className: "ActionLogSettings-logTypes"
       }, m("h3", null, m("span", null, app.translator.trans("sycho-action-log.admin.actions." + key + ".label"))), Object.keys(actions[key]).map(function (resourceType) {
@@ -610,7 +610,7 @@ var ActionLogSettingsModal = /*#__PURE__*/function (_SettingsModal) {
           }, app.translator.trans("sycho-action-log.admin.actions." + key + "." + resourceType + "." + action + ".label")));
         }));
       }));
-    });
+    })];
   };
 
   _proto.getExcludedLoggingValue = function getExcludedLoggingValue() {
