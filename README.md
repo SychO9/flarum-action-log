@@ -6,9 +6,43 @@
 
 Administration/Moderation log for [Flarum](https://github.com/flarum/flarum).
 
+**Warning**: This is still under development.
+
+## Todo
+* Add scheduled task to clean the log.
+
+## Actions Logged
+* Moderation
+  - Discussion
+    + Locking
+    + Unlocking
+    + Deleting
+    + Stickying
+    + Unstickying
+  - Post
+    + Approving
+  - User
+    + Suspending
+    + Unsuspending
+* Administration
+  - Group
+    + Creating
+    + Deleting
+  - Extension
+    + Enabling
+    + Disabling
+    + Uninstalling
+
 ## Installation
 ```gitattributes
 $ composer require sycho/flarum-action-log
+```
+
+## Updating
+```gitattributes
+$ composer update sycho/flarum-action-log
+$ php flarum migrate
+$ php flarum cache:clear
 ```
 
 ## Links
