@@ -15,6 +15,14 @@ sycho-action-log:
       newest: => core.forum.index_sort.newest_button
       oldest: => core.forum.index_sort.oldest_button
 
+    gambits:
+      label: Search Filters
+      description: 'You can use the following filters in the search box. (example, type:moderation)'
+      items:
+        type: The type of the action (moderation/administration).
+        resource: 'The resource type the action was taken on (example: discussion).'
+        actor: Name of the actor who took the action.
+
     actions:
 
       moderation:

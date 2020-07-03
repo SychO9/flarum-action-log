@@ -544,98 +544,6 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
 
 /***/ }),
 
-/***/ "./src/admin/components/ActionLogSettingsModal.js":
-/*!********************************************************!*\
-  !*** ./src/admin/components/ActionLogSettingsModal.js ***!
-  \********************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ActionLogSettingsModal; });
-/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/inheritsLoose */ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js");
-/* harmony import */ var flarum_components_SettingsModal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flarum/components/SettingsModal */ "flarum/components/SettingsModal");
-/* harmony import */ var flarum_components_SettingsModal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flarum_components_SettingsModal__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/components/Switch */ "flarum/components/Switch");
-/* harmony import */ var flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var flarum_components_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flarum/components/Button */ "flarum/components/Button");
-/* harmony import */ var flarum_components_Button__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Button__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! flarum/helpers/icon */ "flarum/helpers/icon");
-/* harmony import */ var flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4__);
-
-
-
-
-
-
-var ActionLogSettingsModal = /*#__PURE__*/function (_SettingsModal) {
-  Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(ActionLogSettingsModal, _SettingsModal);
-
-  function ActionLogSettingsModal() {
-    return _SettingsModal.apply(this, arguments) || this;
-  }
-
-  var _proto = ActionLogSettingsModal.prototype;
-
-  _proto.init = function init() {
-    _SettingsModal.prototype.init.call(this);
-
-    this.excludedLoggingSetting = this.setting('sycho-action-log.excluded_logging', JSON.stringify([]));
-  };
-
-  _proto.title = function title() {
-    return app.translator.trans('sycho-action-log.admin.settings');
-  };
-
-  _proto.form = function form() {
-    var _this = this;
-
-    var actions = this.props.actions.items;
-    var icons = this.props.actions.icons;
-    return [m("p", null, app.translator.trans('sycho-action-log.admin.action_settings')), Object.keys(actions).map(function (key) {
-      return m("div", {
-        className: "ActionLogSettings-logTypes"
-      }, m("h3", null, m("span", null, app.translator.trans("sycho-action-log.admin.actions." + key + ".label"))), Object.keys(actions[key]).map(function (resourceType) {
-        return m("div", {
-          className: "ActionLogSettings-resourceTypes"
-        }, m("h4", null, app.translator.trans("sycho-action-log.admin.actions." + key + "." + resourceType + ".label"), m("span", {
-          className: "ActionLog-titleIcon"
-        }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(icons.resourceTypes[resourceType]))), actions[key][resourceType].map(function (action) {
-          return m("div", {
-            className: "Form-group"
-          }, m(flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default.a, {
-            state: !_this.getExcludedLoggingValue().includes(key + "." + resourceType + "." + action),
-            onchange: _this["switch"].bind(_this, key, resourceType, action)
-          }, app.translator.trans("sycho-action-log.admin.actions." + key + "." + resourceType + "." + action + ".label"), m("span", {
-            className: "ActionLog-titleIcon"
-          }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(icons.actionNames[action]))));
-        }));
-      }));
-    })];
-  };
-
-  _proto.getExcludedLoggingValue = function getExcludedLoggingValue() {
-    return JSON.parse(this.excludedLoggingSetting());
-    ;
-  };
-
-  _proto["switch"] = function _switch(key, resourceType, action, value) {
-    var actionName = key + "." + resourceType + "." + action;
-    var excludedLogging = this.getExcludedLoggingValue();
-    if (!value) excludedLogging.push(actionName);else excludedLogging = excludedLogging.filter(function (item) {
-      return item !== actionName;
-    });
-    this.excludedLoggingSetting(JSON.stringify(excludedLogging));
-  };
-
-  return ActionLogSettingsModal;
-}(flarum_components_SettingsModal__WEBPACK_IMPORTED_MODULE_1___default.a);
-
-
-
-/***/ }),
-
 /***/ "./src/admin/components/Input.js":
 /*!***************************************!*\
   !*** ./src/admin/components/Input.js ***!
@@ -726,6 +634,146 @@ Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"
 
 /***/ }),
 
+/***/ "./src/admin/modals/ActionLogSettingsModal.js":
+/*!****************************************************!*\
+  !*** ./src/admin/modals/ActionLogSettingsModal.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ActionLogSettingsModal; });
+/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/inheritsLoose */ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js");
+/* harmony import */ var flarum_components_SettingsModal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flarum/components/SettingsModal */ "flarum/components/SettingsModal");
+/* harmony import */ var flarum_components_SettingsModal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flarum_components_SettingsModal__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/components/Switch */ "flarum/components/Switch");
+/* harmony import */ var flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var flarum_components_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flarum/components/Button */ "flarum/components/Button");
+/* harmony import */ var flarum_components_Button__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Button__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! flarum/helpers/icon */ "flarum/helpers/icon");
+/* harmony import */ var flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4__);
+
+
+
+
+
+
+var ActionLogSettingsModal = /*#__PURE__*/function (_SettingsModal) {
+  Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(ActionLogSettingsModal, _SettingsModal);
+
+  function ActionLogSettingsModal() {
+    return _SettingsModal.apply(this, arguments) || this;
+  }
+
+  var _proto = ActionLogSettingsModal.prototype;
+
+  _proto.init = function init() {
+    _SettingsModal.prototype.init.call(this);
+
+    this.excludedLoggingSetting = this.setting('sycho-action-log.excluded_logging', JSON.stringify([]));
+  };
+
+  _proto.title = function title() {
+    return app.translator.trans('sycho-action-log.admin.settings');
+  };
+
+  _proto.form = function form() {
+    var _this = this;
+
+    var actions = this.props.actions.items;
+    var icons = this.props.actions.icons;
+    return [m("p", null, app.translator.trans('sycho-action-log.admin.action_settings')), Object.keys(actions).map(function (key) {
+      return m("div", {
+        className: "ActionLogSettings-logTypes"
+      }, m("h3", null, m("span", null, app.translator.trans("sycho-action-log.admin.actions." + key + ".label"))), Object.keys(actions[key]).map(function (resourceType) {
+        return m("div", {
+          className: "ActionLogSettings-resourceTypes"
+        }, m("h4", null, app.translator.trans("sycho-action-log.admin.actions." + key + "." + resourceType + ".label"), m("span", {
+          className: "ActionLog-titleIcon"
+        }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(icons.resourceTypes[resourceType]))), actions[key][resourceType].map(function (action) {
+          return m("div", {
+            className: "Form-group"
+          }, m(flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default.a, {
+            state: !_this.getExcludedLoggingValue().includes(key + "." + resourceType + "." + action),
+            onchange: _this["switch"].bind(_this, key, resourceType, action)
+          }, app.translator.trans("sycho-action-log.admin.actions." + key + "." + resourceType + "." + action + ".label"), m("span", {
+            className: "ActionLog-titleIcon"
+          }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(icons.actionNames[action]))));
+        }));
+      }));
+    })];
+  };
+
+  _proto.getExcludedLoggingValue = function getExcludedLoggingValue() {
+    return JSON.parse(this.excludedLoggingSetting());
+    ;
+  };
+
+  _proto["switch"] = function _switch(key, resourceType, action, value) {
+    var actionName = key + "." + resourceType + "." + action;
+    var excludedLogging = this.getExcludedLoggingValue();
+    if (!value) excludedLogging.push(actionName);else excludedLogging = excludedLogging.filter(function (item) {
+      return item !== actionName;
+    });
+    this.excludedLoggingSetting(JSON.stringify(excludedLogging));
+  };
+
+  return ActionLogSettingsModal;
+}(flarum_components_SettingsModal__WEBPACK_IMPORTED_MODULE_1___default.a);
+
+
+
+/***/ }),
+
+/***/ "./src/admin/modals/FiltersHelpModal.js":
+/*!**********************************************!*\
+  !*** ./src/admin/modals/FiltersHelpModal.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return FiltersHelpModal; });
+/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/inheritsLoose */ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js");
+/* harmony import */ var flarum_components_Modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flarum/components/Modal */ "flarum/components/Modal");
+/* harmony import */ var flarum_components_Modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Modal__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+var FiltersHelpModal = /*#__PURE__*/function (_Modal) {
+  Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(FiltersHelpModal, _Modal);
+
+  function FiltersHelpModal() {
+    return _Modal.apply(this, arguments) || this;
+  }
+
+  var _proto = FiltersHelpModal.prototype;
+
+  _proto.content = function content() {
+    return m("div", {
+      className: "Modal-body"
+    }, app.translator.trans('sycho-action-log.admin.gambits.description'), m("ul", null, this.gambits().map(function (gambit) {
+      return m("li", null, m("strong", null, gambit, ":"), " ", app.translator.trans("sycho-action-log.admin.gambits.items." + gambit));
+    })));
+  };
+
+  _proto.title = function title() {
+    return app.translator.trans('sycho-action-log.admin.gambits.label');
+  };
+
+  _proto.gambits = function gambits() {
+    return ['type', 'resource', 'actor'];
+  };
+
+  return FiltersHelpModal;
+}(flarum_components_Modal__WEBPACK_IMPORTED_MODULE_1___default.a);
+
+
+
+/***/ }),
+
 /***/ "./src/admin/models/ActionLogEntry.js":
 /*!********************************************!*\
   !*** ./src/admin/models/ActionLogEntry.js ***!
@@ -789,7 +837,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_components_Dropdown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/components/Dropdown */ "flarum/components/Dropdown");
 /* harmony import */ var flarum_components_Dropdown__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Dropdown__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _components_Input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Input */ "./src/admin/components/Input.js");
-/* harmony import */ var _components_ActionLogSettingsModal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/ActionLogSettingsModal */ "./src/admin/components/ActionLogSettingsModal.js");
+/* harmony import */ var _modals_ActionLogSettingsModal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../modals/ActionLogSettingsModal */ "./src/admin/modals/ActionLogSettingsModal.js");
+/* harmony import */ var _modals_FiltersHelpModal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../modals/FiltersHelpModal */ "./src/admin/modals/FiltersHelpModal.js");
+
 
 
 
@@ -818,7 +868,7 @@ var ActionLogControls = /*#__PURE__*/function () {
       children: app.translator.trans('sycho-action-log.admin.settings'),
       icon: "fas fa-cogs",
       onclick: function onclick() {
-        return app.modal.show(new _components_ActionLogSettingsModal__WEBPACK_IMPORTED_MODULE_4__["default"]({
+        return app.modal.show(new _modals_ActionLogSettingsModal__WEBPACK_IMPORTED_MODULE_4__["default"]({
           actions: _this.actions()
         }));
       }
@@ -837,6 +887,13 @@ var ActionLogControls = /*#__PURE__*/function () {
       placeholder: app.translator.trans('sycho-action-log.admin.search'),
       value: this.component.query(),
       oninput: this.search.bind(this)
+    }));
+    items.add('help', flarum_components_Button__WEBPACK_IMPORTED_MODULE_1___default.a.component({
+      className: 'Button Button--icon',
+      icon: 'fas fa-question',
+      onclick: function onclick() {
+        return app.modal.show(new _modals_FiltersHelpModal__WEBPACK_IMPORTED_MODULE_5__["default"]());
+      }
     }));
     items.add('sort', flarum_components_Dropdown__WEBPACK_IMPORTED_MODULE_2___default.a.component({
       buttonClassName: 'Button',
@@ -1039,6 +1096,17 @@ module.exports = flarum.core.compat['components/Dropdown'];
 /***/ (function(module, exports) {
 
 module.exports = flarum.core.compat['components/LoadingIndicator'];
+
+/***/ }),
+
+/***/ "flarum/components/Modal":
+/*!*********************************************************!*\
+  !*** external "flarum.core.compat['components/Modal']" ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = flarum.core.compat['components/Modal'];
 
 /***/ }),
 

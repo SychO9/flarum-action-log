@@ -2,7 +2,8 @@ import ItemList from 'flarum/utils/ItemList';
 import Button from 'flarum/components/Button';
 import Dropdown from 'flarum/components/Dropdown';
 import Input from '../components/Input';
-import ActionLogSettingsModal from '../components/ActionLogSettingsModal';
+import ActionLogSettingsModal from '../modals/ActionLogSettingsModal';
+import FiltersHelpModal from '../modals/FiltersHelpModal';
 
 export default class ActionLogControls {
   constructor(component) {
@@ -39,6 +40,12 @@ export default class ActionLogControls {
       placeholder: app.translator.trans('sycho-action-log.admin.search'),
       value: this.component.query(),
       oninput: this.search.bind(this),
+    }));
+
+    items.add('help', Button.component({
+      className: 'Button Button--icon',
+      icon: 'fas fa-question',
+      onclick: () => app.modal.show(new FiltersHelpModal()),
     }));
 
     items.add('sort', Dropdown.component({
