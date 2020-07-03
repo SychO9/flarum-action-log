@@ -170,14 +170,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = (function () {
-  app.routes.actionLog = {
-    path: '/logs',
+  app.routes['sycho-action-log'] = {
+    path: '/action-log',
     component: _components_ActionLogPage__WEBPACK_IMPORTED_MODULE_1__["default"].component()
   };
-  app.extensionSettings['sycho-action-log'] = m.route(app.route('actionLog'));
+
+  app.extensionSettings['sycho-action-log'] = function () {
+    return m.route(app.route('sycho-action-log'));
+  };
+
   Object(flarum_extend__WEBPACK_IMPORTED_MODULE_0__["extend"])(flarum_components_AdminNav__WEBPACK_IMPORTED_MODULE_2___default.a.prototype, 'items', function (items) {
-    items.add('actionLog', flarum_components_AdminLinkButton__WEBPACK_IMPORTED_MODULE_3___default.a.component({
-      href: app.route('actionLog'),
+    items.add('sycho-action-log', flarum_components_AdminLinkButton__WEBPACK_IMPORTED_MODULE_3___default.a.component({
+      href: app.route('sycho-action-log'),
       icon: 'fas fa-clipboard-list',
       children: app.translator.trans('sycho-action-log.admin.title'),
       description: app.translator.trans('sycho-action-log.admin.description')
