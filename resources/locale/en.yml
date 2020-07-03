@@ -9,6 +9,8 @@ sycho-action-log:
     settings: => core.ref.settings
     action_settings: From here you can control which actions to log.
     save: => core.ref.save_changes
+    clear: Clear Log
+    clear_confirmation: Are you sure you want to clear the log ? this cannot be undone.
     sort:
       newest: => core.forum.index_sort.newest_button
       oldest: => core.forum.index_sort.oldest_button

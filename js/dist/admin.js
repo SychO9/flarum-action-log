@@ -805,7 +805,7 @@ var ActionLogControls = /*#__PURE__*/function () {
     var items = new flarum_utils_ItemList__WEBPACK_IMPORTED_MODULE_0___default.a();
     items.add('clear', flarum_components_Button__WEBPACK_IMPORTED_MODULE_1___default.a.component({
       className: "Button Button--primary",
-      children: "Clear Log",
+      children: app.translator.trans('sycho-action-log.admin.clear'),
       icon: "fas fa-trash",
       onclick: this.clear.bind(this)
     }));
@@ -879,6 +879,7 @@ var ActionLogControls = /*#__PURE__*/function () {
   _proto.clear = function clear() {
     var _this3 = this;
 
+    if (!confirm(app.translator.trans('sycho-action-log.admin.clear_confirmation'))) return;
     this.component.loading = true;
     app.request({
       url: app.forum.attribute('apiUrl') + '/action-log-entries',

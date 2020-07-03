@@ -14,7 +14,7 @@ export default class ActionLogControls {
 
     items.add('clear', Button.component({
       className: "Button Button--primary",
-      children: "Clear Log",
+      children: app.translator.trans('sycho-action-log.admin.clear'),
       icon: "fas fa-trash",
       onclick: this.clear.bind(this),
     }));
@@ -84,6 +84,8 @@ export default class ActionLogControls {
   }
 
   clear() {
+    if (!confirm(app.translator.trans('sycho-action-log.admin.clear_confirmation'))) return;
+
     this.component.loading = true;
 
     app
