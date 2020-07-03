@@ -1,5 +1,5 @@
 # Action Log
-![latest version](https://img.shields.io/github/release/SychO9/flarum-action-log.svg?style=flat-square)
+[![latest version](https://img.shields.io/packagist/v/sycho/flarum-action-log.svg)](https://packagist.org/packages/flagrow/bazaar)
 ![flarum version](https://img.shields.io/badge/flarum-%5E0.1.0--beta.14-%23e7742e?style=flat-square)
 ![mit license](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square&color=green)
 ![downloads](https://img.shields.io/packagist/dt/sycho/flarum-action-log?color=%23f28d1a&style=flat-square)
