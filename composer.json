@@ -22,8 +22,8 @@
         "flarum-extension": {
             "title": "Action Log",
             "icon": {
-                "name": "fas fa-eye",
-                "backgroundColor": "#004957",
+                "name": "fas fa-stream",
+                "background": "linear-gradient(45deg, #821717, #f32d00)",
                 "color": "#fff"
             }
         }
