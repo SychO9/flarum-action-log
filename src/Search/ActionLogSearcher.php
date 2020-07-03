@@ -10,6 +10,7 @@
 namespace SychO\ActionLog\Search;
 
 use SychO\ActionLog\ActionLogEntry;
+use SychO\ActionLog\Event\Searching;
 use Flarum\Search\ApplySearchParametersTrait;
 use Flarum\Search\GambitManager;
 use Flarum\Search\SearchCriteria;
@@ -57,8 +58,7 @@ class ActionLogSearcher
         $this->applyOffset($search, $offset);
         $this->applyLimit($search, $limit);
 
-        // @TODO add event
-        // event(new Searching($search, $criteria));
+        event(new Searching($search, $criteria));
 
         // Execute the search query and retrieve the results.
         // And prepare the dynamically set relationships

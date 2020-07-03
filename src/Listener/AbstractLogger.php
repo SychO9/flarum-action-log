@@ -10,6 +10,7 @@
 namespace SychO\ActionLog\Listener;
 
 use SychO\ActionLog\ActionLogEntry;
+use SychO\ActionLog\Event\Logged;
 use Carbon\Carbon;
 use Laminas\Diactoros\ServerRequest;
 use Flarum\User\User;
@@ -92,6 +93,8 @@ abstract class AbstractLogger
         $entry->created_at = new Carbon('now');
 
         $entry->save();
+
+        event(new Logged($entry, $actor));
     }
 
     /**
