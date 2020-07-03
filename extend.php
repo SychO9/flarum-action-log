@@ -14,6 +14,13 @@ use SychO\ActionLog\Provider;
 use Flarum\Foundation\Application;
 use Flarum\Extend;
 use Illuminate\Contracts\Events\Dispatcher;
+use Flarum\Suspend;
+use Flarum\Approval;
+use Flarum\Sticky;
+use Flarum\Discussion;
+use Flarum\Lock;
+use Flarum\Extension;
+use Flarum\Group;
 
 return [
     (new Extend\Frontend('admin'))
@@ -33,36 +40,36 @@ return [
         $app->register(Provider\SearchServiceProvider::class);
 
         // Flarum Lock
-        if (class_exists('\Flarum\Lock\Event\DiscussionWasLocked')) {
-            $events->listen(\Flarum\Lock\Event\DiscussionWasLocked::class, Listener\LogDiscussionLocked::class);
-            $events->listen(\Flarum\Lock\Event\DiscussionWasUnlocked::class, Listener\LogDiscussionUnlocked::class);
+        if (class_exists(Lock\Event\DiscussionWasLocked::class)) {
+            $events->listen(Lock\Event\DiscussionWasLocked::class, Listener\LogDiscussionLocked::class);
+            $events->listen(Lock\Event\DiscussionWasUnlocked::class, Listener\LogDiscussionUnlocked::class);
         }
 
         // Flarum Sticky
-        if (class_exists('\Flarum\Sticky\Event\DiscussionWasStickied')) {
-            $events->listen(\Flarum\Sticky\Event\DiscussionWasStickied::class, Listener\LogDiscussionStickied::class);
-            $events->listen(\Flarum\Sticky\Event\DiscussionWasUnstickied::class, Listener\LogDiscussionUnstickied::class);
+        if (class_exists(Sticky\Event\DiscussionWasStickied::class)) {
+            $events->listen(Sticky\Event\DiscussionWasStickied::class, Listener\LogDiscussionStickied::class);
+            $events->listen(Sticky\Event\DiscussionWasUnstickied::class, Listener\LogDiscussionUnstickied::class);
         }
 
         // Flarum Approval
-        if (class_exists('\Flarum\Approval\Event\PostWasApproved')) {
-            $events->listen(\Flarum\Approval\Event\PostWasApproved::class, Listener\LogPostApproved::class);
+        if (class_exists(Approval\Event\PostWasApproved::class)) {
+            $events->listen(Approval\Event\PostWasApproved::class, Listener\LogPostApproved::class);
         }
 
         // Flarum Suspend
-        if (class_exists('\Flarum\Suspend\Event\Suspended')) {
-            $events->listen(\Flarum\Suspend\Event\Suspended::class, Listener\LogUserSuspended::class);
-            $events->listen(\Flarum\Suspend\Event\Unsuspended::class, Listener\LogUserUnsuspended::class);
+        if (class_exists(Suspend\Event\Suspended::class)) {
+            $events->listen(Suspend\Event\Suspended::class, Listener\LogUserSuspended::class);
+            $events->listen(Suspend\Event\Unsuspended::class, Listener\LogUserUnsuspended::class);
         }
 
         // Flarum Core
-        $events->listen(\Flarum\Discussion\Event\Deleted::class, Listener\LogDiscussionDeleted::class);
+        $events->listen(Discussion\Event\Deleted::class, Listener\LogDiscussionDeleted::class);
 
-        $events->listen(\Flarum\Extension\Event\Disabled::class, Listener\LogExtensionDisabled::class);
-        $events->listen(\Flarum\Extension\Event\Enabled::class, Listener\LogExtensionEnabled::class);
-        $events->listen(\Flarum\Extension\Event\Uninstalled::class, Listener\LogExtensionUninstalled::class);
+        $events->listen(Extension\Event\Disabled::class, Listener\LogExtensionDisabled::class);
+        $events->listen(Extension\Event\Enabled::class, Listener\LogExtensionEnabled::class);
+        $events->listen(Extension\Event\Uninstalled::class, Listener\LogExtensionUninstalled::class);
 
-        $events->listen(\Flarum\Group\Event\Created::class, Listener\LogGroupCreated::class);
-        $events->listen(\Flarum\Group\Event\Deleted::class, Listener\LogGroupDeleted::class);
+        $events->listen(Group\Event\Created::class, Listener\LogGroupCreated::class);
+        $events->listen(Group\Event\Deleted::class, Listener\LogGroupDeleted::class);
     }
 ];
