@@ -10,6 +10,8 @@ Administration/Moderation log for [Flarum](https://github.com/flarum/flarum).
 
 ## Todo
 * Add scheduled task to clean the log.
+* Add action name search gambit.
+* Log tags events.
 
 ## Actions Logged
 * Moderation
