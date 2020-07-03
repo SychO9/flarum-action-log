@@ -1,6 +1,7 @@
 import SettingsModal from 'flarum/components/SettingsModal';
 import Switch from 'flarum/components/Switch';
 import Button from 'flarum/components/Button';
+import icon from 'flarum/helpers/icon';
 
 export default class ActionLogSettingsModal extends SettingsModal {
   init() {
@@ -13,42 +14,9 @@ export default class ActionLogSettingsModal extends SettingsModal {
     return app.translator.trans('sycho-action-log.admin.settings');
   }
 
-  actions() {
-    const items = {
-      moderation: {
-        discussion: [
-          'locked',
-          'unlocked',
-          'deleted',
-          'stickied',
-          'unstickied',
-        ],
-        user: [
-          'suspended',
-          'unsuspended',
-        ],
-        post: [
-          'approved',
-        ],
-      },
-      administration: {
-        group: [
-          'created',
-          'deleted',
-        ],
-        extension: [
-          'enabled',
-          'disabled',
-          'uninstalled',
-        ],
-      },
-    };
-
-    return items;
-  }
-
   form() {
-    const actions = this.actions();
+    const actions = this.props.actions.items;
+    const icons = this.props.actions.icons;
 
     return [
       <p>{app.translator.trans('sycho-action-log.admin.action_settings')}</p>,
@@ -59,7 +27,10 @@ export default class ActionLogSettingsModal extends SettingsModal {
           </h3>
           {Object.keys(actions[key]).map(resourceType => (
             <div className="ActionLogSettings-resourceTypes">
-              <h4>{app.translator.trans(`sycho-action-log.admin.actions.${key}.${resourceType}.label`)}</h4>
+              <h4>
+                {app.translator.trans(`sycho-action-log.admin.actions.${key}.${resourceType}.label`)}
+                  <span className="ActionLog-titleIcon">{icon(icons.resourceTypes[resourceType])}</span>
+              </h4>
               {actions[key][resourceType].map(action => (
                 <div className="Form-group">
                   <Switch
@@ -67,6 +38,7 @@ export default class ActionLogSettingsModal extends SettingsModal {
                     onchange={this.switch.bind(this, key, resourceType, action)}
                   >
                     {app.translator.trans(`sycho-action-log.admin.actions.${key}.${resourceType}.${action}.label`)}
+                    <span className="ActionLog-titleIcon">{icon(icons.actionNames[action])}</span>
                   </Switch>
                 </div>
               ))}

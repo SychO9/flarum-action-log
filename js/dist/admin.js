@@ -288,6 +288,9 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
   };
 
   _proto.view = function view() {
+    var _this$controls$action = this.controls.actions(),
+        icons = _this$controls$action.icons;
+
     return m("div", {
       className: "ActionLogPage"
     }, m("div", {
@@ -323,7 +326,13 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
         className: "ActionLogGrid-entryTime"
       }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()('far fa-clock'), " ", flarum_helpers_humanTime__WEBPACK_IMPORTED_MODULE_3___default()(entry.createdAt()))), m("div", {
         className: "ActionLogGrid-entryName"
-      }, entry.formattedName)));
+      }, entry.formattedName)), m("div", {
+        className: "ActionLogGrid-itemIcon"
+      }, m("div", {
+        className: "ActionLogGrid-itemIconMain"
+      }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(icons.resourceTypes[entry.resourceType()]), m("span", {
+        className: "ActionLogGrid-itemIconSecondary"
+      }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(icons.actionNames[entry.name()])))));
     })), m("div", {
       className: "ActionLogPage-navigation"
     }, this.buildPagination())] : m(flarum_components_Placeholder__WEBPACK_IMPORTED_MODULE_7___default.a, {
@@ -552,6 +561,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var flarum_components_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flarum/components/Button */ "flarum/components/Button");
 /* harmony import */ var flarum_components_Button__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Button__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! flarum/helpers/icon */ "flarum/helpers/icon");
+/* harmony import */ var flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4__);
+
 
 
 
@@ -576,38 +588,28 @@ var ActionLogSettingsModal = /*#__PURE__*/function (_SettingsModal) {
     return app.translator.trans('sycho-action-log.admin.settings');
   };
 
-  _proto.actions = function actions() {
-    var items = {
-      moderation: {
-        discussion: ['locked', 'unlocked', 'deleted', 'stickied', 'unstickied'],
-        user: ['suspended', 'unsuspended'],
-        post: ['approved']
-      },
-      administration: {
-        group: ['created', 'deleted'],
-        extension: ['enabled', 'disabled', 'uninstalled']
-      }
-    };
-    return items;
-  };
-
   _proto.form = function form() {
     var _this = this;
 
-    var actions = this.actions();
+    var actions = this.props.actions.items;
+    var icons = this.props.actions.icons;
     return [m("p", null, app.translator.trans('sycho-action-log.admin.action_settings')), Object.keys(actions).map(function (key) {
       return m("div", {
         className: "ActionLogSettings-logTypes"
       }, m("h3", null, m("span", null, app.translator.trans("sycho-action-log.admin.actions." + key + ".label"))), Object.keys(actions[key]).map(function (resourceType) {
         return m("div", {
           className: "ActionLogSettings-resourceTypes"
-        }, m("h4", null, app.translator.trans("sycho-action-log.admin.actions." + key + "." + resourceType + ".label")), actions[key][resourceType].map(function (action) {
+        }, m("h4", null, app.translator.trans("sycho-action-log.admin.actions." + key + "." + resourceType + ".label"), m("span", {
+          className: "ActionLog-titleIcon"
+        }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(icons.resourceTypes[resourceType]))), actions[key][resourceType].map(function (action) {
           return m("div", {
             className: "Form-group"
           }, m(flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default.a, {
             state: !_this.getExcludedLoggingValue().includes(key + "." + resourceType + "." + action),
             onchange: _this["switch"].bind(_this, key, resourceType, action)
-          }, app.translator.trans("sycho-action-log.admin.actions." + key + "." + resourceType + "." + action + ".label")));
+          }, app.translator.trans("sycho-action-log.admin.actions." + key + "." + resourceType + "." + action + ".label"), m("span", {
+            className: "ActionLog-titleIcon"
+          }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(icons.actionNames[action]))));
         }));
       }));
     })];
@@ -802,6 +804,8 @@ var ActionLogControls = /*#__PURE__*/function () {
   var _proto = ActionLogControls.prototype;
 
   _proto.mainControls = function mainControls() {
+    var _this = this;
+
     var items = new flarum_utils_ItemList__WEBPACK_IMPORTED_MODULE_0___default.a();
     items.add('clear', flarum_components_Button__WEBPACK_IMPORTED_MODULE_1___default.a.component({
       className: "Button Button--primary",
@@ -814,14 +818,16 @@ var ActionLogControls = /*#__PURE__*/function () {
       children: app.translator.trans('sycho-action-log.admin.settings'),
       icon: "fas fa-cogs",
       onclick: function onclick() {
-        return app.modal.show(new _components_ActionLogSettingsModal__WEBPACK_IMPORTED_MODULE_4__["default"]());
+        return app.modal.show(new _components_ActionLogSettingsModal__WEBPACK_IMPORTED_MODULE_4__["default"]({
+          actions: _this.actions()
+        }));
       }
     }));
     return items;
   };
 
   _proto.filterControls = function filterControls() {
-    var _this = this;
+    var _this2 = this;
 
     var items = new flarum_utils_ItemList__WEBPACK_IMPORTED_MODULE_0___default.a();
     items.add('search', _components_Input__WEBPACK_IMPORTED_MODULE_3__["default"].component({
@@ -836,11 +842,11 @@ var ActionLogControls = /*#__PURE__*/function () {
       buttonClassName: 'Button',
       label: app.translator.trans("sycho-action-log.admin.sort." + this.component.sort),
       children: Object.keys(this.component.sortingOptions).map(function (key) {
-        var active = _this.component.sort === key;
+        var active = _this2.component.sort === key;
         return flarum_components_Button__WEBPACK_IMPORTED_MODULE_1___default.a.component({
           children: app.translator.trans("sycho-action-log.admin.sort." + key),
           icon: active ? 'fas fa-check' : true,
-          onclick: _this.updateSort.bind(_this, key),
+          onclick: _this2.updateSort.bind(_this2, key),
           active: active
         });
       })
@@ -854,6 +860,47 @@ var ActionLogControls = /*#__PURE__*/function () {
     return items;
   };
 
+  _proto.actions = function actions() {
+    var items = {
+      moderation: {
+        discussion: ['locked', 'unlocked', 'deleted', 'stickied', 'unstickied'],
+        user: ['suspended', 'unsuspended'],
+        post: ['approved']
+      },
+      administration: {
+        group: ['created', 'deleted'],
+        extension: ['enabled', 'disabled', 'uninstalled']
+      }
+    };
+    var icons = {
+      resourceTypes: {
+        discussion: 'fas fa-comments',
+        user: 'fas fa-user',
+        post: 'fas fa-reply',
+        extension: 'fas fa-puzzle-piece',
+        group: 'fas fa-key'
+      },
+      actionNames: {
+        locked: 'fas fa-lock',
+        unlocked: 'fas fa-unlock',
+        deleted: 'fas fa-trash',
+        stickied: 'fas fa-thumbtack',
+        unstickied: 'fas fa-thumbtack',
+        suspended: 'fas fa-ban',
+        unsuspended: 'fas fa-check-circle',
+        approved: 'fas fa-check-circle',
+        created: 'fas fa-plus-circle',
+        enabled: 'fas fa-check-circle',
+        disabled: 'fas fa-ban',
+        uninstalled: 'fas fa-times-circle'
+      }
+    };
+    return {
+      items: items,
+      icons: icons
+    };
+  };
+
   _proto.updateSort = function updateSort(sort) {
     this.component.load({
       sort: sort
@@ -861,14 +908,14 @@ var ActionLogControls = /*#__PURE__*/function () {
   };
 
   _proto.search = function search() {
-    var _this2 = this;
+    var _this3 = this;
 
     m.withAttr('value', this.component.query)();
     this.component.loading = true;
 
     this.searching = function () {
-      return _this2.component.load({
-        query: _this2.component.query()
+      return _this3.component.load({
+        query: _this3.component.query()
       });
     };
 
@@ -877,7 +924,7 @@ var ActionLogControls = /*#__PURE__*/function () {
   };
 
   _proto.clear = function clear() {
-    var _this3 = this;
+    var _this4 = this;
 
     if (!confirm(app.translator.trans('sycho-action-log.admin.clear_confirmation'))) return;
     this.component.loading = true;
@@ -885,7 +932,7 @@ var ActionLogControls = /*#__PURE__*/function () {
       url: app.forum.attribute('apiUrl') + '/action-log-entries',
       method: 'DELETE'
     }).then(function () {
-      return _this3.component.load();
+      return _this4.component.load();
     });
   };
 

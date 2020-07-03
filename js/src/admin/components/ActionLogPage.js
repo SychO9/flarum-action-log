@@ -40,6 +40,8 @@ export default class ActionLogPage extends Page {
   }
 
   view() {
+    const { icons } = this.controls.actions();
+
     return (
       <div className="ActionLogPage">
         <div className="ActionLogPage-header">
@@ -73,6 +75,12 @@ export default class ActionLogPage extends Page {
                           <div className="ActionLogGrid-entryTime">{icon('far fa-clock')} {humanTime(entry.createdAt())}</div>
                         </div>
                         <div className="ActionLogGrid-entryName">{entry.formattedName}</div>
+                      </div>
+                      <div className="ActionLogGrid-itemIcon">
+                        <div className="ActionLogGrid-itemIconMain">
+                          {icon(icons.resourceTypes[entry.resourceType()])}
+                          <span className="ActionLogGrid-itemIconSecondary">{icon(icons.actionNames[entry.name()])}</span>
+                        </div>
                       </div>
                     </div>
                   ))}

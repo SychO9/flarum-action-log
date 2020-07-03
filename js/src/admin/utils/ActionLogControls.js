@@ -23,7 +23,7 @@ export default class ActionLogControls {
       className: "Button",
       children: app.translator.trans('sycho-action-log.admin.settings'),
       icon: "fas fa-cogs",
-      onclick: () => app.modal.show(new ActionLogSettingsModal()),
+      onclick: () => app.modal.show(new ActionLogSettingsModal({ actions: this.actions() })),
     }));
 
     return items;
@@ -65,6 +65,64 @@ export default class ActionLogControls {
     }));
 
     return items;
+  }
+
+  actions() {
+    const items = {
+      moderation: {
+        discussion: [
+          'locked',
+          'unlocked',
+          'deleted',
+          'stickied',
+          'unstickied',
+        ],
+        user: [
+          'suspended',
+          'unsuspended',
+        ],
+        post: [
+          'approved',
+        ],
+      },
+      administration: {
+        group: [
+          'created',
+          'deleted',
+        ],
+        extension: [
+          'enabled',
+          'disabled',
+          'uninstalled',
+        ],
+      },
+    };
+
+    const icons = {
+      resourceTypes: {
+        discussion: 'fas fa-comments',
+        user: 'fas fa-user',
+        post: 'fas fa-reply',
+        extension: 'fas fa-puzzle-piece',
+        group: 'fas fa-key',
+      },
+      actionNames: {
+        locked: 'fas fa-lock',
+        unlocked: 'fas fa-unlock',
+        deleted: 'fas fa-trash',
+        stickied: 'fas fa-thumbtack',
+        unstickied: 'fas fa-thumbtack',
+        suspended: 'fas fa-ban',
+        unsuspended: 'fas fa-check-circle',
+        approved: 'fas fa-check-circle',
+        created: 'fas fa-plus-circle',
+        enabled: 'fas fa-check-circle',
+        disabled: 'fas fa-ban',
+        uninstalled: 'fas fa-times-circle',
+      },
+    };
+
+    return { items, icons };
   }
 
   updateSort(sort) {
