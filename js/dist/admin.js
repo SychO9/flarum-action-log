@@ -868,9 +868,9 @@ var ActionLogControls = /*#__PURE__*/function () {
       children: app.translator.trans('sycho-action-log.admin.settings'),
       icon: "fas fa-cogs",
       onclick: function onclick() {
-        return app.modal.show(new _modals_ActionLogSettingsModal__WEBPACK_IMPORTED_MODULE_4__["default"]({
+        return app.modal.show(_modals_ActionLogSettingsModal__WEBPACK_IMPORTED_MODULE_4__["default"], {
           actions: _this.actions()
-        }));
+        });
       }
     }));
     return items;
@@ -892,7 +892,7 @@ var ActionLogControls = /*#__PURE__*/function () {
       className: 'Button Button--icon',
       icon: 'fas fa-question',
       onclick: function onclick() {
-        return app.modal.show(new _modals_FiltersHelpModal__WEBPACK_IMPORTED_MODULE_5__["default"]());
+        return app.modal.show(_modals_FiltersHelpModal__WEBPACK_IMPORTED_MODULE_5__["default"]);
       }
     }));
     items.add('sort', flarum_components_Dropdown__WEBPACK_IMPORTED_MODULE_2___default.a.component({

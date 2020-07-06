@@ -24,7 +24,7 @@ export default class ActionLogControls {
       className: "Button",
       children: app.translator.trans('sycho-action-log.admin.settings'),
       icon: "fas fa-cogs",
-      onclick: () => app.modal.show(new ActionLogSettingsModal({ actions: this.actions() })),
+      onclick: () => app.modal.show(ActionLogSettingsModal, { actions: this.actions() }),
     }));
 
     return items;
@@ -45,7 +45,7 @@ export default class ActionLogControls {
     items.add('help', Button.component({
       className: 'Button Button--icon',
       icon: 'fas fa-question',
-      onclick: () => app.modal.show(new FiltersHelpModal()),
+      onclick: () => app.modal.show(FiltersHelpModal),
     }));
 
     items.add('sort', Dropdown.component({
