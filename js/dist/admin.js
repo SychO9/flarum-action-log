@@ -202,8 +202,12 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ActionLogPage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/ActionLogPage */ "./src/admin/components/ActionLogPage.js");
 /* harmony import */ var _components_Input__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Input */ "./src/admin/components/Input.js");
-/* harmony import */ var _models_ActionLogEntry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./models/ActionLogEntry */ "./src/admin/models/ActionLogEntry.js");
-/* harmony import */ var _utils_ActionLogControls__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/ActionLogControls */ "./src/admin/utils/ActionLogControls.js");
+/* harmony import */ var _modals_ActionLogSettingsModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modals/ActionLogSettingsModal */ "./src/admin/modals/ActionLogSettingsModal.js");
+/* harmony import */ var _modals_FiltersHelpModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modals/FiltersHelpModal */ "./src/admin/modals/FiltersHelpModal.js");
+/* harmony import */ var _models_ActionLogEntry__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./models/ActionLogEntry */ "./src/admin/models/ActionLogEntry.js");
+/* harmony import */ var _utils_ActionLogControls__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/ActionLogControls */ "./src/admin/utils/ActionLogControls.js");
+
+
 
 
 
@@ -211,8 +215,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   'actionLog/components/ActionLogPage': _components_ActionLogPage__WEBPACK_IMPORTED_MODULE_0__["default"],
   'actionLog/components/Input': _components_Input__WEBPACK_IMPORTED_MODULE_1__["default"],
-  'actionLog/models/ActionLogEntry': _models_ActionLogEntry__WEBPACK_IMPORTED_MODULE_2__["default"],
-  'actionLog/utils/ActionLogControls': _utils_ActionLogControls__WEBPACK_IMPORTED_MODULE_3__["default"]
+  'actionLog/modals/ActionLogSettingsModal': _modals_ActionLogSettingsModal__WEBPACK_IMPORTED_MODULE_2__["default"],
+  'actionLog/modals/FiltersHelpModal': _modals_FiltersHelpModal__WEBPACK_IMPORTED_MODULE_3__["default"],
+  'actionLog/models/ActionLogEntry': _models_ActionLogEntry__WEBPACK_IMPORTED_MODULE_4__["default"],
+  'actionLog/utils/ActionLogControls': _utils_ActionLogControls__WEBPACK_IMPORTED_MODULE_5__["default"]
 });
 
 /***/ }),
