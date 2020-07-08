@@ -13,19 +13,25 @@ export default class ActionLogControls {
   mainControls() {
     const items = new ItemList();
 
-    items.add('clear', Button.component({
-      className: "Button Button--primary",
-      children: app.translator.trans('sycho-action-log.admin.clear'),
-      icon: "fas fa-trash",
-      onclick: this.clear.bind(this),
-    }));
+    items.add(
+      'clear',
+      Button.component({
+        className: 'Button Button--primary',
+        children: app.translator.trans('sycho-action-log.admin.clear'),
+        icon: 'fas fa-trash',
+        onclick: this.clear.bind(this),
+      })
+    );
 
-    items.add('settings', Button.component({
-      className: "Button",
-      children: app.translator.trans('sycho-action-log.admin.settings'),
-      icon: "fas fa-cogs",
-      onclick: () => app.modal.show(ActionLogSettingsModal, { actions: this.actions() }),
-    }));
+    items.add(
+      'settings',
+      Button.component({
+        className: 'Button',
+        children: app.translator.trans('sycho-action-log.admin.settings'),
+        icon: 'fas fa-cogs',
+        onclick: () => app.modal.show(ActionLogSettingsModal, { actions: this.actions() }),
+      })
+    );
 
     return items;
   }
@@ -33,43 +39,55 @@ export default class ActionLogControls {
   filterControls() {
     const items = new ItemList();
 
-    items.add('search', Input.component({
-      icon: "fas fa-filter",
-      parentClassName: "ActionLog-search",
-      className: "FormControl",
-      placeholder: app.translator.trans('sycho-action-log.admin.search'),
-      value: this.component.query(),
-      oninput: this.search.bind(this),
-    }));
-
-    items.add('help', Button.component({
-      className: 'Button Button--icon',
-      icon: 'fas fa-question',
-      onclick: () => app.modal.show(FiltersHelpModal),
-    }));
-
-    items.add('sort', Dropdown.component({
-      buttonClassName: 'Button',
-      label: app.translator.trans(`sycho-action-log.admin.sort.${this.component.sort}`),
-      children: Object.keys(this.component.sortingOptions).map(key => {
-        const active = this.component.sort === key;
-
-        return Button.component({
-          children: app.translator.trans(`sycho-action-log.admin.sort.${key}`),
-          icon: active ? 'fas fa-check' : true,
-          onclick: this.updateSort.bind(this, key),
-          active,
-        });
+    items.add(
+      'search',
+      Input.component({
+        icon: 'fas fa-filter',
+        parentClassName: 'ActionLog-search',
+        className: 'FormControl',
+        placeholder: app.translator.trans('sycho-action-log.admin.search'),
+        value: this.component.query(),
+        oninput: this.search.bind(this),
       })
-    }));
+    );
+
+    items.add(
+      'help',
+      Button.component({
+        className: 'Button Button--icon',
+        icon: 'fas fa-question',
+        onclick: () => app.modal.show(FiltersHelpModal),
+      })
+    );
+
+    items.add(
+      'sort',
+      Dropdown.component({
+        buttonClassName: 'Button',
+        label: app.translator.trans(`sycho-action-log.admin.sort.${this.component.sort}`),
+        children: Object.keys(this.component.sortingOptions).map((key) => {
+          const active = this.component.sort === key;
+
+          return Button.component({
+            children: app.translator.trans(`sycho-action-log.admin.sort.${key}`),
+            icon: active ? 'fas fa-check' : true,
+            onclick: this.updateSort.bind(this, key),
+            active,
+          });
+        }),
+      })
+    );
 
     items.add('pagination', this.component.buildPagination());
 
-    items.add('refresh', Button.component({
-      className: 'Button Button--icon',
-      icon: 'fas fa-sync',
-      onclick: this.component.load.bind(this.component),
-    }));
+    items.add(
+      'refresh',
+      Button.component({
+        className: 'Button Button--icon',
+        icon: 'fas fa-sync',
+        onclick: this.component.load.bind(this.component),
+      })
+    );
 
     return items;
   }
@@ -77,31 +95,13 @@ export default class ActionLogControls {
   actions() {
     const items = {
       moderation: {
-        discussion: [
-          'locked',
-          'unlocked',
-          'deleted',
-          'stickied',
-          'unstickied',
-        ],
-        user: [
-          'suspended',
-          'unsuspended',
-        ],
-        post: [
-          'approved',
-        ],
+        discussion: ['locked', 'unlocked', 'deleted', 'stickied', 'unstickied'],
+        user: ['suspended', 'unsuspended'],
+        post: ['approved'],
       },
       administration: {
-        group: [
-          'created',
-          'deleted',
-        ],
-        extension: [
-          'enabled',
-          'disabled',
-          'uninstalled',
-        ],
+        group: ['created', 'deleted'],
+        extension: ['enabled', 'disabled', 'uninstalled'],
       },
     };
 
@@ -142,8 +142,7 @@ export default class ActionLogControls {
     this.component.loading = true;
     this.searching = () => this.component.load({ query: this.component.query() });
 
-    if (this.searchTimeout)
-      clearTimeout(this.searchTimeout);
+    if (this.searchTimeout) clearTimeout(this.searchTimeout);
 
     this.searchTimeout = setTimeout(this.searching, 250);
   }
@@ -156,7 +155,7 @@ export default class ActionLogControls {
     app
       .request({
         url: app.forum.attribute('apiUrl') + '/action-log-entries',
-        method: 'DELETE'
+        method: 'DELETE',
       })
       .then(() => this.component.load());
   }

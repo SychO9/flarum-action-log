@@ -713,7 +713,6 @@ var ActionLogSettingsModal = /*#__PURE__*/function (_SettingsModal) {
 
   _proto.getExcludedLoggingValue = function getExcludedLoggingValue() {
     return JSON.parse(this.excludedLoggingSetting());
-    ;
   };
 
   _proto["switch"] = function _switch(key, resourceType, action, value) {
@@ -864,15 +863,15 @@ var ActionLogControls = /*#__PURE__*/function () {
 
     var items = new flarum_utils_ItemList__WEBPACK_IMPORTED_MODULE_0___default.a();
     items.add('clear', flarum_components_Button__WEBPACK_IMPORTED_MODULE_1___default.a.component({
-      className: "Button Button--primary",
+      className: 'Button Button--primary',
       children: app.translator.trans('sycho-action-log.admin.clear'),
-      icon: "fas fa-trash",
+      icon: 'fas fa-trash',
       onclick: this.clear.bind(this)
     }));
     items.add('settings', flarum_components_Button__WEBPACK_IMPORTED_MODULE_1___default.a.component({
-      className: "Button",
+      className: 'Button',
       children: app.translator.trans('sycho-action-log.admin.settings'),
-      icon: "fas fa-cogs",
+      icon: 'fas fa-cogs',
       onclick: function onclick() {
         return app.modal.show(_modals_ActionLogSettingsModal__WEBPACK_IMPORTED_MODULE_4__["default"], {
           actions: _this.actions()
@@ -887,9 +886,9 @@ var ActionLogControls = /*#__PURE__*/function () {
 
     var items = new flarum_utils_ItemList__WEBPACK_IMPORTED_MODULE_0___default.a();
     items.add('search', _components_Input__WEBPACK_IMPORTED_MODULE_3__["default"].component({
-      icon: "fas fa-filter",
-      parentClassName: "ActionLog-search",
-      className: "FormControl",
+      icon: 'fas fa-filter',
+      parentClassName: 'ActionLog-search',
+      className: 'FormControl',
       placeholder: app.translator.trans('sycho-action-log.admin.search'),
       value: this.component.query(),
       oninput: this.search.bind(this)

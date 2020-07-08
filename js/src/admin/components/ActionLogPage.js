@@ -57,22 +57,22 @@ export default class ActionLogPage extends Page {
 
         <div className="ActionLogPage-content">
           <div className="container">
-            <div className="ActionLogPage-navigation">
-              {this.controls.filterControls(this).toArray()}
-            </div>
+            <div className="ActionLogPage-navigation">{this.controls.filterControls(this).toArray()}</div>
             {this.loading ? (
               <LoadingIndicator className="LoadingIndicator--block" />
-            ) :
-              this.entries.length ? [
+            ) : this.entries.length ? (
+              [
                 <div className="ActionLogGrid">
-                  {this.entries.map(entry => (
+                  {this.entries.map((entry) => (
                     <div className="ActionLogGrid-item">
                       <div className="ActionLogGrid-Avatar">{avatar(entry.actor())}</div>
                       <div className="ActionLogGrid-itemContent">
                         <div className="ActionLogGrid-entryDetails">
                           <div className="ActionLogGrid-entryActor">{username(entry.actor())}</div>
                           <div className="ActionLogGrid-entryType">{entry.type()}</div>
-                          <div className="ActionLogGrid-entryTime">{icon('far fa-clock')} {humanTime(entry.createdAt())}</div>
+                          <div className="ActionLogGrid-entryTime">
+                            {icon('far fa-clock')} {humanTime(entry.createdAt())}
+                          </div>
                         </div>
                         <div className="ActionLogGrid-entryName">{entry.formattedName}</div>
                       </div>
@@ -85,11 +85,11 @@ export default class ActionLogPage extends Page {
                     </div>
                   ))}
                 </div>,
-                <div className="ActionLogPage-navigation">{this.buildPagination()}</div>
-              ] : (
-                <Placeholder text={app.translator.trans('sycho-action-log.admin.no_entries')} />
-              )
-            }
+                <div className="ActionLogPage-navigation">{this.buildPagination()}</div>,
+              ]
+            ) : (
+              <Placeholder text={app.translator.trans('sycho-action-log.admin.no_entries')} />
+            )}
           </div>
         </div>
       </div>
@@ -101,9 +101,14 @@ export default class ActionLogPage extends Page {
    * @returns string
    */
   showActor(entry) {
-    if (! entry.actor()) return;
+    if (!entry.actor()) return;
 
-    return <a>{avatar(entry.actor())}{username(entry.actor())}</a>;
+    return (
+      <a>
+        {avatar(entry.actor())}
+        {username(entry.actor())}
+      </a>
+    );
   }
 
   /**
@@ -149,7 +154,7 @@ export default class ActionLogPage extends Page {
     this.links = response.payload.links;
     this.page = Math.ceil(this.offset / this.limit);
 
-    this.entries.map(entry => {
+    this.entries.map((entry) => {
       entry.formattedName = this.formatName(entry);
     });
 
@@ -161,23 +166,9 @@ export default class ActionLogPage extends Page {
 
     return (
       <div className="ActionLogPage-pagination">
-        <Button
-          className="Button Button--icon"
-          icon="fas fa-arrow-left"
-          onclick={this.prev.bind(this)}
-          disabled={!this.hasPrev()}
-        />
-        {<Select
-          value={this.page}
-          options={this.getPages()}
-          onchange={this.changePage.bind(this)}
-        />}
-        <Button
-          className="Button Button--icon"
-          icon="fas fa-arrow-right"
-          onclick={this.next.bind(this)}
-          disabled={!this.hasNext()}
-        />
+        <Button className="Button Button--icon" icon="fas fa-arrow-left" onclick={this.prev.bind(this)} disabled={!this.hasPrev()} />
+        {<Select value={this.page} options={this.getPages()} onchange={this.changePage.bind(this)} />}
+        <Button className="Button Button--icon" icon="fas fa-arrow-right" onclick={this.next.bind(this)} disabled={!this.hasNext()} />
       </div>
     );
   }
@@ -195,7 +186,7 @@ export default class ActionLogPage extends Page {
   }
 
   hasNext() {
-    return this.offset+this.limit < this.count;
+    return this.offset + this.limit < this.count;
   }
 
   hasPrev() {
@@ -203,7 +194,7 @@ export default class ActionLogPage extends Page {
   }
 
   getPages() {
-    let pageRange = Array.from({ length: Math.ceil(this.count/this.limit) }, (v, k) => k+1);
+    let pageRange = Array.from({ length: Math.ceil(this.count / this.limit) }, (v, k) => k + 1);
 
     pageRange.map((number, index) => {
       pageRange[index] = app.translator.trans('sycho-action-log.admin.page', { number });
@@ -215,7 +206,7 @@ export default class ActionLogPage extends Page {
   changePage(value) {
     if (!Object.keys(this.getPages()).includes(value)) return;
 
-    this.load({ offset: value*this.limit });
+    this.load({ offset: value * this.limit });
   }
 
   /**
@@ -244,8 +235,7 @@ export default class ActionLogPage extends Page {
       // so we have no choice but to add some ugly hackish code here
       format[key === 'user' ? 'u' : key] = this.buildResourceName(key, entry);
 
-      if (key === 'user')
-        delete format.user;
+      if (key === 'user') delete format.user;
     });
 
     Object.keys(format).map((key, index) => {
@@ -271,10 +261,7 @@ export default class ActionLogPage extends Page {
     }
 
     if (format.version) {
-      name = [
-        name,
-        <i> ({format.version})</i>
-      ];
+      name = [name, <i> ({format.version})</i>];
     }
 
     if (format.icon) {
@@ -282,7 +269,7 @@ export default class ActionLogPage extends Page {
         <span className="Badge ActionLogExtensionIcon" style={format.icon}>
           {icon(format.icon.name)}
         </span>,
-        name
+        name,
       ];
     }
 

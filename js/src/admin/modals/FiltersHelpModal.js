@@ -6,8 +6,10 @@ export default class FiltersHelpModal extends Modal {
       <div className="Modal-body">
         {app.translator.trans('sycho-action-log.admin.gambits.description')}
         <ul>
-          {this.gambits().map(gambit => (
-            <li><strong>{gambit}:</strong> {app.translator.trans(`sycho-action-log.admin.gambits.items.${gambit}`)}</li>
+          {this.gambits().map((gambit) => (
+            <li>
+              <strong>{gambit}:</strong> {app.translator.trans(`sycho-action-log.admin.gambits.items.${gambit}`)}
+            </li>
           ))}
         </ul>
       </div>
