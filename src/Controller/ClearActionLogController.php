@@ -9,15 +9,30 @@
 
 namespace SychO\ActionLog\Controller;
 
-use SychO\ActionLog\ActionLogEntry;
+use SychO\ActionLog\Console\ClearActionLogCommand;
 use Flarum\Api\Controller\AbstractDeleteController;
 use Flarum\User\AssertPermissionTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use Laminas\Diactoros\Response\EmptyResponse;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 
 class ClearActionLogController extends AbstractDeleteController
 {
     use AssertPermissionTrait;
+
+    /**
+     * @var ClearActionLogCommand
+     */
+    protected $command;
+
+    /**
+     * @param Dispatcher $bus
+     */
+    public function __construct(ClearActionLogCommand $command)
+    {
+        $this->command = $command;
+    }
 
     /**
      * @inheritDoc
@@ -26,7 +41,10 @@ class ClearActionLogController extends AbstractDeleteController
     {
         $this->assertAdmin($request->getAttribute('actor'));
 
-        ActionLogEntry::getQuery()->delete();
+        $this->command->run(
+            new ArrayInput([]),
+            new NullOutput()
+        );
 
         return new EmptyResponse(204);
     }

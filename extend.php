@@ -11,6 +11,7 @@ use SychO\ActionLog\Listener;
 use SychO\ActionLog\Controller;
 use SychO\ActionLog\Middleware;
 use SychO\ActionLog\Provider;
+use SychO\ActionLog\Console;
 use Flarum\Foundation\Application;
 use Flarum\Extend;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -23,6 +24,9 @@ use Flarum\Extension;
 use Flarum\Group;
 
 return [
+    (new Extend\Console)
+        ->command(Console\ClearActionLogCommand::class),
+
     (new Extend\Frontend('admin'))
         ->js(__DIR__.'/js/dist/admin.js')
         ->css(__DIR__.'/resources/less/admin.less'),
