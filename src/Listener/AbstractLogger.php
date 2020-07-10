@@ -67,7 +67,7 @@ abstract class AbstractLogger
      */
     public function handle($event)
     {
-        if ($this->isDisabled()) {
+        if ($this->isDisabled($event)) {
             return;
         }
 
@@ -100,9 +100,10 @@ abstract class AbstractLogger
     /**
      * Checks if an admin has disabled this type of action logging
      *
+     * @param object $event
      * @return bool
      */
-    protected function isDisabled(): bool
+    protected function isDisabled($event): bool
     {
         $actionName = "{$this->type}.{$this->resource_type}.{$this->name}";
 

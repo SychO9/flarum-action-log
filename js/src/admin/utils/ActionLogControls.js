@@ -101,6 +101,7 @@ export default class ActionLogControls {
       },
       administration: {
         group: ['created', 'deleted'],
+        tag: ['created', 'deleted'],
         extension: ['enabled', 'disabled', 'uninstalled'],
       },
     };
@@ -112,6 +113,7 @@ export default class ActionLogControls {
         post: 'fas fa-reply',
         extension: 'fas fa-puzzle-piece',
         group: 'fas fa-key',
+        tag: 'fas fa-tag',
       },
       actionNames: {
         locked: 'fas fa-lock',

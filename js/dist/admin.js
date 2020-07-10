@@ -931,6 +931,7 @@ var ActionLogControls = /*#__PURE__*/function () {
       },
       administration: {
         group: ['created', 'deleted'],
+        tag: ['created', 'deleted'],
         extension: ['enabled', 'disabled', 'uninstalled']
       }
     };
@@ -940,7 +941,8 @@ var ActionLogControls = /*#__PURE__*/function () {
         user: 'fas fa-user',
         post: 'fas fa-reply',
         extension: 'fas fa-puzzle-piece',
-        group: 'fas fa-key'
+        group: 'fas fa-key',
+        tag: 'fas fa-tag'
       },
       actionNames: {
         locked: 'fas fa-lock',

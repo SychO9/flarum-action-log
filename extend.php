@@ -22,6 +22,7 @@ use Flarum\Discussion;
 use Flarum\Lock;
 use Flarum\Extension;
 use Flarum\Group;
+use Flarum\Tags;
 
 return [
     (new Extend\Console)
@@ -64,6 +65,13 @@ return [
         if (class_exists(Suspend\Event\Suspended::class)) {
             $events->listen(Suspend\Event\Suspended::class, Listener\LogUserSuspended::class);
             $events->listen(Suspend\Event\Unsuspended::class, Listener\LogUserUnsuspended::class);
+        }
+
+        // Flarum Tags
+        if (class_exists(Tags\Event\Creating::class)) {
+            $events->listen(Tags\Event\Creating::class, Listener\LogTagCreated::class);
+            $events->listen(Tags\Event\Deleting::class, Listener\LogTagDeleted::class);
+            $events->listen(Tags\Event\DiscussionWasTagged::class, Listener\LogDiscussionTagged::class);
         }
 
         // Flarum Core

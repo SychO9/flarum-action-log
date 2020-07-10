@@ -73,6 +73,15 @@ sycho-action-log:
             label: Deleted
             action: Deleted the group {group}
 
+        tag:
+          label: Tag
+          created:
+            label: Created
+            action: Created a new tag {tag}
+          deleted:
+            label: Deleted
+            action: Deleted the tag {tag}
+
         extension:
           label: Extension
           enabled:
