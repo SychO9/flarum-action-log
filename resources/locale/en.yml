@@ -45,6 +45,13 @@ sycho-action-log:
           unstickied:
             label: Unstickied
             action: Unstickied the discussion {discussion}
+          tagged:
+            label: Tagged
+            action:
+              add_remove: Added the {tags} and removed the {oldTags} from the discussion {discussion}
+              add: Added the {tags} to the discussion {discussion}
+              remove: Removed the {oldTags} from the discussion {discussion}
+              tags_text: "{tags} tag|{tags} tags"
 
         post:
           label: Post

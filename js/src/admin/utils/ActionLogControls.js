@@ -95,7 +95,7 @@ export default class ActionLogControls {
   actions() {
     const items = {
       moderation: {
-        discussion: ['locked', 'unlocked', 'deleted', 'stickied', 'unstickied'],
+        discussion: ['locked', 'unlocked', 'deleted', 'stickied', 'unstickied', 'tagged'],
         user: ['suspended', 'unsuspended'],
         post: ['approved'],
       },
@@ -128,6 +128,7 @@ export default class ActionLogControls {
         enabled: 'fas fa-check-circle',
         disabled: 'fas fa-ban',
         uninstalled: 'fas fa-times-circle',
+        tagged: 'fas fa-tag',
       },
     };
 

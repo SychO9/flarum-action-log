@@ -101,6 +101,33 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/defineProperty.js ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _defineProperty; });
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime/helpers/esm/extends.js":
 /*!************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/extends.js ***!
@@ -253,6 +280,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_components_Select__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! flarum/components/Select */ "flarum/components/Select");
 /* harmony import */ var flarum_components_Select__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Select__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var _utils_ActionLogControls__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../utils/ActionLogControls */ "./src/admin/utils/ActionLogControls.js");
+/* harmony import */ var _utils_Formatter__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../utils/Formatter */ "./src/admin/utils/Formatter.js");
+
 
 
 
@@ -473,74 +502,13 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
     });
   }
   /**
-   * Finds the appropriate language string
-   * and calls for the resource name to be built
-   *
    * @param entry
-   * @returns string
+   * @returns {string}
    */
   ;
 
   _proto.formatName = function formatName(entry) {
-    var _this3 = this;
-
-    var key = "sycho-action-log.admin.actions." + entry.type();
-    var format = entry.format();
-
-    if (entry.resourceType().length) {
-      key += "." + entry.resourceType();
-    }
-
-    key += "." + entry.name() + ".action"; // If there are any objects, convert them to strings using the buildResourceName() method
-
-    Object.keys(format).map(function (key, index) {
-      if (typeof format[key] !== 'object') return; // The core code tries to get the displayName attribute when the
-      // translation parameter key is named 'user', even if the value is a string
-      // so we have no choice but to add some ugly hackish code here
-
-      format[key === 'user' ? 'u' : key] = _this3.buildResourceName(key, entry);
-      if (key === 'user') delete format.user;
-    });
-    Object.keys(format).map(function (key, index) {
-      format[key] = m("strong", null, format[key]);
-    });
-    return app.translator.trans(key, format);
-  }
-  /**
-   * Gives context to the resource manipulated
-   *
-   * @param format
-   * @param entry
-   * @returns string
-   */
-  ;
-
-  _proto.buildResourceName = function buildResourceName(key, entry) {
-    var format = entry.format()[key] || {};
-    var name = format.title || '';
-
-    if (format.id) {
-      format.version = "#" + format.id;
-    }
-
-    if (format.version) {
-      name = [name, m("i", null, " (", format.version, ")")];
-    }
-
-    if (format.icon) {
-      name = [m("span", {
-        className: "Badge ActionLogExtensionIcon",
-        style: format.icon
-      }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(format.icon.name)), name];
-    }
-
-    if (format.link) {
-      name = m("a", {
-        href: format.link
-      }, name);
-    }
-
-    return name;
+    return new _utils_Formatter__WEBPACK_IMPORTED_MODULE_11__["default"](entry).handle();
   };
 
   return ActionLogPage;
@@ -925,7 +893,7 @@ var ActionLogControls = /*#__PURE__*/function () {
   _proto.actions = function actions() {
     var items = {
       moderation: {
-        discussion: ['locked', 'unlocked', 'deleted', 'stickied', 'unstickied'],
+        discussion: ['locked', 'unlocked', 'deleted', 'stickied', 'unstickied', 'tagged'],
         user: ['suspended', 'unsuspended'],
         post: ['approved']
       },
@@ -956,7 +924,8 @@ var ActionLogControls = /*#__PURE__*/function () {
         created: 'fas fa-plus-circle',
         enabled: 'fas fa-check-circle',
         disabled: 'fas fa-ban',
-        uninstalled: 'fas fa-times-circle'
+        uninstalled: 'fas fa-times-circle',
+        tagged: 'fas fa-tag'
       }
     };
     return {
@@ -1002,6 +971,151 @@ var ActionLogControls = /*#__PURE__*/function () {
 
   return ActionLogControls;
 }();
+
+
+
+/***/ }),
+
+/***/ "./src/admin/utils/Formatter.js":
+/*!**************************************!*\
+  !*** ./src/admin/utils/Formatter.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Formatter; });
+/* harmony import */ var _babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
+/* harmony import */ var _models_ActionLogEntry__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/ActionLogEntry */ "./src/admin/models/ActionLogEntry.js");
+/* harmony import */ var flarum_tags_helpers_tagsLabel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/tags/helpers/tagsLabel */ "flarum/tags/helpers/tagsLabel");
+/* harmony import */ var flarum_tags_helpers_tagsLabel__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_tags_helpers_tagsLabel__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var flarum_tags_models_Tag__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flarum/tags/models/Tag */ "flarum/tags/models/Tag");
+/* harmony import */ var flarum_tags_models_Tag__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flarum_tags_models_Tag__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+/**
+ * Finds the appropriate language string
+ * and builds the name of the action taken
+ */
+
+var Formatter = /*#__PURE__*/function () {
+  /**
+   * @param entry {ActionLogEntry}
+   */
+  function Formatter(entry) {
+    this.entry = entry;
+    this.langKey = "sycho-action-log.admin.actions." + entry.type();
+  }
+  /**
+   * @returns {string}
+   */
+
+
+  var _proto = Formatter.prototype;
+
+  _proto.handle = function handle() {
+    if (this.entry.resourceType().length) {
+      this.langKey += "." + this.entry.resourceType();
+    }
+
+    this.langKey += "." + this.entry.name() + ".action";
+    var uniqueHandler = this.entry.resourceType() + this.entry.name().charAt(0).toUpperCase() + this.entry.name().slice(1);
+    if (this[uniqueHandler]) return this[uniqueHandler]();
+    return this.genericHandler();
+  }
+  /**
+   * @returns {string}
+   */
+  ;
+
+  _proto.genericHandler = function genericHandler() {
+    var _this = this;
+
+    var format = this.entry.format();
+    console.log('I see...'); // If there are any objects, convert them to strings using the buildResourceName() method
+
+    Object.keys(format).map(function (key, index) {
+      if (typeof format[key] !== 'object') return;
+      var type = format[key].type || key;
+      if (!_this[type]) type = 'guessResourceName'; // The core code tries to get the displayName attribute when the
+      // translation parameter key is named 'user', even if the value is a string
+      // so we have no choice but to add some ugly hackish code here
+
+      format[key === 'user' ? 'u' : key] = _this[type](key);
+      if (key === 'user') delete format.user;
+    });
+    Object.keys(format).map(function (key, index) {
+      format[key] = m("strong", null, format[key]);
+    });
+    return app.translator.trans(this.langKey, format);
+  }
+  /**
+   * Tries to build JSX representing the resource
+   *
+   * @param key
+   * @returns {string}
+   */
+  ;
+
+  _proto.guessResourceName = function guessResourceName(key) {
+    var format = this.entry.format()[key] || {};
+    var name = format.title || '';
+
+    if (format.id) {
+      format.version = "#" + format.id;
+    }
+
+    if (format.version) {
+      name = [name, m("i", null, " (", format.version, ")")];
+    }
+
+    if (format.icon) {
+      name = [m("span", {
+        className: "Badge ActionLogExtensionIcon",
+        style: format.icon
+      }, icon(format.icon.name)), name];
+    }
+
+    if (format.link) {
+      name = m("a", {
+        href: format.link
+      }, name);
+    }
+
+    return name;
+  }
+  /**
+   * Special handler for discussion tagging actions
+   */
+  ;
+
+  _proto.discussionTagged = function discussionTagged() {
+    var format = this.entry.format();
+    if (format.tags.items.length && format.oldTags.items.length) this.langKey += '.add_remove';else if (format.tags.items.length) this.langKey += '.add';else this.langKey += '.remove';
+
+    var tagTextConstructor = function tagTextConstructor(tags) {
+      return app.translator.transChoice(Formatter.tagsText, tags.length, {
+        tags: flarum_tags_helpers_tagsLabel__WEBPACK_IMPORTED_MODULE_2___default()(tags.map(function (attributes) {
+          return new flarum_tags_models_Tag__WEBPACK_IMPORTED_MODULE_3___default.a({
+            attributes: attributes
+          });
+        }))
+      });
+    };
+
+    format.tags = tagTextConstructor(format.tags.items);
+    format.oldTags = tagTextConstructor(format.oldTags.items);
+    format.discussion = m("strong", null, this.guessResourceName('discussion'));
+    return app.translator.trans(this.langKey, format);
+  };
+
+  return Formatter;
+}();
+
+Object(_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(Formatter, "tagsText", 'sycho-action-log.admin.actions.moderation.discussion.tagged.action.tags_text');
 
 
 
@@ -1224,6 +1338,28 @@ module.exports = flarum.core.compat['helpers/icon'];
 /***/ (function(module, exports) {
 
 module.exports = flarum.core.compat['helpers/username'];
+
+/***/ }),
+
+/***/ "flarum/tags/helpers/tagsLabel":
+/*!***************************************************************!*\
+  !*** external "flarum.core.compat['tags/helpers/tagsLabel']" ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = flarum.core.compat['tags/helpers/tagsLabel'];
+
+/***/ }),
+
+/***/ "flarum/tags/models/Tag":
+/*!********************************************************!*\
+  !*** external "flarum.core.compat['tags/models/Tag']" ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = flarum.core.compat['tags/models/Tag'];
 
 /***/ }),
 

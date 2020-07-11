@@ -8,6 +8,7 @@ import Placeholder from 'flarum/components/Placeholder';
 import Button from 'flarum/components/Button';
 import Select from 'flarum/components/Select';
 import ActionLogControls from '../utils/ActionLogControls';
+import Formatter from '../utils/Formatter';
 
 export default class ActionLogPage extends Page {
   init() {
@@ -210,73 +211,10 @@ export default class ActionLogPage extends Page {
   }
 
   /**
-   * Finds the appropriate language string
-   * and calls for the resource name to be built
-   *
    * @param entry
-   * @returns string
+   * @returns {string}
    */
   formatName(entry) {
-    let key = `sycho-action-log.admin.actions.${entry.type()}`;
-    let format = entry.format();
-
-    if (entry.resourceType().length) {
-      key += `.${entry.resourceType()}`;
-    }
-
-    key += `.${entry.name()}.action`;
-
-    // If there are any objects, convert them to strings using the buildResourceName() method
-    Object.keys(format).map((key, index) => {
-      if (typeof format[key] !== 'object') return;
-
-      // The core code tries to get the displayName attribute when the
-      // translation parameter key is named 'user', even if the value is a string
-      // so we have no choice but to add some ugly hackish code here
-      format[key === 'user' ? 'u' : key] = this.buildResourceName(key, entry);
-
-      if (key === 'user') delete format.user;
-    });
-
-    Object.keys(format).map((key, index) => {
-      format[key] = <strong>{format[key]}</strong>;
-    });
-
-    return app.translator.trans(key, format);
-  }
-
-  /**
-   * Gives context to the resource manipulated
-   *
-   * @param format
-   * @param entry
-   * @returns string
-   */
-  buildResourceName(key, entry) {
-    const format = entry.format()[key] || {};
-    let name = format.title || '';
-
-    if (format.id) {
-      format.version = `#${format.id}`;
-    }
-
-    if (format.version) {
-      name = [name, <i> ({format.version})</i>];
-    }
-
-    if (format.icon) {
-      name = [
-        <span className="Badge ActionLogExtensionIcon" style={format.icon}>
-          {icon(format.icon.name)}
-        </span>,
-        name,
-      ];
-    }
-
-    if (format.link) {
-      name = <a href={format.link}>{name}</a>;
-    }
-
-    return name;
+    return new Formatter(entry).handle();
   }
 }

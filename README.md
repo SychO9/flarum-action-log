@@ -25,6 +25,7 @@ Administration/Moderation log for [Flarum](https://github.com/flarum/flarum).
     + Deleting
     + Stickying
     + Unstickying
+    + Tagging
   - Post
     + Approving
   - User
