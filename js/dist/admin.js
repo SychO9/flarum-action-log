@@ -992,6 +992,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_tags_helpers_tagsLabel__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_tags_helpers_tagsLabel__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var flarum_tags_models_Tag__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flarum/tags/models/Tag */ "flarum/tags/models/Tag");
 /* harmony import */ var flarum_tags_models_Tag__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flarum_tags_models_Tag__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! flarum/helpers/icon */ "flarum/helpers/icon");
+/* harmony import */ var flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4__);
+
 
 
 
@@ -1076,7 +1079,7 @@ var Formatter = /*#__PURE__*/function () {
       name = [m("span", {
         className: "Badge ActionLogExtensionIcon",
         style: format.icon
-      }, icon(format.icon.name)), name];
+      }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(format.icon.name)), name];
     }
 
     if (format.link) {

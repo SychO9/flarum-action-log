@@ -1,6 +1,7 @@
 import ActionLogEntry from '../models/ActionLogEntry';
 import tagsLabel from 'flarum/tags/helpers/tagsLabel';
 import Tag from 'flarum/tags/models/Tag';
+import icon from 'flarum/helpers/icon';
 
 /**
  * Finds the appropriate language string
