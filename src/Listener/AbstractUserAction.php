@@ -12,6 +12,11 @@ namespace SychO\ActionLog\Listener;
 class AbstractUserAction extends AbstractLogger
 {
     /**
+     * @var string
+     */
+    protected $actor = 'actor';
+
+    /**
      * @inheritDoc
      */
     protected function details($event): array
