@@ -9,13 +9,12 @@ Administration/Moderation log for [Flarum](https://github.com/flarum/flarum).
 **Warning**: This is still under development.
 
 <p align=center>
-<img src="https://user-images.githubusercontent.com/20267363/86499382-3d9ca000-bd8b-11ea-80f3-5315b9332b63.png" alt="flarum-action-log" width="500">
+<img src="https://user-images.githubusercontent.com/20267363/87246644-05622500-c44f-11ea-8cc2-1090e97106aa.png" alt="flarum-action-log" width="500">
 </p>
 
 ## Todo
 * Add scheduled task to clean the log.
 * Add action name search gambit.
-* Log tags events.
 
 ## Actions Logged
 * Moderation
