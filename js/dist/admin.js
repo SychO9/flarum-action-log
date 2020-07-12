@@ -1043,8 +1043,7 @@ var Formatter = /*#__PURE__*/function () {
   _proto.genericHandler = function genericHandler() {
     var _this = this;
 
-    var format = this.entry.format();
-    console.log('I see...'); // If there are any objects, convert them to strings using the buildResourceName() method
+    var format = this.entry.format(); // If there are any objects, convert them to strings using the buildResourceName() method
 
     Object.keys(format).map(function (key, index) {
       if (typeof format[key] !== 'object') return;
@@ -1119,6 +1118,12 @@ var Formatter = /*#__PURE__*/function () {
     format.oldTags = tagTextConstructor(format.oldTags.items);
     format.discussion = m("strong", null, this.guessResourceName('discussion'));
     return app.translator.trans(this.langKey, format);
+  };
+
+  _proto.tag = function tag(key) {
+    return flarum_tags_helpers_tagsLabel__WEBPACK_IMPORTED_MODULE_2___default()([new flarum_tags_models_Tag__WEBPACK_IMPORTED_MODULE_3___default.a({
+      attributes: this.entry.format()[key]
+    })]);
   };
 
   return Formatter;

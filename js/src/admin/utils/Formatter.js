@@ -41,8 +41,6 @@ export default class Formatter {
   genericHandler() {
     let format = this.entry.format();
 
-    console.log('I see...');
-
     // If there are any objects, convert them to strings using the buildResourceName() method
     Object.keys(format).map((key, index) => {
       if (typeof format[key] !== 'object') return;
@@ -124,5 +122,9 @@ export default class Formatter {
     format.discussion = <strong>{this.guessResourceName('discussion')}</strong>;
 
     return app.translator.trans(this.langKey, format);
+  }
+
+  tag(key) {
+    return tagsLabel([new Tag({ attributes: this.entry.format()[key] })]);
   }
 }

@@ -19,10 +19,8 @@ abstract class AbstractTagAction extends AbstractLogger
         return [
             'tag' => [
                 'name' => $event->tag->name,
-                'icon' => [
-                    'name' => $event->tag->icon,
-                    'backgroundColor' => $event->tag->color,
-                ]
+                'icon' => $event->tag->icon,
+                'color' => $event->tag->color,
             ],
         ];
     }
