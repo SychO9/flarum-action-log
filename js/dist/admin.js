@@ -348,6 +348,18 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
       return m("div", {
         className: "ActionLogGrid-item"
       }, m("div", {
+        className: "ActionLogGrid-itemIcon"
+      }, m("div", {
+        className: "ActionLogGrid-itemIconMain"
+      }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(icons.resourceTypes[entry.resourceType()]), m("span", {
+        className: "ActionLogGrid-itemIconSecondary Badge",
+        title: entry.name(),
+        config: function config(element) {
+          return $(element).tooltip({
+            placement: 'bottom'
+          });
+        }
+      }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(icons.actionNames[entry.name()])))), m("div", {
         className: "ActionLogGrid-Avatar"
       }, flarum_helpers_avatar__WEBPACK_IMPORTED_MODULE_5___default()(entry.actor())), m("div", {
         className: "ActionLogGrid-itemContent"
@@ -361,13 +373,7 @@ var ActionLogPage = /*#__PURE__*/function (_Page) {
         className: "ActionLogGrid-entryTime"
       }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()('far fa-clock'), " ", flarum_helpers_humanTime__WEBPACK_IMPORTED_MODULE_3___default()(entry.createdAt()))), m("div", {
         className: "ActionLogGrid-entryName"
-      }, entry.formattedName)), m("div", {
-        className: "ActionLogGrid-itemIcon"
-      }, m("div", {
-        className: "ActionLogGrid-itemIconMain"
-      }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(icons.resourceTypes[entry.resourceType()]), m("span", {
-        className: "ActionLogGrid-itemIconSecondary"
-      }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(icons.actionNames[entry.name()])))));
+      }, entry.formattedName)));
     })), m("div", {
       className: "ActionLogPage-navigation"
     }, this.buildPagination())] : m(flarum_components_Placeholder__WEBPACK_IMPORTED_MODULE_7___default.a, {
@@ -919,12 +925,12 @@ var ActionLogControls = /*#__PURE__*/function () {
         stickied: 'fas fa-thumbtack',
         unstickied: 'fas fa-thumbtack',
         suspended: 'fas fa-ban',
-        unsuspended: 'fas fa-check-circle',
-        approved: 'fas fa-check-circle',
-        created: 'fas fa-plus-circle',
-        enabled: 'fas fa-check-circle',
+        unsuspended: 'fas fa-check',
+        approved: 'fas fa-check',
+        created: 'fas fa-plus',
+        enabled: 'fas fa-check',
         disabled: 'fas fa-ban',
-        uninstalled: 'fas fa-times-circle',
+        uninstalled: 'fas fa-times',
         tagged: 'fas fa-tag'
       }
     };

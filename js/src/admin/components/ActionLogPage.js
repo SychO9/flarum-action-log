@@ -66,6 +66,18 @@ export default class ActionLogPage extends Page {
                 <div className="ActionLogGrid">
                   {this.entries.map((entry) => (
                     <div className="ActionLogGrid-item">
+                      <div className="ActionLogGrid-itemIcon">
+                        <div className="ActionLogGrid-itemIconMain">
+                          {icon(icons.resourceTypes[entry.resourceType()])}
+                          <span
+                            className="ActionLogGrid-itemIconSecondary Badge"
+                            title={entry.name()}
+                            config={(element) => $(element).tooltip({ placement: 'bottom' })}
+                          >
+                            {icon(icons.actionNames[entry.name()])}
+                          </span>
+                        </div>
+                      </div>
                       <div className="ActionLogGrid-Avatar">{avatar(entry.actor())}</div>
                       <div className="ActionLogGrid-itemContent">
                         <div className="ActionLogGrid-entryDetails">
@@ -76,12 +88,6 @@ export default class ActionLogPage extends Page {
                           </div>
                         </div>
                         <div className="ActionLogGrid-entryName">{entry.formattedName}</div>
-                      </div>
-                      <div className="ActionLogGrid-itemIcon">
-                        <div className="ActionLogGrid-itemIconMain">
-                          {icon(icons.resourceTypes[entry.resourceType()])}
-                          <span className="ActionLogGrid-itemIconSecondary">{icon(icons.actionNames[entry.name()])}</span>
-                        </div>
                       </div>
                     </div>
                   ))}
