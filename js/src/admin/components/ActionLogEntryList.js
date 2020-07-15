@@ -28,7 +28,8 @@ export default class ActionLogEntryList extends Component {
                 <span
                   className="ActionLogGrid-itemIconSecondary Badge"
                   title={entry.name()}
-                  config={(element) => $(element).tooltip({ placement: 'bottom' })}>
+                  config={(element) => $(element).tooltip({ placement: 'bottom' })}
+                >
                   {icon(icons.actionNames[entry.name()])}
                 </span>
               </div>

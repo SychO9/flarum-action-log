@@ -4,7 +4,7 @@ import Button from 'flarum/components/Button';
 import Select from 'flarum/components/Select';
 import ActionLogControls from '../utils/ActionLogControls';
 import Formatter from '../utils/Formatter';
-import ActionLogEntryList from "./ActionLogEntryList";
+import ActionLogEntryList from './ActionLogEntryList';
 
 export default class ActionLogPage extends Page {
   init() {
@@ -53,11 +53,7 @@ export default class ActionLogPage extends Page {
         <div className="ActionLogPage-content">
           <div className="container">
             <div className="ActionLogPage-navigation">{this.controls.filterControls(this).toArray()}</div>
-            <ActionLogEntryList
-              loading={this.loading}
-              entries={this.entries}
-              controls={this.controls}
-            />
+            <ActionLogEntryList loading={this.loading} entries={this.entries} controls={this.controls} />
             <div className="ActionLogPage-navigation">{this.buildPagination()}</div>
           </div>
         </div>
