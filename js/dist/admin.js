@@ -1145,13 +1145,13 @@ var Formatter = /*#__PURE__*/function () {
 
   _proto.discussionTagged = function discussionTagged() {
     var format = this.entry.format();
-    if (format.tags.items.length && format.oldTags.items.length) this.langKey += '.add_remove';else if (format.tags.items.length) this.langKey += '.add';else this.langKey += '.remove';
+    if (Object.keys(format.tags.items).length && Object.keys(format.oldTags.items).length) this.langKey += '.add_remove';else if (Object.keys(format.tags.items).length) this.langKey += '.add';else this.langKey += '.remove';
 
     var tagTextConstructor = function tagTextConstructor(tags) {
-      return app.translator.transChoice(Formatter.tagsText, tags.length, {
-        tags: flarum_tags_helpers_tagsLabel__WEBPACK_IMPORTED_MODULE_2___default()(tags.map(function (attributes) {
+      return app.translator.transChoice(Formatter.tagsText, Object.keys(tags).length, {
+        tags: flarum_tags_helpers_tagsLabel__WEBPACK_IMPORTED_MODULE_2___default()(Object.keys(tags).map(function (key) {
           return new flarum_tags_models_Tag__WEBPACK_IMPORTED_MODULE_3___default.a({
-            attributes: attributes
+            attributes: tags[key]
           });
         }))
       });

@@ -104,15 +104,15 @@ export default class Formatter {
   discussionTagged() {
     const format = this.entry.format();
 
-    if (format.tags.items.length && format.oldTags.items.length) this.langKey += '.add_remove';
-    else if (format.tags.items.length) this.langKey += '.add';
+    if (Object.keys(format.tags.items).length && Object.keys(format.oldTags.items).length) this.langKey += '.add_remove';
+    else if (Object.keys(format.tags.items).length) this.langKey += '.add';
     else this.langKey += '.remove';
 
     const tagTextConstructor = (tags) =>
-      app.translator.transChoice(Formatter.tagsText, tags.length, {
+      app.translator.transChoice(Formatter.tagsText, Object.keys(tags).length, {
         tags: tagsLabel(
-          tags.map((attributes) => {
-            return new Tag({ attributes });
+          Object.keys(tags).map((key) => {
+            return new Tag({ attributes: tags[key] });
           })
         ),
       });
