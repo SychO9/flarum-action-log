@@ -36,14 +36,14 @@ export default class ActionLogEntryList extends Component {
             </div>
             <div className="ActionLogGrid-Avatar">{avatar(entry.actor())}</div>
             <div className="ActionLogGrid-itemContent">
+              <div className="ActionLogGrid-entryActor">{username(entry.actor())}</div>
+              <div className="ActionLogGrid-entryName">{entry.formattedName}</div>
               <div className="ActionLogGrid-entryDetails">
-                <div className="ActionLogGrid-entryActor">{username(entry.actor())}</div>
                 <div className="ActionLogGrid-entryType">{entry.type()}</div>
                 <div className="ActionLogGrid-entryTime">
                   {icon('far fa-clock')} {humanTime(entry.createdAt())}
                 </div>
               </div>
-              <div className="ActionLogGrid-entryName">{entry.formattedName}</div>
             </div>
           </div>
         ))}

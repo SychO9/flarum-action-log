@@ -331,16 +331,16 @@ var ActionLogEntryList = /*#__PURE__*/function (_Component) {
       }, flarum_helpers_avatar__WEBPACK_IMPORTED_MODULE_5___default()(entry.actor())), m("div", {
         className: "ActionLogGrid-itemContent"
       }, m("div", {
-        className: "ActionLogGrid-entryDetails"
-      }, m("div", {
         className: "ActionLogGrid-entryActor"
       }, flarum_helpers_username__WEBPACK_IMPORTED_MODULE_6___default()(entry.actor())), m("div", {
+        className: "ActionLogGrid-entryName"
+      }, entry.formattedName), m("div", {
+        className: "ActionLogGrid-entryDetails"
+      }, m("div", {
         className: "ActionLogGrid-entryType"
       }, entry.type()), m("div", {
         className: "ActionLogGrid-entryTime"
-      }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_7___default()('far fa-clock'), " ", flarum_helpers_humanTime__WEBPACK_IMPORTED_MODULE_4___default()(entry.createdAt()))), m("div", {
-        className: "ActionLogGrid-entryName"
-      }, entry.formattedName)));
+      }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_7___default()('far fa-clock'), " ", flarum_helpers_humanTime__WEBPACK_IMPORTED_MODULE_4___default()(entry.createdAt())))));
     }));
   };
 

@@ -30,7 +30,7 @@
 
 .ActionLogGrid-item {
   display: flex;
-  padding: 10px 16px;
+  padding: 5px 14px;
   border-radius: @border-radius;
 
   &:hover {
@@ -47,6 +47,7 @@
 
 .ActionLogGrid-entryName {
   padding: 4px 0;
+  margin-inline-start: 8px;
 
   .Badge {
     margin: -4px 5px 0 4px;
@@ -59,16 +60,25 @@
 
 .ActionLogGrid-Avatar {
   margin-right: 8px;
+  display: flex;
+  align-items: center;
+
+  .Avatar {
+    width: 30px;
+    height: 30px;
+  }
 }
 
 .ActionLogGrid-entryDetails {
   display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
   color: @control-color;
 
   > * {
     &::after {
-      content: "\2022";
-      margin: 0 6px;
+      content: "";
+      margin: 0 3px;
     }
     &:last-child::after {
       display: none;
@@ -165,6 +175,8 @@
 
 .ActionLogGrid-itemContent {
   flex-grow: 1;
+  display: flex;
+  align-items: center;
 }
 
 .ActionLogGrid-itemIcon {
@@ -173,8 +185,8 @@
 
 .ActionLogGrid-itemIconMain {
   position: relative;
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   line-height: 28px;
   border-radius: 100%;
   text-align: center;
@@ -183,7 +195,7 @@
   justify-content: center;
 
   > i {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: @control-color;
   }
 }
@@ -196,8 +208,8 @@
   display: inline-block;
   text-align: center;
   position: absolute;
-  bottom: -5px;
-  right: -7px;
+  bottom: -2px;
+  right: -10px;
 }
 
 @media (max-width: 425px) {
