@@ -9,7 +9,7 @@ Administration/Moderation log for [Flarum](https://github.com/flarum/flarum).
 **Warning**: This is still under development.
 
 <p align=center>
-<img src="https://user-images.githubusercontent.com/20267363/87246644-05622500-c44f-11ea-8cc2-1090e97106aa.png" alt="flarum-action-log" width="500">
+<img src="https://user-images.githubusercontent.com/20267363/87606561-32366680-c6f3-11ea-86a5-2c5d59ebdd78.png" alt="flarum-action-log" width="500">
 </p>
 
 ## Todo
