@@ -1,14 +1,10 @@
 import Page from 'flarum/components/Page';
-import LoadingIndicator from 'flarum/components/LoadingIndicator';
-import humanTime from 'flarum/helpers/humanTime';
 import icon from 'flarum/helpers/icon';
-import avatar from 'flarum/helpers/avatar';
-import username from 'flarum/helpers/username';
-import Placeholder from 'flarum/components/Placeholder';
 import Button from 'flarum/components/Button';
 import Select from 'flarum/components/Select';
 import ActionLogControls from '../utils/ActionLogControls';
 import Formatter from '../utils/Formatter';
+import ActionLogEntryList from "./ActionLogEntryList";
 
 export default class ActionLogPage extends Page {
   init() {
@@ -41,8 +37,6 @@ export default class ActionLogPage extends Page {
   }
 
   view() {
-    const { icons } = this.controls.actions();
-
     return (
       <div className="ActionLogPage">
         <div className="ActionLogPage-header">
@@ -59,62 +53,15 @@ export default class ActionLogPage extends Page {
         <div className="ActionLogPage-content">
           <div className="container">
             <div className="ActionLogPage-navigation">{this.controls.filterControls(this).toArray()}</div>
-            {this.loading ? (
-              <LoadingIndicator className="LoadingIndicator--block" />
-            ) : this.entries.length ? (
-              [
-                <div className="ActionLogGrid">
-                  {this.entries.map((entry) => (
-                    <div className="ActionLogGrid-item">
-                      <div className="ActionLogGrid-itemIcon">
-                        <div className="ActionLogGrid-itemIconMain">
-                          {icon(icons.resourceTypes[entry.resourceType()])}
-                          <span
-                            className="ActionLogGrid-itemIconSecondary Badge"
-                            title={entry.name()}
-                            config={(element) => $(element).tooltip({ placement: 'bottom' })}
-                          >
-                            {icon(icons.actionNames[entry.name()])}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="ActionLogGrid-Avatar">{avatar(entry.actor())}</div>
-                      <div className="ActionLogGrid-itemContent">
-                        <div className="ActionLogGrid-entryDetails">
-                          <div className="ActionLogGrid-entryActor">{username(entry.actor())}</div>
-                          <div className="ActionLogGrid-entryType">{entry.type()}</div>
-                          <div className="ActionLogGrid-entryTime">
-                            {icon('far fa-clock')} {humanTime(entry.createdAt())}
-                          </div>
-                        </div>
-                        <div className="ActionLogGrid-entryName">{entry.formattedName}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>,
-                <div className="ActionLogPage-navigation">{this.buildPagination()}</div>,
-              ]
-            ) : (
-              <Placeholder text={app.translator.trans('sycho-action-log.admin.no_entries')} />
-            )}
+            <ActionLogEntryList
+              loading={this.loading}
+              entries={this.entries}
+              controls={this.controls}
+            />
+            <div className="ActionLogPage-navigation">{this.buildPagination()}</div>
           </div>
         </div>
       </div>
-    );
-  }
-
-  /**
-   * @param entry
-   * @returns string
-   */
-  showActor(entry) {
-    if (!entry.actor()) return;
-
-    return (
-      <a>
-        {avatar(entry.actor())}
-        {username(entry.actor())}
-      </a>
     );
   }
 
