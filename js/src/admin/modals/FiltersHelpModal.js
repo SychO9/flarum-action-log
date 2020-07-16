@@ -21,6 +21,6 @@ export default class FiltersHelpModal extends Modal {
   }
 
   gambits() {
-    return ['type', 'resource', 'actor'];
+    return ['type', 'action', 'resource', 'actor'];
   }
 }

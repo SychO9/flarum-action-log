@@ -20,6 +20,7 @@ sycho-action-log:
       description: 'You can use the following filters in the search box. (example, type:moderation)'
       items:
         type: The type of the action (moderation/administration).
+        action: The name of the action (deleted, created, enabled, tagged...etc)
         resource: 'The resource type the action was taken on (example: discussion).'
         actor: Name of the actor who took the action.
 

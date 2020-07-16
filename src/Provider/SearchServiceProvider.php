@@ -10,6 +10,7 @@
 namespace SychO\ActionLog\Provider;
 
 use SychO\ActionLog\Search\ActionLogSearcher;
+use SychO\ActionLog\Search\Gambit\ActionGambit;
 use SychO\ActionLog\Search\Gambit\TypeGambit;
 use SychO\ActionLog\Search\Gambit\ResourceTypeGambit;
 use SychO\ActionLog\Search\Gambit\ActorGambit;
@@ -29,6 +30,7 @@ class SearchServiceProvider extends AbstractServiceProvider
                 $gambits->add(TypeGambit::class);
                 $gambits->add(ResourceTypeGambit::class);
                 $gambits->add(ActorGambit::class);
+                $gambits->add(ActionGambit::class);
 
                 return $gambits;
             });

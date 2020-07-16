@@ -786,7 +786,7 @@ var FiltersHelpModal = /*#__PURE__*/function (_Modal) {
   };
 
   _proto.gambits = function gambits() {
-    return ['type', 'resource', 'actor'];
+    return ['type', 'action', 'resource', 'actor'];
   };
 
   return FiltersHelpModal;
