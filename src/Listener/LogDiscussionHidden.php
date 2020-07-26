@@ -9,20 +9,20 @@
 
 namespace SychO\ActionLog\Listener;
 
-use Flarum\Discussion\Event\Renamed;
+use Flarum\Discussion\Event\Hidden;
 
 /**
- * Class LogDiscussionRenamed
+ * Class LogDiscussionHidden
  * @package SychO\ActionLog\Listener
  *
- * @see Renamed
+ * @see Hidden
  */
-class LogDiscussionRenamed extends AbstractDiscussionAction
+class LogDiscussionHidden extends AbstractDiscussionAction
 {
     /**
      * @var string
      */
-    protected $name = 'renamed';
+    protected $name = 'hidden';
 
     /**
      * @var string
@@ -33,14 +33,4 @@ class LogDiscussionRenamed extends AbstractDiscussionAction
      * @var string
      */
     protected $resource_type = 'discussion';
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function details($event): array
-    {
-        return array_merge(parent::details($event), [
-            'oldTitle' => $event->oldTitle,
-        ]);
-    }
 }

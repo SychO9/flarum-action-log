@@ -37,6 +37,9 @@ sycho-action-log:
           unlocked:
             label: Unlocked
             action: Unlocked the discussion {discussion}
+          hidden:
+            label: Hidden
+            action: Hid the discussion {discussion}
           deleted:
             label: Deleted
             action: Deleted the discussion {discussion}
