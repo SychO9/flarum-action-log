@@ -76,6 +76,7 @@ return [
 
         // Flarum Core
         $events->listen(Discussion\Event\Deleted::class, Listener\LogDiscussionDeleted::class);
+        $events->listen(Discussion\Event\Renamed::class, Listener\LogDiscussionRenamed::class);
 
         $events->listen(Extension\Event\Disabled::class, Listener\LogExtensionDisabled::class);
         $events->listen(Extension\Event\Enabled::class, Listener\LogExtensionEnabled::class);

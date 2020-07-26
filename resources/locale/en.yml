@@ -53,6 +53,9 @@ sycho-action-log:
               add: Added the {tags} to the discussion {discussion}
               remove: Removed the {oldTags} from the discussion {discussion}
               tags_text: "{tags} tag|{tags} tags"
+          renamed:
+            label: Renamed
+            action: Renamed the discussion {oldTitle} to {discussion}
 
         post:
           label: Post
