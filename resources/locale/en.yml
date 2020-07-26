@@ -40,6 +40,9 @@ sycho-action-log:
           hidden:
             label: Hidden
             action: Hid the discussion {discussion}
+          restored:
+            label: Restored
+            action: Restored the discussion {discussion}
           deleted:
             label: Deleted
             action: Deleted the discussion {discussion}

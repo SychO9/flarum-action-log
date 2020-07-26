@@ -942,7 +942,7 @@ var ActionLogControls = /*#__PURE__*/function () {
   _proto.actions = function actions() {
     var items = {
       moderation: {
-        discussion: ['locked', 'unlocked', 'hidden', 'deleted', 'stickied', 'unstickied', 'tagged', 'renamed'],
+        discussion: ['locked', 'unlocked', 'hidden', 'restored', 'deleted', 'stickied', 'unstickied', 'tagged', 'renamed'],
         user: ['suspended', 'unsuspended'],
         post: ['approved']
       },
@@ -976,7 +976,8 @@ var ActionLogControls = /*#__PURE__*/function () {
         uninstalled: 'fas fa-times',
         tagged: 'fas fa-tag',
         renamed: 'fas fa-pencil-alt',
-        hidden: 'fas fa-eye-slash'
+        hidden: 'fas fa-eye-slash',
+        restored: 'fas fa-reply'
       }
     };
     return {
