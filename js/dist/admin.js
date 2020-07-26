@@ -943,7 +943,7 @@ var ActionLogControls = /*#__PURE__*/function () {
     var items = {
       moderation: {
         discussion: ['locked', 'unlocked', 'hidden', 'restored', 'deleted', 'stickied', 'unstickied', 'tagged', 'renamed'],
-        user: ['suspended', 'unsuspended'],
+        user: ['suspended', 'unsuspended', 'activated'],
         post: ['approved']
       },
       administration: {
@@ -977,7 +977,8 @@ var ActionLogControls = /*#__PURE__*/function () {
         tagged: 'fas fa-tag',
         renamed: 'fas fa-pencil-alt',
         hidden: 'fas fa-eye-slash',
-        restored: 'fas fa-reply'
+        restored: 'fas fa-reply',
+        activated: 'fas fa-bolt'
       }
     };
     return {

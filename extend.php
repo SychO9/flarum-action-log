@@ -14,7 +14,6 @@ use SychO\ActionLog\Provider;
 use SychO\ActionLog\Console;
 use Flarum\Foundation\Application;
 use Flarum\Extend;
-use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Suspend;
 use Flarum\Approval;
 use Flarum\Sticky;
@@ -23,6 +22,8 @@ use Flarum\Lock;
 use Flarum\Extension;
 use Flarum\Group;
 use Flarum\Tags;
+use Flarum\User;
+use Illuminate\Contracts\Events\Dispatcher;
 
 return [
     (new Extend\Console)
@@ -79,6 +80,8 @@ return [
         $events->listen(Discussion\Event\Restored::class, Listener\LogDiscussionRestored::class);
         $events->listen(Discussion\Event\Deleted::class, Listener\LogDiscussionDeleted::class);
         $events->listen(Discussion\Event\Renamed::class, Listener\LogDiscussionRenamed::class);
+
+        $events->listen(User\Event\Activated::class, Listener\LogUserActivated::class);
 
         $events->listen(Extension\Event\Disabled::class, Listener\LogExtensionDisabled::class);
         $events->listen(Extension\Event\Enabled::class, Listener\LogExtensionEnabled::class);

@@ -77,6 +77,9 @@ sycho-action-log:
           unsuspended:
             label: Unsuspended
             action: Unsuspended the user {u}
+          activated:
+            label: Activated
+            action: Activated the user {u}
 
       administration:
         label: Administration

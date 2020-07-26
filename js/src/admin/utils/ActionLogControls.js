@@ -96,7 +96,7 @@ export default class ActionLogControls {
     const items = {
       moderation: {
         discussion: ['locked', 'unlocked', 'hidden', 'restored', 'deleted', 'stickied', 'unstickied', 'tagged', 'renamed'],
-        user: ['suspended', 'unsuspended'],
+        user: ['suspended', 'unsuspended', 'activated'],
         post: ['approved'],
       },
       administration: {
@@ -132,6 +132,7 @@ export default class ActionLogControls {
         renamed: 'fas fa-pencil-alt',
         hidden: 'fas fa-eye-slash',
         restored: 'fas fa-reply',
+        activated: 'fas fa-bolt',
       },
     };
 
