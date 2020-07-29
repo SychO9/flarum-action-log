@@ -24,6 +24,7 @@ Administration/Moderation log for [Flarum](https://github.com/flarum/flarum).
   - Group: `Creating`, `Deleting`
   - Tag: `Creating`, `Deleting`
   - Extension: `Enabling`, `Disabling`, `Uninstalling`
+  - Permission: `Editing`
 
 ## Installation
 ```ssh

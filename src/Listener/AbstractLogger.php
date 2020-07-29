@@ -84,7 +84,9 @@ abstract class AbstractLogger
 
         if (!empty($this->resource_type)) {
             $entry->resource_type = $this->resource_type;
-            $entry->resource_id = $event->{$this->resource_type}->id;
+
+            if (isset($event->{$this->resource_type}))
+                $entry->resource_id = $event->{$this->resource_type}->id;
         }
 
         // Details about the log entry

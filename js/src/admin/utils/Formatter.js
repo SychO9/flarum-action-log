@@ -52,7 +52,7 @@ export default class Formatter {
       // The core code tries to get the displayName attribute when the
       // translation parameter key is named 'user', even if the value is a string
       // so we have no choice but to add some ugly hackish code here
-      format[key === 'user' ? 'u' : key] = this[type](key);
+      format[key === 'user' ? 'u' : key] = this[type](this.entry.format()[key] || {}, key);
 
       if (key === 'user') delete format.user;
     });
@@ -67,11 +67,15 @@ export default class Formatter {
   /**
    * Tries to build JSX representing the resource
    *
-   * @param key
-   * @returns {string}
+   * @param format {object}
+   * @param key {number}
+   * @returns {string || string[]}
    */
-  guessResourceName(key) {
-    const format = this.entry.format()[key] || {};
+  guessResourceName(format, key) {
+    if (typeof format.items !== 'undefined' && format.items.length) {
+      return format.items.map((item) => this.guessResourceName(item, format.type));
+    }
+
     let name = format.title || '';
 
     if (format.id) {
@@ -119,12 +123,41 @@ export default class Formatter {
 
     format.tags = tagTextConstructor(format.tags.items);
     format.oldTags = tagTextConstructor(format.oldTags.items);
-    format.discussion = <strong>{this.guessResourceName('discussion')}</strong>;
+    format.discussion = <strong>{this.guessResourceName(format, 'discussion')}</strong>;
 
     return app.translator.trans(this.langKey, format);
   }
 
-  tag(key) {
-    return tagsLabel([new Tag({ attributes: this.entry.format()[key] })]);
+  /**
+   * @param format
+   * @param key
+   */
+  tag(format, key) {
+    return tagsLabel([new Tag({ attributes: format })]);
+  }
+
+  /**
+   * @param format {object}
+   * @returns {*}
+   */
+  groups(format) {
+    return format.items.map((group) => (
+      <span
+        className="Badge ActionLogExtensionIcon"
+        title={group.name}
+        config={(element) => $(element).tooltip({ placement: 'top' })}
+        style={{ backgroundColor: group.icon.backgroundColor }}
+      >
+        {icon(group.icon.name)}
+      </span>
+    ));
+  }
+
+  /**
+   * @param format {object}
+   * @returns {*}
+   */
+  permission(format) {
+    return <code>{format.title}</code>;
   }
 }

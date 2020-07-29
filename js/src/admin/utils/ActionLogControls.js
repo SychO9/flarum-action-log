@@ -103,6 +103,7 @@ export default class ActionLogControls {
         group: ['created', 'deleted'],
         tag: ['created', 'deleted'],
         extension: ['enabled', 'disabled', 'uninstalled'],
+        permission: ['edited'],
       },
     };
 
@@ -112,8 +113,9 @@ export default class ActionLogControls {
         user: 'fas fa-user',
         post: 'fas fa-reply',
         extension: 'fas fa-puzzle-piece',
-        group: 'fas fa-key',
+        group: 'fas fa-user-friends',
         tag: 'fas fa-tag',
+        permission: 'fas fa-key',
       },
       actionNames: {
         locked: 'fas fa-lock',
@@ -133,6 +135,7 @@ export default class ActionLogControls {
         hidden: 'fas fa-eye-slash',
         restored: 'fas fa-reply',
         activated: 'fas fa-bolt',
+        edited: 'fas fa-cog',
       },
     };
 

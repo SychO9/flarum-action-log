@@ -949,7 +949,8 @@ var ActionLogControls = /*#__PURE__*/function () {
       administration: {
         group: ['created', 'deleted'],
         tag: ['created', 'deleted'],
-        extension: ['enabled', 'disabled', 'uninstalled']
+        extension: ['enabled', 'disabled', 'uninstalled'],
+        permission: ['edited']
       }
     };
     var icons = {
@@ -958,8 +959,9 @@ var ActionLogControls = /*#__PURE__*/function () {
         user: 'fas fa-user',
         post: 'fas fa-reply',
         extension: 'fas fa-puzzle-piece',
-        group: 'fas fa-key',
-        tag: 'fas fa-tag'
+        group: 'fas fa-user-friends',
+        tag: 'fas fa-tag',
+        permission: 'fas fa-key'
       },
       actionNames: {
         locked: 'fas fa-lock',
@@ -978,7 +980,8 @@ var ActionLogControls = /*#__PURE__*/function () {
         renamed: 'fas fa-pencil-alt',
         hidden: 'fas fa-eye-slash',
         restored: 'fas fa-reply',
-        activated: 'fas fa-bolt'
+        activated: 'fas fa-bolt',
+        edited: 'fas fa-cog'
       }
     };
     return {
@@ -1099,7 +1102,7 @@ var Formatter = /*#__PURE__*/function () {
       // translation parameter key is named 'user', even if the value is a string
       // so we have no choice but to add some ugly hackish code here
 
-      format[key === 'user' ? 'u' : key] = _this[type](key);
+      format[key === 'user' ? 'u' : key] = _this[type](_this.entry.format()[key] || {}, key);
       if (key === 'user') delete format.user;
     });
     Object.keys(format).map(function (key, index) {
@@ -1110,13 +1113,21 @@ var Formatter = /*#__PURE__*/function () {
   /**
    * Tries to build JSX representing the resource
    *
-   * @param key
-   * @returns {string}
+   * @param format {object}
+   * @param key {number}
+   * @returns {string || string[]}
    */
   ;
 
-  _proto.guessResourceName = function guessResourceName(key) {
-    var format = this.entry.format()[key] || {};
+  _proto.guessResourceName = function guessResourceName(format, key) {
+    var _this2 = this;
+
+    if (typeof format.items !== 'undefined' && format.items.length) {
+      return format.items.map(function (item) {
+        return _this2.guessResourceName(item, format.type);
+      });
+    }
+
     var name = format.title || '';
 
     if (format.id) {
@@ -1163,14 +1174,50 @@ var Formatter = /*#__PURE__*/function () {
 
     format.tags = tagTextConstructor(format.tags.items);
     format.oldTags = tagTextConstructor(format.oldTags.items);
-    format.discussion = m("strong", null, this.guessResourceName('discussion'));
+    format.discussion = m("strong", null, this.guessResourceName(format, 'discussion'));
     return app.translator.trans(this.langKey, format);
-  };
+  }
+  /**
+   * @param format
+   * @param key
+   */
+  ;
 
-  _proto.tag = function tag(key) {
+  _proto.tag = function tag(format, key) {
     return flarum_tags_helpers_tagsLabel__WEBPACK_IMPORTED_MODULE_2___default()([new flarum_tags_models_Tag__WEBPACK_IMPORTED_MODULE_3___default.a({
-      attributes: this.entry.format()[key]
+      attributes: format
     })]);
+  }
+  /**
+   * @param format {object}
+   * @returns {*}
+   */
+  ;
+
+  _proto.groups = function groups(format) {
+    return format.items.map(function (group) {
+      return m("span", {
+        className: "Badge ActionLogExtensionIcon",
+        title: group.name,
+        config: function config(element) {
+          return $(element).tooltip({
+            placement: 'top'
+          });
+        },
+        style: {
+          backgroundColor: group.icon.backgroundColor
+        }
+      }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_4___default()(group.icon.name));
+    });
+  }
+  /**
+   * @param format {object}
+   * @returns {*}
+   */
+  ;
+
+  _proto.permission = function permission(format) {
+    return m("code", null, format.title);
   };
 
   return Formatter;

@@ -113,3 +113,9 @@ sycho-action-log:
           uninstalled:
             label: Uninstalled
             action: Uninstalled the extension {extension}
+
+        permission:
+          label: Permission
+          edited:
+            label: Set
+            action: Set the permission {permission} to groups {groups}

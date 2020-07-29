@@ -43,7 +43,7 @@ return [
         ->add(Middleware\ActionLoggingMiddleware::class),
 
     function (Application $app, Dispatcher $events) {
-        $app->register(Provider\SearchServiceProvider::class);
+        $app->register(Provider\ActionLogServiceProvider::class);
 
         // Flarum Lock
         if (class_exists(Lock\Event\DiscussionWasLocked::class)) {
@@ -89,5 +89,8 @@ return [
 
         $events->listen(Group\Event\Created::class, Listener\LogGroupCreated::class);
         $events->listen(Group\Event\Deleted::class, Listener\LogGroupDeleted::class);
+
+        // Core but not core, does that make sense ?
+        $events->listen(\SychO\ActionLog\Event\PermissionSet::class, Listener\LogPermissionEdited::class);
     }
 ];

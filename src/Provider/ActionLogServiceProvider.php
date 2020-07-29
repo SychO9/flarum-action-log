@@ -9,6 +9,9 @@
 
 namespace SychO\ActionLog\Provider;
 
+use Flarum\Api\Controller\SetPermissionController;
+use SychO\ActionLog\Event\PermissionSet;
+use SychO\ActionLog\Listener\LogPermissionEdited;
 use SychO\ActionLog\Search\ActionLogSearcher;
 use SychO\ActionLog\Search\Gambit\ActionGambit;
 use SychO\ActionLog\Search\Gambit\TypeGambit;
@@ -18,7 +21,7 @@ use Flarum\Foundation\AbstractServiceProvider;
 use Flarum\Search\GambitManager;
 use Illuminate\Contracts\Container\Container;
 
-class SearchServiceProvider extends AbstractServiceProvider
+class ActionLogServiceProvider extends AbstractServiceProvider
 {
     public function register()
     {
@@ -34,5 +37,9 @@ class SearchServiceProvider extends AbstractServiceProvider
 
                 return $gambits;
             });
+
+        $this->app->resolving(SetPermissionController::class, function ($controller, $app) {
+            $app->make('events')->dispatch(new PermissionSet);
+        });
     }
 }
