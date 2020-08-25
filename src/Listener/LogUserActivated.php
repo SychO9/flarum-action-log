@@ -33,4 +33,9 @@ class LogUserActivated extends AbstractUserAction
      * @var string
      */
     protected $resource_type = 'user';
+
+    /**
+     * @var string
+     */
+    protected $actor = 'user';
 }
