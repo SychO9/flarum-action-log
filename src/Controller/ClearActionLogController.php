@@ -11,7 +11,6 @@ namespace SychO\ActionLog\Controller;
 
 use SychO\ActionLog\Console\ClearActionLogCommand;
 use Flarum\Api\Controller\AbstractDeleteController;
-use Flarum\User\AssertPermissionTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use Laminas\Diactoros\Response\EmptyResponse;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -19,8 +18,6 @@ use Symfony\Component\Console\Output\NullOutput;
 
 class ClearActionLogController extends AbstractDeleteController
 {
-    use AssertPermissionTrait;
-
     /**
      * @var ClearActionLogCommand
      */
@@ -39,7 +36,9 @@ class ClearActionLogController extends AbstractDeleteController
      */
     protected function delete(ServerRequestInterface $request)
     {
-        $this->assertAdmin($request->getAttribute('actor'));
+        $actor = $request->getAttribute('actor');
+
+        $actor->assertAdmin();
 
         $this->command->run(
             new ArrayInput([]),

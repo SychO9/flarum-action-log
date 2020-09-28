@@ -15,15 +15,12 @@ use SychO\ActionLog\Serializer\ActionLogEntrySerializer;
 use Flarum\Api\Controller\AbstractListController;
 use Flarum\Search\SearchCriteria;
 use Flarum\Http\UrlGenerator;
-use Flarum\User\AssertPermissionTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 use Illuminate\Support\Arr;
 
 class ListActionLogEntriesController extends AbstractListController
 {
-    use AssertPermissionTrait;
-
     /**
      * @inheritDoc
      */
@@ -70,9 +67,9 @@ class ListActionLogEntriesController extends AbstractListController
      */
     protected function data(ServerRequestInterface $request, Document $document)
     {
-        $this->assertAdmin($request->getAttribute('actor'));
-
         $actor = $request->getAttribute('actor');
+
+        $actor->assertAdmin();
 
         $query = Arr::get($this->extractFilter($request), 'q');
         $sort = $this->extractSort($request);
