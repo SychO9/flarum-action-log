@@ -8,19 +8,19 @@ import icon from 'flarum/helpers/icon';
 
 export default class ActionLogEntryList extends Component {
   view() {
-    if (this.props.loading) {
+    if (this.attrs.loading) {
       return <LoadingIndicator className="LoadingIndicator--block" />;
     }
 
-    if (!this.props.entries.length) {
+    if (!this.attrs.entries.length) {
       return <Placeholder text={app.translator.trans('sycho-action-log.admin.no_entries')} />;
     }
 
-    const { icons } = this.props.controls.actions();
+    const { icons } = this.attrs.controls.actions();
 
     return (
       <div className="ActionLogGrid">
-        {this.props.entries.map((entry) => (
+        {this.attrs.entries.map((entry) => (
           <div className="ActionLogGrid-item">
             <div className="ActionLogGrid-itemIcon">
               <div className="ActionLogGrid-itemIconMain">

@@ -1,6 +1,7 @@
 import ItemList from 'flarum/utils/ItemList';
 import Button from 'flarum/components/Button';
 import Dropdown from 'flarum/components/Dropdown';
+import withAttr from 'flarum/utils/withAttr';
 import Input from '../components/Input';
 import ActionLogSettingsModal from '../modals/ActionLogSettingsModal';
 import FiltersHelpModal from '../modals/FiltersHelpModal';
@@ -15,22 +16,16 @@ export default class ActionLogControls {
 
     items.add(
       'clear',
-      Button.component({
-        className: 'Button Button--primary',
-        children: app.translator.trans('sycho-action-log.admin.clear'),
-        icon: 'fas fa-trash',
-        onclick: this.clear.bind(this),
-      })
+      <Button className="Button Button--primary" icon="fas fa-trash" onclick={this.clear.bind(this)}>
+        {app.translator.trans('sycho-action-log.admin.clear')}
+      </Button>
     );
 
     items.add(
       'settings',
-      Button.component({
-        className: 'Button',
-        children: app.translator.trans('sycho-action-log.admin.settings'),
-        icon: 'fas fa-cogs',
-        onclick: () => app.modal.show(ActionLogSettingsModal, { actions: this.actions() }),
-      })
+      <Button className="Button" icon="fas fa-cogs" onclick={() => app.modal.show(ActionLogSettingsModal, { actions: this.actions() })}>
+        {app.translator.trans('sycho-action-log.admin.settings')}
+      </Button>
     );
 
     return items;
@@ -41,52 +36,49 @@ export default class ActionLogControls {
 
     items.add(
       'search',
-      Input.component({
-        icon: 'fas fa-filter',
-        parentClassName: 'ActionLog-search',
-        className: 'FormControl',
-        placeholder: app.translator.trans('sycho-action-log.admin.search'),
-        value: this.component.query(),
-        oninput: this.search.bind(this),
-      })
+      <Input
+        icon="fas fa-filter"
+        parentClassName="ActionLog-search"
+        className="FormControl"
+        placeholder={app.translator.trans('sycho-action-log.admin.search')}
+        value={this.component.query()}
+        oninput={this.search.bind(this)}
+      />
     );
 
     items.add(
       'help',
-      Button.component({
-        className: 'Button Button--icon',
-        icon: 'fas fa-question',
-        onclick: () => app.modal.show(FiltersHelpModal),
-      })
+      <Button
+        className="Button Button--icon"
+        icon="fas fa-question"
+        onclick={() => app.modal.show(FiltersHelpModal)}
+      />
     );
 
     items.add(
       'sort',
-      Dropdown.component({
-        buttonClassName: 'Button',
-        label: app.translator.trans(`sycho-action-log.admin.sort.${this.component.sort}`),
-        children: Object.keys(this.component.sortingOptions).map((key) => {
+      <Dropdown buttonClassName="Button" label={app.translator.trans(`sycho-action-log.admin.sort.${this.component.sort}`)}>
+        {Object.keys(this.component.sortingOptions).map((key) => {
           const active = this.component.sort === key;
 
-          return Button.component({
-            children: app.translator.trans(`sycho-action-log.admin.sort.${key}`),
-            icon: active ? 'fas fa-check' : true,
-            onclick: this.updateSort.bind(this, key),
-            active,
-          });
-        }),
-      })
+          return (
+            <Button icon={active ? 'fas fa-check' : true} onclick={this.updateSort.bind(this, key)} active={active}>
+              {app.translator.trans(`sycho-action-log.admin.sort.${key}`)}
+            </Button>
+          );
+        })}
+      </Dropdown>
     );
 
-    items.add('pagination', this.component.buildPagination());
+    items.add('pagination', <div>{this.component.buildPagination()}</div>);
 
     items.add(
       'refresh',
-      Button.component({
-        className: 'Button Button--icon',
-        icon: 'fas fa-sync',
-        onclick: this.component.load.bind(this.component),
-      })
+      <Button
+        className="Button Button--icon"
+        icon="fas fa-sync"
+        onclick={this.component.load.bind(this.component)}
+      />
     );
 
     return items;
@@ -147,7 +139,7 @@ export default class ActionLogControls {
   }
 
   search() {
-    m.withAttr('value', this.component.query)();
+    withAttr('value', this.component.query)();
 
     this.component.loading = true;
     this.searching = () => this.component.load({ query: this.component.query() });

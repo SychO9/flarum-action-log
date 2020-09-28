@@ -4,8 +4,8 @@ import Button from 'flarum/components/Button';
 import icon from 'flarum/helpers/icon';
 
 export default class ActionLogSettingsModal extends SettingsModal {
-  init() {
-    super.init();
+  oninit(vnode) {
+    super.oninit(vnode);
 
     this.excludedLoggingSetting = this.setting('sycho-action-log.excluded_logging', JSON.stringify([]));
   }
@@ -15,8 +15,8 @@ export default class ActionLogSettingsModal extends SettingsModal {
   }
 
   form() {
-    const actions = this.props.actions.items;
-    const icons = this.props.actions.icons;
+    const actions = this.attrs.actions.items;
+    const icons = this.attrs.actions.icons;
 
     return [
       <p>{app.translator.trans('sycho-action-log.admin.action_settings')}</p>,

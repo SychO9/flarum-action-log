@@ -2,13 +2,14 @@ import Page from 'flarum/components/Page';
 import icon from 'flarum/helpers/icon';
 import Button from 'flarum/components/Button';
 import Select from 'flarum/components/Select';
+import Stream from 'flarum/utils/Stream';
 import ActionLogControls from '../utils/ActionLogControls';
 import Formatter from '../utils/Formatter';
 import ActionLogEntryList from './ActionLogEntryList';
 
 export default class ActionLogPage extends Page {
-  init() {
-    super.init();
+  oninit(vnode) {
+    super.oninit(vnode);
 
     this.entries = [];
 
@@ -29,7 +30,7 @@ export default class ActionLogPage extends Page {
 
     this.page = 0;
 
-    this.query = m.prop('');
+    this.query = Stream('');
 
     this.controls = new ActionLogControls(this);
 
@@ -112,12 +113,12 @@ export default class ActionLogPage extends Page {
   }
 
   buildPagination() {
-    if (this.count <= this.limit) return;
+    if (this.count <= this.limit) return <div className="ActionLogPage-pagination"></div>;
 
     return (
       <div className="ActionLogPage-pagination">
         <Button className="Button Button--icon" icon="fas fa-arrow-left" onclick={this.prev.bind(this)} disabled={!this.hasPrev()} />
-        {<Select value={this.page} options={this.getPages()} onchange={this.changePage.bind(this)} />}
+        <Select value={this.page} options={this.getPages()} onchange={this.changePage.bind(this)} />
         <Button className="Button Button--icon" icon="fas fa-arrow-right" onclick={this.next.bind(this)} disabled={!this.hasNext()} />
       </div>
     );
