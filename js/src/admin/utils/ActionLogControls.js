@@ -46,14 +46,7 @@ export default class ActionLogControls {
       />
     );
 
-    items.add(
-      'help',
-      <Button
-        className="Button Button--icon"
-        icon="fas fa-question"
-        onclick={() => app.modal.show(FiltersHelpModal)}
-      />
-    );
+    items.add('help', <Button className="Button Button--icon" icon="fas fa-question" onclick={() => app.modal.show(FiltersHelpModal)} />);
 
     items.add(
       'sort',
@@ -72,14 +65,7 @@ export default class ActionLogControls {
 
     items.add('pagination', <div>{this.component.buildPagination()}</div>);
 
-    items.add(
-      'refresh',
-      <Button
-        className="Button Button--icon"
-        icon="fas fa-sync"
-        onclick={this.component.load.bind(this.component)}
-      />
-    );
+    items.add('refresh', <Button className="Button Button--icon" icon="fas fa-sync" onclick={this.component.load.bind(this.component)} />);
 
     return items;
   }

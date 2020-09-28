@@ -11,7 +11,11 @@ export default function () {
   extend(AdminNav.prototype, 'items', (items) => {
     items.add(
       'sycho-action-log',
-      <AdminLinkButton href={app.route('sycho-action-log')} icon="fas fa-clipboard-list" description={app.translator.trans('sycho-action-log.admin.description')}>
+      <AdminLinkButton
+        href={app.route('sycho-action-log')}
+        icon="fas fa-clipboard-list"
+        description={app.translator.trans('sycho-action-log.admin.description')}
+      >
         {app.translator.trans('sycho-action-log.admin.title')}
       </AdminLinkButton>
     );
