@@ -11,8 +11,3 @@ app.initializers.add(
   },
   -90
 );
-
-import actionLogCompat from './compat';
-import { compat } from '@flarum/core/admin';
-
-Object.assign(compat, actionLogCompat);

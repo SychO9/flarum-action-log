@@ -1,10 +1,11 @@
 import ItemList from 'flarum/utils/ItemList';
 import Button from 'flarum/components/Button';
 import Dropdown from 'flarum/components/Dropdown';
-import withAttr from 'flarum/utils/withAttr';
-import Input from '../components/Input';
 import ActionLogSettingsModal from '../modals/ActionLogSettingsModal';
 import FiltersHelpModal from '../modals/FiltersHelpModal';
+import { uikit } from '@sycho-uikit';
+
+const { Input } = uikit;
 
 export default class ActionLogControls {
   constructor(component) {

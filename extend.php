@@ -26,6 +26,8 @@ use Flarum\User;
 use Illuminate\Contracts\Events\Dispatcher;
 
 return [
+    (new SychO\UiKit\Extend\Register()),
+
     (new Extend\Console)
         ->command(Console\ClearActionLogCommand::class),
 
