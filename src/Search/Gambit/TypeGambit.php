@@ -30,6 +30,6 @@ class TypeGambit extends AbstractRegexGambit
             throw new LogicException('This gambit can only be applied on a ActionLogSearch');
         }
 
-        $search->getQuery()->where('type', trim($matches[1], '"'), 'and', $negate);
+        $search->getQuery()->where('type', $negate ? '!=' : '=', trim($matches[1], '"'), 'and');
     }
 }

@@ -124,8 +124,8 @@ export default class ActionLogControls {
     this.component.load({ sort });
   }
 
-  search() {
-    withAttr('value', this.component.query)();
+  search(e) {
+    this.component.query(e.target.value);
 
     this.component.loading = true;
     this.searching = () => this.component.load({ query: this.component.query() });

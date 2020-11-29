@@ -30,6 +30,6 @@ class ResourceTypeGambit extends AbstractRegexGambit
             throw new LogicException('This gambit can only be applied on a ActionLogSearch');
         }
 
-        $search->getQuery()->where('resource_type', trim($matches[1], '"'), 'and', $negate);
+        $search->getQuery()->where('resource_type', $negate ? '!=' : '=', trim($matches[1], '"'), 'and');
     }
 }
