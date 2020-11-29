@@ -34,7 +34,8 @@
             "title": "Action Log",
             "category": "feature",
             "info": {
-                "donate": "https://www.buymeacoffee.com/sycho"
+                "donate": "https://www.buymeacoffee.com/sycho",
+                "website": "https://sycho9.github.io"
             },
             "icon": {
                 "name": "fas fa-stream",

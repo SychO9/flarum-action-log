@@ -2,8 +2,7 @@
 
 /**
  * @package Flarum Action Log
- * @author Sami "SychO" Mazouz (https://github.com/SychO9)
- * @version 0.1.0
+ * @author Sami "SychO" Mazouz (https://sycho9.github.io)
  * @license MIT
  */
 
