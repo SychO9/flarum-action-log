@@ -19,7 +19,7 @@ Administration/Moderation log for [Flarum](https://github.com/flarum/flarum).
 * Moderation
   - Discussion: `Locking`, `Unlocking`, `Deleting`, `Stickying`, `Unstickying`, `Tagging`, `Rnaming`, `Hiding`, `Restoring`
   - Post: `Approving`
-  - User: `Suspending`, `Unsuspending`, `Activated`
+  - User: `Suspending`, `Unsuspending`, `Activating`
 * Administration
   - Group: `Creating`, `Deleting`
   - Tag: `Creating`, `Deleting`
