@@ -28,7 +28,7 @@ export default class ActionLogEntryList extends Component {
                 <span
                   className="ActionLogGrid-itemIconSecondary Badge"
                   title={entry.name()}
-                  config={(element) => $(element).tooltip({ placement: 'bottom' })}
+                  oncreate={(vnode) => $(vnode.dom).tooltip({ placement: 'bottom' })}
                 >
                   {icon(icons.actionNames[entry.name()])}
                 </span>

@@ -145,7 +145,7 @@ export default class Formatter {
       <span
         className="Badge ActionLogExtensionIcon"
         title={group.name}
-        config={(element) => $(element).tooltip({ placement: 'top' })}
+        oncreate={(vnode) => $(vnode.dom).tooltip({ placement: 'top' })}
         style={{ backgroundColor: group.icon.backgroundColor }}
       >
         {icon(group.icon.name)}

@@ -11,7 +11,6 @@ namespace SychO\ActionLog\Provider;
 
 use Flarum\Api\Controller\SetPermissionController;
 use SychO\ActionLog\Event\PermissionSet;
-use SychO\ActionLog\Listener\LogPermissionEdited;
 use SychO\ActionLog\Search\ActionLogSearcher;
 use SychO\ActionLog\Search\Gambit\ActionGambit;
 use SychO\ActionLog\Search\Gambit\TypeGambit;

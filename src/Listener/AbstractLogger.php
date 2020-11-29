@@ -9,12 +9,12 @@
 
 namespace SychO\ActionLog\Listener;
 
-use SychO\ActionLog\ActionLogEntry;
-use SychO\ActionLog\Event\Logged;
 use Carbon\Carbon;
+use Illuminate\Contracts\Queue\Queue;
 use Laminas\Diactoros\ServerRequest;
 use Flarum\User\User;
 use Flarum\Settings\SettingsRepositoryInterface;
+use SychO\ActionLog\Job\LogActionJob;
 
 abstract class AbstractLogger
 {
@@ -44,16 +44,28 @@ abstract class AbstractLogger
     protected $settings;
 
     /**
+     * @var Queue
+     */
+    protected $queue;
+
+    /**
+     * @var mixed
+     */
+    public $event;
+
+    /**
      * @var string
      */
     protected $actor = 'user';
 
     /**
      * @param SettingsRepositoryInterface $settings
+     * @param Queue $queue
      */
-    public function __construct(SettingsRepositoryInterface $settings)
+    public function __construct(SettingsRepositoryInterface $settings, Queue $queue)
     {
         $this->settings = $settings;
+        $this->queue = $queue;
     }
 
     /**
@@ -63,46 +75,33 @@ abstract class AbstractLogger
     abstract protected function details($event): array;
 
     /**
-     * @param $event
+     * @param mixed $event
      */
-    public function handle($event)
+    public function handle($event): void
     {
-        if ($this->isDisabled($event)) {
+        $this->event = $event;
+
+        if ($this->isDisabled($this->event)) {
             return;
         }
 
-        $entry = new ActionLogEntry();
-
-        $entry->name = $this->name;
-        $entry->type = $this->type;
-
-        $actor = $this->getActor($event);
-
-        if ($actor !== null) {
-            $entry->actor_id = $actor->id;
-        }
-
-        if (!empty($this->resource_type)) {
-            $entry->resource_type = $this->resource_type;
-
-            if (isset($event->{$this->resource_type}))
-                $entry->resource_id = $event->{$this->resource_type}->id;
-        }
-
-        // Details about the log entry
-        $entry->data = $this->details($event);
-
-        $entry->created_at = new Carbon('now');
-
-        $entry->save();
-
-        event(new Logged($entry, $actor));
+        $this->queue->push(
+            new LogActionJob(
+                new Carbon('now'),
+                $this->name,
+                $this->type,
+                $this->details($event),
+                $this->getActor($event),
+                $this->resource_type,
+                isset($event->{$this->resource_type}) ? $event->{$this->resource_type}->id : null
+            )
+        );
     }
 
     /**
      * Checks if an admin has disabled this type of action logging
      *
-     * @param object $event
+     * @param mixed $event
      * @return bool
      */
     protected function isDisabled($event): bool
@@ -120,7 +119,7 @@ abstract class AbstractLogger
      */
     protected function getActor($event): ?User
     {
-        if (!empty($this->actor) && !empty($event->{$this->actor})) {
+        if ((! empty($this->actor)) && (! empty($event->{$this->actor}))) {
             return $event->{$this->actor};
         }
 

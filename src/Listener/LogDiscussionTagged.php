@@ -42,15 +42,16 @@ class LogDiscussionTagged extends AbstractDiscussionAction
     protected function details($event): array
     {
         $oldTags = new Collection($event->oldTags);
+        $newTags = $event->discussion->tags()->get();
 
         return array_merge(parent::details($event), [
             'tags' => [
                 'type' => 'tag',
-                'items' => $this->getTagsDiff($event->discussion->tags, $oldTags),
+                'items' => $this->getTagsDiff($newTags, $oldTags),
             ],
             'oldTags' => [
                 'type' => 'tag',
-                'items' => $this->getTagsDiff($oldTags, $event->discussion->tags),
+                'items' => $this->getTagsDiff($oldTags, $newTags),
             ],
         ]);
     }

@@ -6,7 +6,7 @@ app.initializers.add('sycho-action-log', (app) => {
   app.store.models['action-log-entries'] = ActionLogEntry;
 
   addActionLogPane();
-});
+}, -90);
 
 import actionLogCompat from './compat';
 import { compat } from '@flarum/core/admin';

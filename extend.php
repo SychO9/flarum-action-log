@@ -42,55 +42,37 @@ return [
     (new Extend\Middleware('api'))
         ->add(Middleware\ActionLoggingMiddleware::class),
 
+    (new Extend\Event())
+        // Flarum Lock
+        ->listen(Lock\Event\DiscussionWasLocked::class, Listener\LogDiscussionLocked::class)
+        ->listen(Lock\Event\DiscussionWasUnlocked::class, Listener\LogDiscussionUnlocked::class)
+        // Flarum Sticky
+        ->listen(Sticky\Event\DiscussionWasStickied::class, Listener\LogDiscussionStickied::class)
+        ->listen(Sticky\Event\DiscussionWasUnstickied::class, Listener\LogDiscussionUnstickied::class)
+        // Flarum Approval
+        ->listen(Approval\Event\PostWasApproved::class, Listener\LogPostApproved::class)
+        // Flarum Suspend
+        ->listen(Suspend\Event\Suspended::class, Listener\LogUserSuspended::class)
+        ->listen(Suspend\Event\Unsuspended::class, Listener\LogUserUnsuspended::class)
+        // Flarum Tags
+        ->listen(Tags\Event\Creating::class, Listener\LogTagCreated::class)
+        ->listen(Tags\Event\Deleting::class, Listener\LogTagDeleted::class)
+        ->listen(Tags\Event\DiscussionWasTagged::class, Listener\LogDiscussionTagged::class)
+        // Flarum Core
+        ->listen(Discussion\Event\Hidden::class, Listener\LogDiscussionHidden::class)
+        ->listen(Discussion\Event\Restored::class, Listener\LogDiscussionRestored::class)
+        ->listen(Discussion\Event\Deleted::class, Listener\LogDiscussionDeleted::class)
+        ->listen(Discussion\Event\Renamed::class, Listener\LogDiscussionRenamed::class)
+        ->listen(User\Event\Activated::class, Listener\LogUserActivated::class)
+        ->listen(Extension\Event\Disabled::class, Listener\LogExtensionDisabled::class)
+        ->listen(Extension\Event\Enabled::class, Listener\LogExtensionEnabled::class)
+        ->listen(Extension\Event\Uninstalled::class, Listener\LogExtensionUninstalled::class)
+        ->listen(Group\Event\Created::class, Listener\LogGroupCreated::class)
+        ->listen(Group\Event\Deleted::class, Listener\LogGroupDeleted::class)
+        // Core but not core, does that make sense ?
+        ->listen(\SychO\ActionLog\Event\PermissionSet::class, Listener\LogPermissionEdited::class),
+
     function (Application $app, Dispatcher $events) {
         $app->register(Provider\ActionLogServiceProvider::class);
-
-        // Flarum Lock
-        if (class_exists(Lock\Event\DiscussionWasLocked::class)) {
-            $events->listen(Lock\Event\DiscussionWasLocked::class, Listener\LogDiscussionLocked::class);
-            $events->listen(Lock\Event\DiscussionWasUnlocked::class, Listener\LogDiscussionUnlocked::class);
-        }
-
-        // Flarum Sticky
-        if (class_exists(Sticky\Event\DiscussionWasStickied::class)) {
-            $events->listen(Sticky\Event\DiscussionWasStickied::class, Listener\LogDiscussionStickied::class);
-            $events->listen(Sticky\Event\DiscussionWasUnstickied::class, Listener\LogDiscussionUnstickied::class);
-        }
-
-        // Flarum Approval
-        if (class_exists(Approval\Event\PostWasApproved::class)) {
-            $events->listen(Approval\Event\PostWasApproved::class, Listener\LogPostApproved::class);
-        }
-
-        // Flarum Suspend
-        if (class_exists(Suspend\Event\Suspended::class)) {
-            $events->listen(Suspend\Event\Suspended::class, Listener\LogUserSuspended::class);
-            $events->listen(Suspend\Event\Unsuspended::class, Listener\LogUserUnsuspended::class);
-        }
-
-        // Flarum Tags
-        if (class_exists(Tags\Event\Creating::class)) {
-            $events->listen(Tags\Event\Creating::class, Listener\LogTagCreated::class);
-            $events->listen(Tags\Event\Deleting::class, Listener\LogTagDeleted::class);
-            $events->listen(Tags\Event\DiscussionWasTagged::class, Listener\LogDiscussionTagged::class);
-        }
-
-        // Flarum Core
-        $events->listen(Discussion\Event\Hidden::class, Listener\LogDiscussionHidden::class);
-        $events->listen(Discussion\Event\Restored::class, Listener\LogDiscussionRestored::class);
-        $events->listen(Discussion\Event\Deleted::class, Listener\LogDiscussionDeleted::class);
-        $events->listen(Discussion\Event\Renamed::class, Listener\LogDiscussionRenamed::class);
-
-        $events->listen(User\Event\Activated::class, Listener\LogUserActivated::class);
-
-        $events->listen(Extension\Event\Disabled::class, Listener\LogExtensionDisabled::class);
-        $events->listen(Extension\Event\Enabled::class, Listener\LogExtensionEnabled::class);
-        $events->listen(Extension\Event\Uninstalled::class, Listener\LogExtensionUninstalled::class);
-
-        $events->listen(Group\Event\Created::class, Listener\LogGroupCreated::class);
-        $events->listen(Group\Event\Deleted::class, Listener\LogGroupDeleted::class);
-
-        // Core but not core, does that make sense ?
-        $events->listen(\SychO\ActionLog\Event\PermissionSet::class, Listener\LogPermissionEdited::class);
     }
 ];

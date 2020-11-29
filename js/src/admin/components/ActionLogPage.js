@@ -105,6 +105,10 @@ export default class ActionLogPage extends Page {
     this.links = response.payload.links;
     this.page = Math.ceil(this.offset / this.limit);
 
+    this.entries = this.entries.filter((entry) => {
+      return !(!this.isTagsEnabled() && (entry.resourceType() === 'tag' || entry.name() === 'tagged'));
+    });
+
     this.entries.map((entry) => {
       entry.formattedName = this.formatName(entry);
     });
@@ -166,5 +170,12 @@ export default class ActionLogPage extends Page {
    */
   formatName(entry) {
     return new Formatter(entry).handle();
+  }
+
+  /**
+   * @return {boolean}
+   */
+  isTagsEnabled() {
+    return JSON.parse(app.data.settings.extensions_enabled).indexOf('flarum-tags') !== -1;
   }
 }
