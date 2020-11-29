@@ -2,6 +2,16 @@
     "name": "sycho/flarum-action-log",
     "description": "Moderation/Administration Log",
     "license": "MIT",
+    "support": {
+      "issues": "https://github.com/SychO9/flarum-action-log/issues",
+      "source": "https://github.com/SychO9/flarum-action-log"
+    },
+    "funding": [
+        {
+            "type": "other",
+            "url": "https://www.buymeacoffee.com/sycho"
+        }
+    ],
     "authors": [
         {
             "name": "Sami 'SychO' Mazouz",
@@ -22,9 +32,13 @@
     "extra": {
         "flarum-extension": {
             "title": "Action Log",
+            "category": "feature",
+            "info": {
+                "donate": "https://www.buymeacoffee.com/sycho"
+            },
             "icon": {
                 "name": "fas fa-stream",
-                "background": "linear-gradient(45deg, #821717, #f32d00)",
+                "background": "linear-gradient(45deg, #0f4957, #1b93b0)",
                 "color": "#fff"
             }
         }
