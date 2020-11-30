@@ -39,7 +39,7 @@
             },
             "icon": {
                 "name": "fas fa-stream",
-                "background": "#117187",
+                "backgroundColor": "#117187",
                 "color": "#fff"
             }
         }
