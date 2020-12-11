@@ -1,181 +1,53 @@
-import Page from 'flarum/components/Page';
-import icon from 'flarum/helpers/icon';
-import Button from 'flarum/components/Button';
-import Select from 'flarum/components/Select';
-import Stream from 'flarum/utils/Stream';
-import ActionLogControls from '../utils/ActionLogControls';
-import Formatter from '../utils/Formatter';
-import ActionLogEntryList from './ActionLogEntryList';
+import ExtensionPage from 'flarum/admin/components/ExtensionPage';
+import ActionLogSection from "./ActionLogSection";
+import ActionLogSettingsModal from "../modals/ActionLogSettingsModal";
+import ItemList from 'flarum/common/utils/ItemList';
+import Button from 'flarum/common/components/Button';
+import ActionLogSectionState from "../states/ActionLogSectionState";
 
-export default class ActionLogPage extends Page {
+export default class ActionLogPage extends ExtensionPage {
   oninit(vnode) {
     super.oninit(vnode);
 
-    this.entries = [];
-
-    this.sortingOptions = {
-      newest: '-createdAt',
-      oldest: 'createdAt',
-    };
-
-    this.sort = 'newest';
-
-    this.offset = 0;
-
-    this.limit = 20;
-
-    this.total = 0;
-
-    this.count = 0;
-
-    this.page = 0;
-
-    this.query = Stream('');
-
-    this.controls = new ActionLogControls(this);
-
-    this.load();
+    this.actionLogSectionState = new ActionLogSectionState();
   }
 
-  view() {
-    return (
-      <div className="ActionLogPage">
-        <div className="ActionLogPage-header">
-          <div className="container">
-            <h2>
-              {icon('fas fa-clipboard-list')} {app.translator.trans('sycho-action-log.admin.title')}
-            </h2>
-            <p>{app.translator.trans('sycho-action-log.admin.description')}</p>
-            <p>{app.translator.trans('sycho-action-log.admin.total_entries', { count: this.total || '0' })}</p>
-            {this.controls.mainControls(this).toArray()}
-          </div>
-        </div>
+  sections() {
+    const sections = super.sections();
 
-        <div className="ActionLogPage-content">
-          <div className="container">
-            <div className="ActionLogPage-navigation">{this.controls.filterControls(this).toArray()}</div>
-            <ActionLogEntryList loading={this.loading} entries={this.entries} controls={this.controls} />
-            <div className="ActionLogPage-navigation">{this.buildPagination()}</div>
-          </div>
+    sections.replace('content', this.content(), 2);
+    sections.add('actionLogList', <ActionLogSection state={this.actionLogSectionState}/>, 1);
+
+    return sections;
+  }
+
+  content() {
+    return (
+      <div className="ExtensionPage-settings">
+        <div className="container ActionLogPage-mainControls">
+          {this.mainControls().toArray()}
         </div>
       </div>
     );
   }
 
-  /**
-   * Loads the log entries
-   */
-  load(params) {
-    this.loading = true;
+  mainControls() {
+    const items = new ItemList();
 
-    app.store
-      .find('action-log-entries', this.requestParams(params || {}))
-      .then(this.handleResponse.bind(this))
-      .then(() => {
-        this.loading = false;
-        m.redraw();
-      });
-  }
-
-  requestParams({ offset, query, sort }) {
-    if (typeof offset !== 'undefined') {
-      this.offset = offset;
-    }
-
-    if (typeof sort !== 'undefined') {
-      this.sort = sort;
-    }
-
-    return {
-      page: {
-        offset: this.offset,
-        limit: this.limit,
-      },
-      filter: {
-        q: query,
-      },
-      sort: this.sortingOptions[this.sort],
-    };
-  }
-
-  handleResponse(response) {
-    this.entries = response;
-    this.total = response.payload.meta.total || 0;
-    this.count = response.payload.meta.count || 0;
-    this.links = response.payload.links;
-    this.page = Math.ceil(this.offset / this.limit);
-
-    this.entries = this.entries.filter((entry) => {
-      return !(!this.isTagsEnabled() && (entry.resourceType() === 'tag' || entry.name() === 'tagged'));
-    });
-
-    this.entries.map((entry) => {
-      entry.formattedName = this.formatName(entry);
-    });
-
-    return response;
-  }
-
-  buildPagination() {
-    if (this.count <= this.limit) return <div className="ActionLogPage-pagination"></div>;
-
-    return (
-      <div className="ActionLogPage-pagination">
-        <Button className="Button Button--icon" icon="fas fa-arrow-left" onclick={this.prev.bind(this)} disabled={!this.hasPrev()} />
-        <Select value={this.page} options={this.getPages()} onchange={this.changePage.bind(this)} />
-        <Button className="Button Button--icon" icon="fas fa-arrow-right" onclick={this.next.bind(this)} disabled={!this.hasNext()} />
-      </div>
+    items.add(
+      'clear',
+      <Button className="Button Button--primary" icon="fas fa-trash" onclick={this.actionLogSectionState.clear.bind(this.actionLogSectionState)}>
+        {app.translator.trans('sycho-action-log.admin.clear')}
+      </Button>
     );
-  }
 
-  next() {
-    if (!this.hasNext()) return;
+    items.add(
+      'settings',
+      <Button className="Button" icon="fas fa-cogs" onclick={() => app.modal.show(ActionLogSettingsModal, { actions: this.actionLogSectionState.controls.actions() })}>
+        {app.translator.trans('sycho-action-log.admin.settings')}
+      </Button>
+    );
 
-    this.load({ offset: this.offset + this.limit });
-  }
-
-  prev() {
-    if (!this.hasPrev()) return;
-
-    this.load({ offset: this.offset - this.limit });
-  }
-
-  hasNext() {
-    return this.offset + this.limit < this.count;
-  }
-
-  hasPrev() {
-    return this.links.prev;
-  }
-
-  getPages() {
-    let pageRange = Array.from({ length: Math.ceil(this.count / this.limit) }, (v, k) => k + 1);
-
-    pageRange.map((number, index) => {
-      pageRange[index] = app.translator.trans('sycho-action-log.admin.page', { number });
-    });
-
-    return pageRange;
-  }
-
-  changePage(value) {
-    if (!Object.keys(this.getPages()).includes(value)) return;
-
-    this.load({ offset: value * this.limit });
-  }
-
-  /**
-   * @param entry
-   * @returns {string}
-   */
-  formatName(entry) {
-    return new Formatter(entry).handle();
-  }
-
-  /**
-   * @return {boolean}
-   */
-  isTagsEnabled() {
-    return JSON.parse(app.data.settings.extensions_enabled).indexOf('flarum-tags') !== -1;
+    return items;
   }
 }

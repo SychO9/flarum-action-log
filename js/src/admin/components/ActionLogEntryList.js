@@ -7,20 +7,26 @@ import username from 'flarum/helpers/username';
 import icon from 'flarum/helpers/icon';
 
 export default class ActionLogEntryList extends Component {
+  oninit(vnode) {
+    super.oninit(vnode);
+
+    this.state = this.attrs.state;
+  }
+
   view() {
-    if (this.attrs.loading) {
+    if (this.state.loading) {
       return <LoadingIndicator className="LoadingIndicator--block" />;
     }
 
-    if (!this.attrs.entries.length) {
+    if (!this.state.entries.length) {
       return <Placeholder text={app.translator.trans('sycho-action-log.admin.no_entries')} />;
     }
 
-    const { icons } = this.attrs.controls.actions();
+    const { icons } = this.state.controls.actions();
 
     return (
       <div className="ActionLogGrid">
-        {this.attrs.entries.map((entry) => (
+        {this.state.entries.map((entry) => (
           <div className="ActionLogGrid-item">
             <div className="ActionLogGrid-itemIcon">
               <div className="ActionLogGrid-itemIconMain">

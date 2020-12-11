@@ -1,35 +1,14 @@
 import ItemList from 'flarum/utils/ItemList';
 import Button from 'flarum/components/Button';
 import Dropdown from 'flarum/components/Dropdown';
-import ActionLogSettingsModal from '../modals/ActionLogSettingsModal';
 import FiltersHelpModal from '../modals/FiltersHelpModal';
 import { uikit } from '@sycho-uikit';
 
 const { Input } = uikit;
 
 export default class ActionLogControls {
-  constructor(component) {
-    this.component = component;
-  }
-
-  mainControls() {
-    const items = new ItemList();
-
-    items.add(
-      'clear',
-      <Button className="Button Button--primary" icon="fas fa-trash" onclick={this.clear.bind(this)}>
-        {app.translator.trans('sycho-action-log.admin.clear')}
-      </Button>
-    );
-
-    items.add(
-      'settings',
-      <Button className="Button" icon="fas fa-cogs" onclick={() => app.modal.show(ActionLogSettingsModal, { actions: this.actions() })}>
-        {app.translator.trans('sycho-action-log.admin.settings')}
-      </Button>
-    );
-
-    return items;
+  constructor(state) {
+    this.state = state;
   }
 
   filterControls() {
@@ -42,7 +21,7 @@ export default class ActionLogControls {
         parentClassName="ActionLog-search"
         className="FormControl"
         placeholder={app.translator.trans('sycho-action-log.admin.search')}
-        value={this.component.query()}
+        value={this.state.query()}
         oninput={this.search.bind(this)}
       />
     );
@@ -51,9 +30,9 @@ export default class ActionLogControls {
 
     items.add(
       'sort',
-      <Dropdown buttonClassName="Button" label={app.translator.trans(`sycho-action-log.admin.sort.${this.component.sort}`)}>
-        {Object.keys(this.component.sortingOptions).map((key) => {
-          const active = this.component.sort === key;
+      <Dropdown buttonClassName="Button" label={app.translator.trans(`sycho-action-log.admin.sort.${this.state.sort}`)}>
+        {Object.keys(this.state.sortingOptions).map((key) => {
+          const active = this.state.sort === key;
 
           return (
             <Button icon={active ? 'fas fa-check' : true} onclick={this.updateSort.bind(this, key)} active={active}>
@@ -64,9 +43,9 @@ export default class ActionLogControls {
       </Dropdown>
     );
 
-    items.add('pagination', <div>{this.component.buildPagination()}</div>);
+    items.add('pagination', <div>{this.state.buildPagination()}</div>);
 
-    items.add('refresh', <Button className="Button Button--icon" icon="fas fa-sync" onclick={this.component.load.bind(this.component)} />);
+    items.add('refresh', <Button className="Button Button--icon" icon="fas fa-sync" onclick={this.state.load.bind(this.state)} />);
 
     return items;
   }
@@ -122,30 +101,17 @@ export default class ActionLogControls {
   }
 
   updateSort(sort) {
-    this.component.load({ sort });
+    this.state.load({ sort });
   }
 
   search(e) {
-    this.component.query(e.target.value);
+    this.state.query(e.target.value);
 
-    this.component.loading = true;
-    this.searching = () => this.component.load({ query: this.component.query() });
+    this.state.loading = true;
+    this.searching = () => this.state.load({ query: this.state.query() });
 
     if (this.searchTimeout) clearTimeout(this.searchTimeout);
 
     this.searchTimeout = setTimeout(this.searching, 250);
-  }
-
-  clear() {
-    if (!confirm(app.translator.trans('sycho-action-log.admin.clear_confirmation'))) return;
-
-    this.component.loading = true;
-
-    app
-      .request({
-        url: app.forum.attribute('apiUrl') + '/action-log-entries',
-        method: 'DELETE',
-      })
-      .then(() => this.component.load());
   }
 }

@@ -11,7 +11,6 @@ use SychO\ActionLog\Controller;
 use SychO\ActionLog\Middleware;
 use SychO\ActionLog\Provider;
 use SychO\ActionLog\Console;
-use Flarum\Foundation\Application;
 use Flarum\Extend;
 use Flarum\Suspend;
 use Flarum\Approval;
@@ -22,7 +21,6 @@ use Flarum\Extension;
 use Flarum\Group;
 use Flarum\Tags;
 use Flarum\User;
-use Illuminate\Contracts\Events\Dispatcher;
 
 return [
     (new SychO\UiKit\Extend\Register()),
@@ -73,7 +71,6 @@ return [
         // Core but not core, does that make sense ?
         ->listen(\SychO\ActionLog\Event\PermissionSet::class, Listener\LogPermissionEdited::class),
 
-    function (Application $app, Dispatcher $events) {
-        $app->register(Provider\ActionLogServiceProvider::class);
-    }
+    (new Extend\ServiceProvider())
+        ->register(Provider\ActionLogServiceProvider::class),
 ];

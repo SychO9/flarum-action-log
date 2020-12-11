@@ -1,13 +1,6 @@
 @alInputIconWidth: 20px;
 
-.ActionLogPage-header {
-  background: @control-bg;
-  color: @control-color;
-  padding: 20px 0;
-
-  h2 {
-    margin: 0 0 5px;
-  }
+.ActionLogPage-mainControls {
   .Button {
     margin: 0 2px;
 
@@ -20,7 +13,11 @@
   }
 }
 
-.ActionLogPage-content {
+.ActionLogListSection {
+  margin-top: 20px;
+}
+
+.ActionLogListSection-content {
   padding: 20px 0;
 }
 
@@ -168,11 +165,11 @@
   float: right;
 }
 
-.ActionLogPage-navigation {
+.ActionLogListSection-navigation {
   display: flex;
 
   > * {
-    .ActionLogPage-header.Button();
+    .ActionLogPage-mainControls.Button();
   }
   .Select-caret {
     margin-right: 14px;
@@ -180,7 +177,7 @@
 }
 
 @media (max-width: 425px) {
-  .ActionLogPage-navigation {
+  .ActionLogListSection-navigation {
     flex-wrap: wrap;
 
     > * {
@@ -254,7 +251,7 @@
   }
 }
 
-.ActionLogPage-pagination {
+.ActionLogListSection-pagination {
   > * {
     margin: 0 2px;
   }
