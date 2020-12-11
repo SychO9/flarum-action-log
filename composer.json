@@ -22,7 +22,7 @@
     ],
     "type": "flarum-extension",
     "require": {
-        "flarum/core": "0.1.0-beta.15",
+        "flarum/core": ">=0.1.0-beta.15 <0.1.0-beta.16",
         "sycho/flarum-uikit": "^0.1.0"
     },
     "autoload": {
