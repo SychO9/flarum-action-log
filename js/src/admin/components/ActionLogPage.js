@@ -1,9 +1,9 @@
 import ExtensionPage from 'flarum/admin/components/ExtensionPage';
-import ActionLogSection from "./ActionLogSection";
-import ActionLogSettingsModal from "../modals/ActionLogSettingsModal";
+import ActionLogSection from './ActionLogSection';
+import ActionLogSettingsModal from '../modals/ActionLogSettingsModal';
 import ItemList from 'flarum/common/utils/ItemList';
 import Button from 'flarum/common/components/Button';
-import ActionLogSectionState from "../states/ActionLogSectionState";
+import ActionLogSectionState from '../states/ActionLogSectionState';
 
 export default class ActionLogPage extends ExtensionPage {
   oninit(vnode) {
@@ -16,7 +16,7 @@ export default class ActionLogPage extends ExtensionPage {
     const sections = super.sections();
 
     sections.replace('content', this.content(), 2);
-    sections.add('actionLogList', <ActionLogSection state={this.actionLogSectionState}/>, 1);
+    sections.add('actionLogList', <ActionLogSection state={this.actionLogSectionState} />, 1);
 
     return sections;
   }
@@ -24,9 +24,7 @@ export default class ActionLogPage extends ExtensionPage {
   content() {
     return (
       <div className="ExtensionPage-settings">
-        <div className="container ActionLogPage-mainControls">
-          {this.mainControls().toArray()}
-        </div>
+        <div className="container ActionLogPage-mainControls">{this.mainControls().toArray()}</div>
       </div>
     );
   }
@@ -43,7 +41,11 @@ export default class ActionLogPage extends ExtensionPage {
 
     items.add(
       'settings',
-      <Button className="Button" icon="fas fa-cogs" onclick={() => app.modal.show(ActionLogSettingsModal, { actions: this.actionLogSectionState.controls.actions() })}>
+      <Button
+        className="Button"
+        icon="fas fa-cogs"
+        onclick={() => app.modal.show(ActionLogSettingsModal, { actions: this.actionLogSectionState.controls.actions() })}
+      >
         {app.translator.trans('sycho-action-log.admin.settings')}
       </Button>
     );
