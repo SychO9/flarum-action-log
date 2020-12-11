@@ -9,14 +9,18 @@
 namespace SychO\ActionLog\Listener;
 
 use Carbon\Carbon;
+use Flarum\Foundation\DispatchEventsTrait;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Queue\Queue;
 use Laminas\Diactoros\ServerRequest;
 use Flarum\User\User;
 use Flarum\Settings\SettingsRepositoryInterface;
-use SychO\ActionLog\Job\LogActionJob;
+use SychO\ActionLog\ActionLogEntry;
 
 abstract class AbstractLogger
 {
+    use DispatchEventsTrait;
+
     /**
      * @var ServerRequest
      */
@@ -59,12 +63,11 @@ abstract class AbstractLogger
 
     /**
      * @param SettingsRepositoryInterface $settings
-     * @param Queue $queue
      */
-    public function __construct(SettingsRepositoryInterface $settings, Queue $queue)
+    public function __construct(SettingsRepositoryInterface $settings, Dispatcher $events)
     {
         $this->settings = $settings;
-        $this->queue = $queue;
+        $this->events = $events;
     }
 
     /**
@@ -84,17 +87,21 @@ abstract class AbstractLogger
             return;
         }
 
-        $this->queue->push(
-            new LogActionJob(
-                new Carbon('now'),
-                $this->name,
-                $this->type,
-                $this->details($event),
-                $this->getActor($event),
-                $this->resource_type,
-                isset($event->{$this->resource_type}) ? $event->{$this->resource_type}->id : null
-            )
+        $actor = $this->getActor($event);
+
+        $entry = ActionLogEntry::build(
+            new Carbon('now'),
+            $this->name,
+            $this->type,
+            $this->details($event),
+            $actor,
+            $this->resource_type,
+            isset($event->{$this->resource_type}) ? $event->{$this->resource_type}->id : null
         );
+
+        $this->dispatchEventsFor($entry, $actor);
+
+        $entry->save();
     }
 
     /**
