@@ -123,7 +123,7 @@ export default class Formatter {
 
     format.tags = tagTextConstructor(format.tags.items);
     format.oldTags = tagTextConstructor(format.oldTags.items);
-    format.discussion = <strong>{this.guessResourceName(format, 'discussion')}</strong>;
+    format.discussion = <strong>{this.guessResourceName(format.discussion, 'discussion')}</strong>;
 
     return app.translator.trans(this.langKey, format);
   }
