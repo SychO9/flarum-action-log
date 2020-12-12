@@ -8,22 +8,12 @@
 Administration/Moderation log for [Flarum](https://github.com/flarum/flarum).
 
 <p align=center>
-<img src="https://user-images.githubusercontent.com/20267363/87606561-32366680-c6f3-11ea-86a5-2c5d59ebdd78.png" alt="flarum-action-log" width="500">
+<img src="https://user-images.githubusercontent.com/20267363/87606561-32366680-c6f3-11ea-86a5-2c5d59ebdd78.png" alt="flarum-action-log" height="450">
+<img src="https://user-images.githubusercontent.com/20267363/101983131-2d151d80-3c79-11eb-8c41-ba22eaf8bdeb.png" alt="flarum-action-log-settings" height="450">
 </p>
 
 ## Todo
 * Add scheduled task to clear the log.
-
-## Actions Logged
-* Moderation
-  - Discussion: `Locking`, `Unlocking`, `Deleting`, `Stickying`, `Unstickying`, `Tagging`, `Rnaming`, `Hiding`, `Restoring`
-  - Post: `Approving`
-  - User: `Suspending`, `Unsuspending`, `Activating`
-* Administration
-  - Group: `Creating`, `Deleting`
-  - Tag: `Creating`, `Deleting`
-  - Extension: `Enabling`, `Disabling`, `Uninstalling`
-  - Permission: `Editing`
 
 ## Installation
 ```ssh
