@@ -89,19 +89,21 @@ abstract class AbstractLogger
 
         $actor = $this->getActor($event);
 
-        $entry = ActionLogEntry::build(
-            new Carbon('now'),
-            $this->name,
-            $this->type,
-            $this->details($event),
-            $actor,
-            $this->resource_type,
-            isset($event->{$this->resource_type}) ? $event->{$this->resource_type}->id : null
-        );
+        if ($actor) {
+            $entry = ActionLogEntry::build(
+                new Carbon('now'),
+                $this->name,
+                $this->type,
+                $this->details($event),
+                $actor,
+                $this->resource_type,
+                isset($event->{$this->resource_type}) ? $event->{$this->resource_type}->id : null
+            );
 
-        $this->dispatchEventsFor($entry, $actor);
+            $this->dispatchEventsFor($entry, $actor);
 
-        $entry->save();
+            $entry->save();
+        }
     }
 
     /**
@@ -129,7 +131,9 @@ abstract class AbstractLogger
             return $event->{$this->actor};
         }
 
-        $requestActor = self::$request->getAttribute('actor');
+        if (self::$request) {
+            $requestActor = self::$request->getAttribute('actor');
+        }
 
         return $requestActor ?? null;
     }

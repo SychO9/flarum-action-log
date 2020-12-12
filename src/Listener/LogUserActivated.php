@@ -9,6 +9,7 @@
 namespace SychO\ActionLog\Listener;
 
 use Flarum\User\Event\Activated;
+use Flarum\User\User;
 
 /**
  * Class LogUserActivated
@@ -32,4 +33,18 @@ class LogUserActivated extends AbstractUserAction
      * @var string
      */
     protected $resource_type = 'user';
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getActor($event): ?User
+    {
+        $actor = parent::getActor($event);
+
+        if (! $actor) {
+            $actor = $event->user;
+        }
+
+        return $actor;
+    }
 }
