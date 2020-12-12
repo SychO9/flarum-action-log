@@ -89,7 +89,7 @@ abstract class AbstractLogger
 
         $actor = $this->getActor($event);
 
-        if ($actor) {
+        if ($actor->exists) {
             $entry = ActionLogEntry::build(
                 new Carbon('now'),
                 $this->name,

@@ -41,7 +41,7 @@ class LogUserActivated extends AbstractUserAction
     {
         $actor = parent::getActor($event);
 
-        if (! $actor) {
+        if (! $actor && $event->user) {
             $actor = $event->user;
         }
 
