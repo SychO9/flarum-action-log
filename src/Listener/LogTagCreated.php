@@ -11,7 +11,7 @@ namespace SychO\ActionLog\Listener;
 use Flarum\Tags\Event\Creating;
 use Flarum\Tags\TagValidator;
 use Flarum\Settings\SettingsRepositoryInterface;
-use Illuminate\Contracts\Queue\Queue;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -47,9 +47,9 @@ class LogTagCreated extends AbstractTagAction
      * @param Queue $queue
      * @param TagValidator $validator
      */
-    public function __construct(SettingsRepositoryInterface $settings, Queue $queue, TagValidator $validator)
+    public function __construct(SettingsRepositoryInterface $settings, Dispatcher $events, TagValidator $validator)
     {
-        parent::__construct($settings, $queue);
+        parent::__construct($settings, $events);
 
         $this->validator = $validator;
     }
